@@ -1,0 +1,58 @@
+@charset "UTF-8";
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+
+.header-container{
+	display: flex;
+	margin-left: 20%
+}
+
+h3{
+	font-size: 23px;
+    width: 40%;
+    height: 30px;
+    display: flex;
+    margin-top: 65px;
+    color: #6E6E6E;
+}
+
+.write-table{
+    height: 200px;
+    text-align: left;
+    border-top: 1px solid #ccc;
+   
+}
+.write-table tr {
+     width: 50px;
+     padding: 10px;
+     font-weight: bold;
+    border-bottom: 1px solid #ccc;
+}
+.write-table th {
+    padding: 15px 0;
+    color: rgb(142, 141, 141);
+    background-color: #e6f6ff;
+    width: 100px;
+    text-align: center;
+}
+.write-table td {
+     width: 100px;
+     padding: 10px;
+     vertical-align: top;
+     border-bottom: 1px solid #ccc;
+}
+
+.write-btn{
+    height: 35px;
+    width: 100px;
+    background-color: white;
+    border: 2px solid black;
+    margin-top: 2%;
+}
+.write-btn:hover{
+    background-color: black;
+    color: white;
+    border: 2px solid black;
+}
+

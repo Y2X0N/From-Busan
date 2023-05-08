@@ -132,7 +132,7 @@ public class ReviewController {
         List<Review> reviews = reviewService.findReviews(searchText, navi.getStartRecord(), navi.getCountPerPage());
 
         // Board 리스트를 model 에 저장한다.
-        model.addAttribute("revies", reviews);
+        model.addAttribute("reviews", reviews);
         // PageNavigation 객체를 model 에 저장한다.
         model.addAttribute("navi", navi);
         model.addAttribute("searchText", searchText);
