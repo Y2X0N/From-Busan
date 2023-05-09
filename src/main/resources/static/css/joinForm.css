@@ -62,7 +62,7 @@ object-fit: cover;
     }
 
     td {
-        border-bottom: 1px dotted black;
+        border-bottom: 1px solid black;
     }
 
     caption {

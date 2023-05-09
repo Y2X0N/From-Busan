@@ -272,25 +272,6 @@
                 </div>
             </div>
             
-	           
-		
-          
-           <p>
-          <div class="reply-div">
-            <a id="replies" class="reply-table"></a>
-          
-           <div class="reply-container">
-               <input class="reply-input" id="reply" name="reply" placeholder=" 댓글을 작성해주세요.">
-               <input type="button" value="등록" class="reply-btn"  onclick="writeReply()">
-           </div>      
-                
-            </p>
-            <div class="read-btns">
-                <input class="read-btn" type="button" onclick="location.href='/review/list'" value="목록으로">
-                 <th:block th:if="${session.loginMember.member_id == review.member_id}">
-		        <input class="read-btn" type="button" th:onclick="|location.href='/review/update?review_id=${review.review_id}'|" value="수정하기">
-		        <input class="read-btn" type="button" th:onclick="|location.href='/review/delete?review_id=${review.review_id}'|" value="삭제하기">
-		      </th:block>
             </div>
 
         </div>
