@@ -122,6 +122,8 @@ function myList(course_id) {
 		</div>
 
 		<p>
+		
+		
 		<table lass="btn-group" role="group"
 			aria-label="Basic mixed styles example">
 			<tr >
@@ -145,8 +147,8 @@ function myList(course_id) {
 			</thead>
 			<tbody>
 				<tr th:each="pic, i : ${coursePics}">
-            <td><img th:src="@{${pic.MAIN_IMG_NORMAL}}" th:weith="180px" th:height="180px"></td>
-      <td th:text="*{course_content__${i.count}__}"></td>
+            <td><img th:src="@{${pic.MAIN_IMG_NORMAL}}" th:weight="500px" th:height="180px"></td>
+    	    <td th:text="*{course_content__${i.count}__}"></td>
 				</tr>
 			</tbody>
 		</table>
