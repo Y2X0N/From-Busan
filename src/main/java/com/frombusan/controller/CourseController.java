@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("course")
 @Controller
 public class CourseController {
-	
+	//testestsetes
 	@Autowired
 	private CourseMapper courseMapper;
 	private ReviewService reviewService;
