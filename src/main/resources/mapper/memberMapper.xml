@@ -30,4 +30,14 @@
     <select id="findIdOrPassword" resultType="map">
         select member_id,password,name,phone_number from member 
     </select>
+    
+    
+    <!--  게시글 수정  -->
+    <update id="updateMember">
+        update member
+        <set>
+            <if test="password != null">password = #{password},</if>
+        </set>
+        where member_id = #{member_id}
+    </update>
 </mapper>

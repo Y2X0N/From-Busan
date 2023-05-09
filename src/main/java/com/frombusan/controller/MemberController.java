@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,7 @@ import com.frombusan.model.festival.Festival;
 import com.frombusan.model.member.LoginForm;
 import com.frombusan.model.member.Member;
 import com.frombusan.model.member.MemberJoinForm;
+import com.frombusan.model.member.MemberUpdateForm;
 import com.frombusan.model.member.findIdForm;
 import com.frombusan.model.tourist.Tourist_Spot;
 import com.frombusan.repository.CourseMapper;
@@ -223,14 +225,37 @@ public class MemberController {
         return "member/findPassword"  ;
     }
     
-    //id찾기
+    //id*비번찾기(위한 정보)
     @PostMapping("")
-    public ResponseEntity<List<findIdForm>> findIdOrPassword(@Validated @ModelAttribute("loginForm") LoginForm loginForm
+    public ResponseEntity<List<findIdForm>> findIdOrPassword(
            ) {
     	List<findIdForm> findIdOrPassword = memberMapper.findIdOrPassword();
 		return ResponseEntity.ok(findIdOrPassword);
     }
     
+    //비번 변경 시작
+    @GetMapping("changePassword")
+    public String changePassword(@RequestParam("member_id") String member_id
+          ,Model model ) {
+    	
+    	Member member = memberMapper.findMember(member_id);
+    	model.addAttribute("member", member);
+    	
+		return "member/changePassword";
+    }
+    //비번 변경
+    @PostMapping("changePassword")
+    public ResponseEntity<String> changePassword2(@RequestParam("member_id") String member_id 
+    		,@RequestParam("password")String password, Model model ) {
+    	
+    	log.info("member_id:{}",member_id);
+    	// 사용자가 입력한 이이디에 해당하는 Member 정보를 데이터베이스에서 가져온다.
+        Member member = memberMapper.findMember(member_id);
+        member.setPassword(password);
+    	memberMapper.updateMember(member);
+    	
+		return ResponseEntity.ok("변경성공");
+    }
     
     
 }
