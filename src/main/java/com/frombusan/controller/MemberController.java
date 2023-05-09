@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,12 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.frombusan.model.course.Course;
 import com.frombusan.model.festival.Festival;
 import com.frombusan.model.member.LoginForm;
 import com.frombusan.model.member.Member;
 import com.frombusan.model.member.MemberJoinForm;
+import com.frombusan.model.member.findIdForm;
 import com.frombusan.model.tourist.Tourist_Spot;
 import com.frombusan.repository.CourseMapper;
 import com.frombusan.repository.FestivalMapper;
@@ -61,7 +64,7 @@ public class MemberController {
     // 회원가입
     @PostMapping("join")
     public String join(@Validated @ModelAttribute("joinForm") MemberJoinForm joinForm,
-                       BindingResult result) {
+                       BindingResult result,Model model) {
         log.info("joinForm: {}", joinForm);
 
         // validation 에 에러가 있으면 가입시키지 않고 member/joinForm.html 페이지로 돌아간다.
@@ -73,6 +76,7 @@ public class MemberController {
         Member member = memberMapper.findMember(joinForm.getMember_id());
         // 사용자 정보가 존재하면
         if (member != null) {
+        	model.addAttribute("member", member);
             log.info("이미 가입된 아이디 입니다.");
             // BindingResult 객체에 GlobalError 를 추가한다.
             result.reject("duplicate ID", "이미 가입된 아이디 입니다.");
@@ -194,5 +198,39 @@ public class MemberController {
     	
         return "member/myJjimList"  ;
     }
+    //id중복확인
+    @GetMapping("")
+    public ResponseEntity<List<String>> checkId(@Validated @ModelAttribute("loginForm") LoginForm loginForm
+    		,@SessionAttribute(value = "loginMember", required = false) Member loginMember)
+            {
+    	List<String> findAllMemberId = memberMapper.findAllMemberId();
+        log.info("findAllMemberId:{}",findAllMemberId);
+		return ResponseEntity.ok(findAllMemberId);
+    }
+    
+    //id찾기
+    @GetMapping("findId")
+    public String findId(Model model) {
+    	
+    	model.addAttribute("findIdForm", new findIdForm());
+        return "member/findId"  ;
+    }
+    
+    //비번찾기
+    @GetMapping("findPassword")
+    public String findPassword(Model model) {
+    	model.addAttribute("findIdForm", new findIdForm());
+        return "member/findPassword"  ;
+    }
+    
+    //id찾기
+    @PostMapping("")
+    public ResponseEntity<List<findIdForm>> findIdOrPassword(@Validated @ModelAttribute("loginForm") LoginForm loginForm
+           ) {
+    	List<findIdForm> findIdOrPassword = memberMapper.findIdOrPassword();
+		return ResponseEntity.ok(findIdOrPassword);
+    }
+    
+    
     
 }

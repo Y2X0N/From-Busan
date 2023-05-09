@@ -364,7 +364,7 @@ function calcRoute(lat,lng) {
        	                let mode = step.travel_mode;          // works
        	            }
        	            let result1 = instruction1.slice(0, -1);
-       	                console.log(result1); 
+       	                result1=result1.replaceAll(',','<br>'); 
        	            $("#mapContent").append(result1);
        	        }        
        	    }

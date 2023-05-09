@@ -95,8 +95,9 @@ img {
 }
 #mapContent{
 	height:600px;
+	width:600px;
 	margin-left : 10px;
-	font-size:14px;
+	font-size:20px;
 	display:flex;
 	align-items:center;
 	justify-content: center;

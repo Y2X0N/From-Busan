@@ -30,10 +30,10 @@ public class WebConfig implements WebMvcConfigurer {
 //	                // 인터셉터에서 제외할 패턴을 지정
 //	                .excludePathPatterns("/css/**", "/*.ico", "/error","/image/**");
 
-	        registry.addInterceptor(new LoginCheckInterceptor())
-	                .order(1)
-	                .addPathPatterns("/**")
-	                .excludePathPatterns(excludePaths);
+//	        registry.addInterceptor(new LoginCheckInterceptor())
+//	                .order(1)
+//	                .addPathPatterns("/**")
+//	                .excludePathPatterns(excludePaths);
 	    }
 	
 }

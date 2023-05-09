@@ -11,7 +11,7 @@
     <script src="/js/index.js"></script>
     
     <script>
-    	function formCheck() {
+    	async function formCheck() {
     		// 아이디 체크(4~20자리 사이)
     		let member_id = $("#member_id");
     		if (member_id.val().length < 4 || member_id.val().length > 20) {
@@ -27,13 +27,13 @@
     			password.focus();
     			return false;
     		}
-					//패스워드 중복체크
-					let passwordCheck=$("#passwordCheck");
-					if(password.val() != passwordCheck.val()){
-						alert("패스워드를 다시 확인해주세요");
-						password.focus();
-						return false;
-					}
+			//패스워드 중복체크
+			let passwordCheck=$("#passwordCheck");
+			if(password.val() != passwordCheck.val()){
+				alert("패스워드를 다시 확인해주세요");
+				password.focus();
+				return false;
+			}
     		
     		
         	// 이름 체크(공백이 아님)
@@ -58,11 +58,59 @@
         		birth.focus();
         		return false;
         	}
-    			
-        	
-        	
-        	return true;
+        
+        	let phone_number = $("#phone_number");
+        	if (phone_number.val() == "") {
+        		alert("휴대폰 번호를 입력하세요");
+        		birth.focus();
+        		return false;
+        	}
+            if (!phone_number.val().includes('-')) { // '-'가 포함되어 있지 않은 경우
+                alert("- 값을 입력해 주세요");
+                phone_number.focus();
+                return false;
+            }
+            if (phone_number.val().charAt(3) !== '-' || phone_number.val().charAt(8) !== '-') {
+                alert("-의 위치가 정확하지 않습니다.");
+                phone_number.focus();
+                return false;
+            }
+            if (phone_number.length() !== 13) {
+                alert("전화번호 수가 정확하지 않습니다.");
+                phone_number.focus();
+                return false;
+            }
+            let idCheckResult = await idCheck();
+            if(idCheckResult===false){
+                alert("중복된 아이디입니다.");
+                return false;
+            }
+            return idCheckResult;
     	}
+    	
+    	
+    	async function idCheck() {
+    	    let member_id = $("#member_id").val(); // 입력한 아이디 값 가져오기
+    	    try {
+    	        let response = await $.ajax({
+    	            url: "/member/",
+    	            method: "GET"
+    	        });
+    	        console.log(response);
+    	        for (let i = 0; i < response.length; i++) {
+    	            if (member_id === response[i]) {
+    	                alert("중복된 아이디입니다.");
+    	                $("#member_id").focus(); // id selector를 사용하여 해당 요소에 포커스 설정
+    	                return false;
+    	            }
+    	        }
+    	        alert("사용할 수 있는 아이디입니다.")
+    	        return true;
+    	    } catch (error) {
+    	        console.log(error);
+    	    }
+    	}
+    	
     </script>
 </head>
 <body>
@@ -79,10 +127,7 @@
                     <td class="leftTd">ID</td>
                     <td class="rightTd">
                         <input type="text" th:field="*{member_id}">
-                        <input class="butID" type="button" value="중복확인">
-                        <span th:if="${#fields.hasGlobalErrors()}" class="error">
-										      <span class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
-										    </span>
+                        <input class="butID" th:field="*{member_id}" type="button" value="중복확인" onclick="return idCheck()">
                     </td>
                 </tr>
                 <tr>
