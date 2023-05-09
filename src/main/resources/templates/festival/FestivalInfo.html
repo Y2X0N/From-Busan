@@ -11,14 +11,50 @@
 	rel="stylesheet"
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
-	
+
+<script async
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_FL3IrY7I_w7Cerf1pK28nSvyxby86Xg&callback=getRestaurant&v=weekly">
+    </script>
+
 <link rel="stylesheet" href="/css/header.css" />
 <link rel="stylesheet" href="/css/Info.css" />
 <script src="/js/index.js"></script>
+
 <style type="text/css">
 .asd {
 	width: 400px;
 	height: 300px;
+}
+
+#mapContainer {
+	position: relative;
+}
+
+#modalText {
+	height: 200px;
+}
+
+.modal {
+	position: absolute;
+	top: 80%;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 10%;
+	background-color: rgba(255, 255, 255, 0.9);
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	z-index: 1;
+    overflow: hidden; /* 스크롤 없애기 */
+	
+}
+
+.modal-content {
+	background-color: white;
+	height:100%;
+	
 }
 </style>
 <script th:inline="javascript">
@@ -78,7 +114,7 @@ function getDb(){
        if (navigator.geolocation) {
          navigator.geolocation.getCurrentPosition(
            (position) => {
-         	  const myLat = position.coords.latitude;
+         	 const myLat = position.coords.latitude;
              const myLng = position.coords.longitude;	 
            
              const pos = new google.maps.LatLng(myLat,myLng);
@@ -117,6 +153,7 @@ function getDb(){
 	          
 /////////////// 전철로 길찾기/////////////////////////////////////////////////////////////////////////
    function calcRouteByRail(lat,lng) {
+	
    	navigator.geolocation.getCurrentPosition(
          (position) => {
        	   const myLat = position.coords.latitude;
@@ -142,25 +179,35 @@ function getDb(){
 	          alert(status+"  (전철이 없을경우 버스 경로가 나옵니다)");  // 확인용 Alert..미사용시 삭제
 		          if (status === google.maps.DirectionsStatus.OK) {
 		        	  directionsDisplay.setDirections(response);
-		        	  for (i = 0; i < response.routes.length; i++) {
-		         		  let route = response.routes[i];
-		         	        for (j = 0; j < route.legs.length; j++) {
-		         	        	let leg = route.legs[j];
-		         	            // Do something with leg attributes...
-		         	            let instruction1 ='';
-		         	            for (k = 0; k < leg.steps.length; k++) {
-		         	            	let 	step = leg.steps[k];
-		         	            	let distance = step.distance.text;    // fine
-		         	            	let duration = step.duration.text;    // fine
-		         	            	let instruction = step.instructions +" "+duration+",";   ////////////////////
-		         	                instruction1 += instruction;
-		         	                let mode = step.travel_mode;          // works
-		         	            }
-		         	            let result1 = instruction1.slice(0, -1);
-		         	                console.log(result1); 
-		         	            $("#mapContent").append(result1);
-		         	        }        
-		         	    }
+						
+		                 // 모달 엘리먼트와 닫기 버튼을 가져옵니다.
+		                    let modal = document.querySelector(".modal");
+		                    let modalContent = document.querySelector("#modalText");
+		                    let closeBtn = document.querySelector(".close");
+
+		                    // 닫기 버튼을 클릭하면 모달을 숨깁니다.
+		                    closeBtn.addEventListener("click", function() {
+		                      modal.style.display = "none";
+		                    });
+		                    
+		                    for (i = 0; i < response.routes.length; i++) {
+		                    	  let route = response.routes[i];
+		                    	  for (j = 0; j < route.legs.length; j++) {
+		                    	    let leg = route.legs[j];
+		                    	    let instruction1 = '';
+		                    	    for (k = 0; k < leg.steps.length; k++) {
+		                    	      let step = leg.steps[k];
+		                    	      let distance = step.distance.text;
+		                    	      let duration = step.duration.text;
+		                    	      let instruction = step.instructions + " " + duration + ",";
+		                    	      instruction1 += instruction;
+		                    	      let mode = step.travel_mode;
+		                    	    }
+		                    	    let result1 = instruction1.slice(0, -1);
+		                    	    modalContent.innerHTML = result1;
+		                    	    modal.style.display = "block"; // 모달을 표시합니다.
+		                    	  }
+		                    	}
 	        	  }else{
 	        		  return getDb()
 	        		  };
@@ -195,25 +242,35 @@ function calcRouteByBus(lat,lng) {
         alert(status+"  (버스가 없을경우 전철 경로가 나옵니다)");  // 확인용 Alert..미사용시 삭제
          if (status === google.maps.DirectionsStatus.OK) {
        	  directionsDisplay.setDirections(response);
-       		for (i = 0; i < response.routes.length; i++) {
-	   		  let route = response.routes[i];
-	   	        for (j = 0; j < route.legs.length; j++) {
-	   	        	let leg = route.legs[j];
-	   	            // Do something with leg attributes...
-	   	            let instruction1 ='';
-	   	            for (k = 0; k < leg.steps.length; k++) {
-	   	            	let 	step = leg.steps[k];
-	   	            	let distance = step.distance.text;    // fine
-	   	            	let duration = step.duration.text;    // fine
-	   	            	let instruction = step.instructions +" "+duration+",";   ////////////////////
-	   	                instruction1 += instruction;
-	   	                let mode = step.travel_mode;          // works
-	   	            }
-	   	            let result1 = instruction1.slice(0, -1);
-	   	                console.log(result1); 
-	   	            $("#mapContent").append(result1);
-	   	        }        
-   	    }
+			
+          // 모달 엘리먼트와 닫기 버튼을 가져옵니다.
+             let modal = document.querySelector(".modal");
+             let modalContent = document.querySelector("#modalText");
+             let closeBtn = document.querySelector(".close");
+
+             // 닫기 버튼을 클릭하면 모달을 숨깁니다.
+             closeBtn.addEventListener("click", function() {
+               modal.style.display = "none";
+             });
+             
+             for (i = 0; i < response.routes.length; i++) {
+             	  let route = response.routes[i];
+             	  for (j = 0; j < route.legs.length; j++) {
+             	    let leg = route.legs[j];
+             	    let instruction1 = '';
+             	    for (k = 0; k < leg.steps.length; k++) {
+             	      let step = leg.steps[k];
+             	      let distance = step.distance.text;
+             	      let duration = step.duration.text;
+             	      let instruction = step.instructions + " " + duration + ",";
+             	      instruction1 += instruction;
+             	      let mode = step.travel_mode;
+             	    }
+             	    let result1 = instruction1.slice(0, -1);
+             	    modalContent.innerHTML = result1;
+             	    modal.style.display = "block"; // 모달을 표시합니다.
+             	  }
+             	}
       	  }else{
       		  return getDb()
       		  };
@@ -377,32 +434,51 @@ function getRestaurant(){
                 alert(status);  // 확인용 Alert..미사용시 삭제
                 if (status === google.maps.DirectionsStatus.OK) {
                     directionsDisplay.setDirections(response);
+					
+                 // 모달 엘리먼트와 닫기 버튼을 가져옵니다.
+                    let modal = document.querySelector(".modal");
+                    let modalContent = document.querySelector("#modalText");
+                    let closeBtn = document.querySelector(".close");
 
+                    // 닫기 버튼을 클릭하면 모달을 숨깁니다.
+                    closeBtn.addEventListener("click", function() {
+                      modal.style.display = "none";
+                    });
+                    
                     for (i = 0; i < response.routes.length; i++) {
-                        let route = response.routes[i];
-                        for (j = 0; j < route.legs.length; j++) {
-                            let leg = route.legs[j];
-                            // Do something with leg attributes...
-                            let instruction1 ='';
-                            for (k = 0; k < leg.steps.length; k++) {
-                                let step = leg.steps[k];
-                                let distance = step.distance.text;    // fine
-                                let duration = step.duration.text;    // fine
-                                let instruction = step.instructions +" "+duration+",";   ////////////////////
-                                instruction1 += instruction;
-                                let mode = step.travel_mode;          // works
-                            }
-                            let result1 = instruction1.slice(0, -1);
-                            	console.log(result1); 
-                            $("#mapContent").append(result1);
-                        }        
-                    }
+                    	  let route = response.routes[i];
+                    	  for (j = 0; j < route.legs.length; j++) {
+                    	    let leg = route.legs[j];
+                    	    let instruction1 = '';
+                    	    for (k = 0; k < leg.steps.length; k++) {
+                    	      let step = leg.steps[k];
+                    	      let distance = step.distance.text;
+                    	      let duration = step.duration.text;
+                    	      let instruction = step.instructions + " " + duration + ",";
+                    	      instruction1 += instruction;
+                    	      let mode = step.travel_mode;
+                    	    }
+                    	    let result1 = instruction1.slice(0, -1);
+                    	    modalContent.innerHTML = result1;
+                    	    modal.style.display = "block"; // 모달을 표시합니다.
+                    	  }
+                    	}
                 } else {
                 return getDb();
           	 };
          }
         )
        })}	
+
+/////////////// 좋아요/////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
 
 /////////////// 좋아요/////////////////////////////////////////////////////////////////////////
 
@@ -422,7 +498,7 @@ function like(festivalId) {
 	 		          });	
  		        } else {
  		          alert("좋아요가 삭제되었습니다.");
- 		         		$(".like_img").attr({
+ 		         		$(".like_img").a2ttr({
 	 		            'src': '/image/heart-regular.svg',
 	 		            alt: '좋아요삭제'
 	 		          });	
@@ -545,14 +621,20 @@ function myList(festival_id) {
 <body>
 	<div th:replace="fragments/header :: header"></div>
 	<div id="container" th:object="${festival}">
-		
+
+
+		<p>
+			<br> <br> <br>
+		<h1 th:text="*{main_title}"></h1>
+
+
 		<nav class="tabnav">
 			<a class="item" href="#itemcntnts">상세 정보</a> <a class="item"
 				href="#information">이용 정보</a> <a class="item" href="#mapContainer"
 				onclick="getRestaurant()">주변 맛집 지도</a>
 		</nav>
-		
-			<div id="spot-header-container">
+
+		<div id="spot-header-container">
 			<div class="itemcntnts" id="itemcntnts">
 
 				<img th:src="*{main_img_normal}" th:alt="*{main_title}">
@@ -561,14 +643,13 @@ function myList(festival_id) {
 					<div class="left_area">
 						<a th:unless="${#lists.contains(findFestivalLikes, member_id)}"
 							href="javascript:;" class="icon heart"
-							th:onclick="|like(*{festival_id})|"> <img
-							class="like_img" src="/image/heart-regular.svg" alt="하트">
+							th:onclick="|like(*{festival_id})|"> <img class="like_img"
+							src="/image/heart-regular.svg" alt="하트">
 						</a>
 						<!--좋아요를 햇으면  -->
 						<a th:if="${#lists.contains(findFestivalLikes, member_id)}"
 							href="javascript:;" class="icon heart"
-							th:onclick="|like(*{festival_id})|"> <img
-							class="like_img"
+							th:onclick="|like(*{festival_id})|"> <img class="like_img"
 							src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
 							alt="하트">
 						</a>
@@ -576,103 +657,89 @@ function myList(festival_id) {
 					<div class="right_area">
 						<a th:unless="${#lists.contains(findFestivalMyList, member_id)}"
 							href="javascript:;" class="icon wish"
-							th:onclick="|myList(*{festival_id})|"> <img
-							class="wish_img" src="/image/bookmark-regular%20(1).svg"
-							alt="찜하기">
+							th:onclick="|myList(*{festival_id})|"> <img class="wish_img"
+							src="/image/bookmark-regular%20(1).svg" alt="찜하기">
 						</a>
 						<!--찜을 햇으면  -->
 						<a th:if="${#lists.contains(findFestivalMyList, member_id)}"
 							href="javascript:;" class="icon wish"
-							th:onclick="|myList(*{festival_id})|"> <img
-							class="wish_img" src="/image/bookmark-solid%20(2).svg" alt="찜하기">
+							th:onclick="|myList(*{festival_id})|"> <img class="wish_img"
+							src="/image/bookmark-solid%20(2).svg" alt="찜하기">
 						</a>
 					</div>
 				</div>
-					
 
-			<input type="button" class="btn btn-info"
-				onclick="location.href='/member/jjimList'" value="나의 찜 목록">
-			 
-			 	
-			 <input
-			type="button" class="btn btn-success"
-			th:onclick="location.href='/review/reviewList?main_title=[[${festival.main_title}]]'" 
-			value="관련 리뷰 찾기">
-				
+				<input type="button" class="btn btn-success"
+					th:onclick="location.href='/review/reviewList?main_title=[[${festival.main_title}]]'"
+					value="관련 리뷰 찾기">
+
+				<!-- <input type="button" class="btn btn-info" onclick="location.href='/member/jjimList'" value="나의 찜 목록">	
 			<a class="btn btn-danger" th:utext="'좋아요 수 : '+*{place_like}"></a>
-			
-			<a class="btn btn-warning" th:utext="'조회수 : '+*{hit}"></a>
-			
-			
-			
+			<a class="btn btn-warning" th:utext="'조회수 : '+*{hit}"></a> -->
 
-		<p>
-		
 
-		<div class="explain">
-			<h3 th:text="*{itemcntnts}"></h3>
+
+
+				<p>
+				<div class="explain">
+					<h3 th:text="*{itemcntnts}"></h3>
+				</div>
+			</div>
+
+
+
+			<div class="information" id="information">
+				<table class="information-table" border="1px solid black">
+					<tr>
+						<th>주소</th>
+						<td th:utext="*{addr1}"></td>
+					</tr>
+					<tr>
+						<th>전화번호</th>
+						<td th:utext="*{cntct_tel}"></td>
+					</tr>
+					<tr>
+						<th>관련 홈페이지</th>
+						<td><a href="#"
+							th:onclick="findFestival([[${festival.homepage_url}]])"
+							th:text="${festival.homepage_url}"></a></td>
+					</tr>
+					<tr>
+						<th>최단 교통정보</th>
+						<td th:utext="*{trfc_info}"></td>
+					</tr>
+
+					<tr>
+						<th>이용 요금</th>
+						<td th:utext="*{usage_amount}"></td>
+					</tr>
+
+					<tr>
+						<th>???</th>
+						<td th:utext="*{middle_size_rm1}"></td>
+					</tr>
+
+				</table>
+
+			</div>
+
+			<div id="mapContainer">
+				<div id="map"></div>
+				<div class="modal">
+					<span class="close">&times;</span>
+					<div id="modalText"></div>
+				</div>
+			</div>
 		</div>
-	</div>
-		
-		
-		
-	<div class="information" id="information">
-		<table  class="information-table" border="1px solid black">
-			<tr>
-				<th>주소</th>
-				<td th:utext="*{addr1}"></td>
-			</tr>
-			<tr>
-				<th>전화번호</th>
-				<td th:utext="*{cntct_tel}"></td>
-			</tr>
-			<tr>
-				<th>관련 홈페이지</th>
-				<td>
-				  <a href="#" th:onclick="findFestival([[${festival.homepage_url}]])"
-				     th:text="${festival.homepage_url}"></a>
-				</td>
-			</tr>
-			<tr>
-				<th>최단 교통정보</th>
-				<td th:utext="*{trfc_info}"></td>
-			</tr>
-			
-			<tr>
-				<th>이용 요금</th>
-				<td th:utext="*{usage_amount}"></td>
-			</tr>
-			
-			<tr>
-				<th>???</th>
-				<td th:utext="*{middle_size_rm1}"></td>
-			</tr>
-			
-		</table>
+
+		<br> <input type="button" class="btn btn-dark"
+			onclick="getRestaurant()" value="맛집 찾기"> <input type="button"
+			class="btn btn-warning" onclick="getDb()" value="명소 찾기">
+
+
+
 
 	</div>
-	
-		<div id="mapContainer">
-			<div id="map"></div>
-			<div id="mapContent"></div>
-			
-			
-		     	
-		</div>
-		
-		<script async
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_FL3IrY7I_w7Cerf1pK28nSvyxby86Xg&callback=getRestaurant&v=weekly">
-	     </script>
-	     
-		<input type="button" class="btn btn-dark" 
-			   onclick="getRestaurant()" 
-			    value="맛집 찾기"> 
-	 
-		 <input type="button" class="btn btn-warning" 
-			   onclick="getDb()" 
-			    value="명소 찾기"> 
-	</div>
-</div>
 
 </body>
 </html>

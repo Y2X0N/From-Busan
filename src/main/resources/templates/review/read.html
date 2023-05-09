@@ -157,16 +157,42 @@
       
       //좋아요 버튼
 
-      $(document).ready(function () {
-          $(".content").click(function () {
-              $(".content").toggleClass("heart-active")
-              $(".like").toggleClass("heart-active")
-              $(".heart").toggleClass("heart-active")
-              $(".numb").toggleClass("heart-active")
-          });
-      });
+     // $(document).ready(function () {
+     //     $(".content").click(function () {
+     //         $(".content").toggleClass("heart-active")
+     //         $(".like").toggleClass("heart-active")
+     //         $(".heart").toggleClass("heart-active")
+     //         $(".numb").toggleClass("heart-active")
+     //     });
+     // });
 
-
+      function like(festivalId) {
+    		console.log(festivalId);
+    		
+    	 	$.ajax({
+    	 	url: "like",
+    	 	type: "POST",
+    		data: { festivalId: festivalId },
+    	 	success: function (result) {
+    	 		        if (result.liked===true) {
+    	 		          alert("좋아요가 추가되었습니다.");
+    		 		         $(".like_img").attr({
+    		 		            'src': 'https://cdn-icons-png.flaticon.com/512/803/803087.png',
+    		 		            alt: '좋아요삭제'
+    		 		          });	
+    	 		        } else {
+    	 		          alert("좋아요가 삭제되었습니다.");
+    	 		         		$(".like_img").attr({
+    		 		            'src': '/image/heart-regular.svg',
+    		 		            alt: '좋아요삭제'
+    		 		          });	
+    	 		        }
+    	 		    },
+    	 		error: function (xhr, status, error) {
+    	 		console.error(error);
+    	 	}		
+    	 });
+    	}  
       
     </script>
 </head>
@@ -202,12 +228,15 @@
                     <th>조회수</th>
                     <td th:text="*{hit}"></td>
                 </tr>
-                <tr>
-                    <th>사진</th>
-                    <td colspan="3">
-                        <img src="01.jpeg" alt="사진1">
-                        <img src="02.jpg" alt="사진2">
-                    </td>
+                
+                <tr th:each="file, fileStat: ${files}">
+                    <th>사진	
+                    <a th:text="${fileStat.count}"></a>
+       				</th>
+        			<th>
+		        	<a th:if="${file}" th:href="@{/image/__${file.SAVED_FILENAME}__}" th:data-title="|${fileStat.count}번째 사진|"  data-lightbox="example-set">
+				 		<img th:src="@{/image/__${file.SAVED_FILENAME}__}" alt="" th:width="100" th:height="100" >
+				 	</a>
                 </tr>
 
                 <tr>
@@ -224,43 +253,48 @@
             <div class="heart-btn">
                 <div class="content">
                     <span class="heart"></span>
+                    <a th:unless="${#lists.contains(findFestivalLikes, member_id)}"
+							href="javascript:;" class="icon heart"
+							th:onclick="|like(*{festival_id})|"> <img
+							class="like_img" src="/image/heart-regular.svg" alt="하트">
+						</a>
+						<!--좋아요를 햇으면  -->
+						<a th:if="${#lists.contains(findFestivalLikes, member_id)}"
+							href="javascript:;" class="icon heart"
+							th:onclick="|like(*{festival_id})|"> <img
+							class="like_img"
+							src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
+							alt="하트">
+						</a>
+                    
                     <span class="like">Like</span>
                     <span class="numb"></span>
                 </div>
             </div>
             
-            <div class="reply-div">
-                <table class="reply-table">
-                    <tr>
-                        <th>No.</th>
-                        <th>작성자</th>
-                        <th>내용</th>
-                        <th>작성일</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>실크로드</td>
-                        <td>재밋겠네용</td>
-                        <td>2023.5.30</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>메롱</td>
-                        <td>으</td>
-                        <td>2023.5.30</td>
-                    </tr>
-                </table>
-
-                <div class="reply-container">
-                    <input class="reply-input" id="reply" type="text" placeholder=" 댓글을 작성해주세요." value="">
-                    <button type="submit" class="reply-btn">작성</button>
-                </div>
-                <p></p>
-                <div class="read-btns">
-                    <input class="read-btn" type="button" onclick="location.href='/review/list'" value="목록으로">
-                </div>
-
+	           
+		
+          
+           <p>
+          <div class="reply-div">
+            <a id="replies" class="reply-table"></a>
+          
+           <div class="reply-container">
+               <input class="reply-input" id="reply" name="reply" placeholder=" 댓글을 작성해주세요.">
+               <input type="button" value="등록" class="reply-btn"  onclick="writeReply()">
+           </div>      
+                
+            </p>
+            <div class="read-btns">
+                <input class="read-btn" type="button" onclick="location.href='/review/list'" value="목록으로">
+                 <th:block th:if="${session.loginMember.member_id == review.member_id}">
+		        <input class="read-btn" type="button" th:onclick="|location.href='/review/update?review_id=${review.review_id}'|" value="수정하기">
+		        <input class="read-btn" type="button" th:onclick="|location.href='/review/delete?review_id=${review.review_id}'|" value="삭제하기">
+		      </th:block>
             </div>
+
+        </div>
+          </div>
 
         </table>
 
