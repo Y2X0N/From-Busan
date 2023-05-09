@@ -14,8 +14,6 @@
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_FL3IrY7I_w7Cerf1pK28nSvyxby86Xg&callback=initialize"></script>
 <script th:inline="javascript">
 
-	//th:href="@{/festival/FestivalInfo(festival_id=${festival.festival_id})}"
-	let inner = document.getElementsByClassName('inner');
 	
 function calcRoute() {
     var start = document.getElementById('start').value;
@@ -141,11 +139,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 			<div class="inner" th:each="tour : ${tourist}">
 				<!-- card -->
+				<a th:href="@{/tourist/TouristInfo(tourist_Spot_id=${tour.tourist_Spot_id})}">
 				<img th:alt="${tour.main_title}" th:src="${tour.main_img_normal}">
+				</a>
 				<div class="innerContent">
-					<a
-						th:href="@{/tourist/TouristInfo(tourist_Spot_id=${tour.tourist_Spot_id})}"
-						th:text="${tour.main_title}"></a> <i
+					<a th:text="${tour.main_title}"></a> <i
 						class="far fa-heart testHeart"
 						style="color: #da202c; margin-left: 10px" title="like"></i> <span
 						th:text="${tour.place_like}" style="font-size: 24px"></span>
@@ -179,12 +177,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 			<div class="inner" th:each="festival : ${festival}">
 				<!-- card -->
+				<a th:href = "@{/festival/FestivalInfo(festival_id=${festival.festival_id})}">
 				<img th:alt="${festival.main_title}"
 					th:src="${festival.main_img_normal}">
+				</a>
 				<div class="innerContent">
-					<a
-						th:href="@{/festival/FestivalInfo(festival_id=${festival.festival_id})}"
-						th:text="${festival.main_title}"></a> <i
+					<a th:text="${festival.main_title}"></a> <i
 						class="far fa-heart testHeart"
 						style="color: #da202c; margin-left: 10px" title="like"></i> <span
 						th:text="${festival.place_like}" style="font-size: 24px"></span>
