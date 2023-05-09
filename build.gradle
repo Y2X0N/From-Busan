@@ -30,6 +30,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     //fragment
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+    //summernote
+    implementation 'org.webjars.npm:summernote:0.8.18'
 }
 
 tasks.named('test') {
