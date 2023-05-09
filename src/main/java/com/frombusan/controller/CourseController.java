@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("course")
 @Controller
 public class CourseController {
-	//testestsetes
+	
 	@Autowired
 	private CourseMapper courseMapper;
 	private ReviewService reviewService;
@@ -65,8 +65,9 @@ public class CourseController {
  			 Model model) {
 
  		// board_id 에 해당하는 게시글을 데이터베이스에서 찾는다.
- 		
  		Course course= courseMapper.findCourse(course_id);
+ 		log.info("course:{}",course);
+ 		
  		// board_id에 해당하는 게시글이 없으면 리스트로 리다이렉트 시킨다.
  		if (course == null) {
  			log.info("축제 없음");
@@ -79,7 +80,6 @@ public class CourseController {
 		//한 코스의 사진들 가져오기
 		List<CoursePic> coursePics = courseMapper.findCoursePic(course.getCourse_set());
 		model.addAttribute("coursePics", coursePics);
-		log.info("coursePics:{}",coursePics);
 		
  		
  		// 모델에 restaurant 객체를 저장한다.
@@ -90,10 +90,9 @@ public class CourseController {
 		
 		List<String> findCourseMyList = courseMapper.findMyListMemberId(course_id);
 		model.addAttribute("findCourseMyList", findCourseMyList);
-		
-		
 		model.addAttribute("member_id", loginMember.getMember_id());
 		
+
  		// board/read.html 를 찾아서 리턴한다.
  		return "course/CourseInfo";
  	}

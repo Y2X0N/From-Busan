@@ -62,6 +62,17 @@ public class ReviewController {
     @GetMapping("write")
     public String writeForm(Model model,RedirectAttributes redirectAttributes) {
         // writeForm.html의 필드 표시를 위해 빈 BoardWriteForm 객체를 생성하여 model 에 저장한다.
+        model.addAttribute("writeForm", new ReviewWriteForm());
+        List<String> findAllName = reviewService.findAllMainTitle();
+        model.addAttribute("findAllName", findAllName);
+        
+        // board/writeForm.html 을 찾아 리턴한다.
+        return "review/write";
+    }
+    /*
+    @GetMapping("write")
+    public String writeForm(Model model) {
+        // writeForm.html의 필드 표시를 위해 빈 BoardWriteForm 객체를 생성하여 model 에 저장한다.
         model.addAttribute("writeForm", new ReviewUpdateForm());
         List<String> findAllName = reviewService.findAllMainTitle();
         model.addAttribute("findAllName", findAllName);
@@ -69,6 +80,7 @@ public class ReviewController {
         // board/writeForm.html 을 찾아 리턴한다.
         return "review/write";
     }
+    */
 
     // 게시글 쓰기
     @PostMapping("write")
@@ -84,7 +96,7 @@ public class ReviewController {
         }
         // findAllName 리스트에 review_place와 일치하는 값이 있는지 확인한다.
         List<String> findAllName = reviewService.findAllMainTitle();
-
+        
         model.addAttribute("findAllName", findAllName);
         
         if (result.hasErrors()) {

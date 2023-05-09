@@ -61,7 +61,7 @@
 						<tbody>
 							<tr th:each="review, reviewsStat: ${reviews}">
 								<td class="color" th:text="${reviewsStat.count}"></td>
-								<td class="color"></td>
+								<td class="color" th:text="${review.review_place}"></td>
 								<th><a th:text="${review.title}"
 									th:href="@{/review/read(review_id=${review.review_id})}"></a></th>
 								<td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
