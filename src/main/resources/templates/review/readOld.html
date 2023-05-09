@@ -1,11 +1,10 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>게시글 읽기</title>
     <link rel="stylesheet" href="/css/default.css">
     <link rel="stylesheet" href="/css/header.css">
-    <link rel="stylesheet" href="/css/reviewRead.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/css/lightbox.min.css">
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.min.js"></script>
@@ -154,119 +153,70 @@
           }
         });
       });
-      
-      //좋아요 버튼
-
-      $(document).ready(function () {
-          $(".content").click(function () {
-              $(".content").toggleClass("heart-active")
-              $(".like").toggleClass("heart-active")
-              $(".heart").toggleClass("heart-active")
-              $(".numb").toggleClass("heart-active")
-          });
-      });
-
-
-      
     </script>
 </head>
 <body>
 <div th:replace ="fragments/header :: header">
   	</div>
 <div id="container">
-
- <div class="read-container">
-        <table>
-            <h2>Read Review</h2>
-
-            <table th:object="${review}" class="read-table">
-
-				<tr>
-                    <th>리뷰 장소</th>
-                    <td th:text="*{review_place}" colspan="3"></td>
-                </tr>
-
-                <tr>
-                    <th>제목</th>
-                    <td th:text="*{title}" colspan="3"></td>
-                </tr>
-
-                <tr>
-                    <th>작성자</th>
-                    <td th:text="*{member_id}" colspan="3"></td>
-                </tr>
-                <tr>
-                <tr>
-                    <th>작성일</th>
-                    <td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd HH:mm')}"></td>
-                    <th>조회수</th>
-                    <td th:text="*{hit}"></td>
-                </tr>
-                <tr>
-                    <th>사진</th>
-                    <td colspan="3">
-                        <img src="01.jpeg" alt="사진1">
-                        <img src="02.jpg" alt="사진2">
-                    </td>
-                </tr>
-
-                <tr>
-                    <th>내용</th>
-                    <td th:utext="*{contents}" colspan="3">
-                       
-                    </td>
-                </tr>
-
-
-            </table>
-
-
-            <div class="heart-btn">
-                <div class="content">
-                    <span class="heart"></span>
-                    <span class="like">Like</span>
-                    <span class="numb"></span>
-                </div>
-            </div>
-            
-            <div class="reply-div">
-                <table class="reply-table">
-                    <tr>
-                        <th>No.</th>
-                        <th>작성자</th>
-                        <th>내용</th>
-                        <th>작성일</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>실크로드</td>
-                        <td>재밋겠네용</td>
-                        <td>2023.5.30</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>메롱</td>
-                        <td>으</td>
-                        <td>2023.5.30</td>
-                    </tr>
-                </table>
-
-                <div class="reply-container">
-                    <input class="reply-input" id="reply" type="text" placeholder=" 댓글을 작성해주세요." value="">
-                    <button type="submit" class="reply-btn">작성</button>
-                </div>
-                <p></p>
-                <div class="read-btns">
-                    <input class="read-btn" type="button" onclick="location.href='/review/list'" value="목록으로">
-                </div>
-
-            </div>
-
-        </table>
-
+  <h1>[ 게시판 - 글 읽기 ]</h1>
+    <table th:object="${review}">
+    <tr>
+        <th>리뷰 장소</th>
+        <td th:text="*{review_place}"></td>
+      </tr>
+      <tr>
+        <th>제목</th>
+        <td th:text="*{title}"></td>
+      </tr>
+      <tr>
+        <th>내용</th>
+        <td th:utext="*{contents}"></td>
+      </tr>
+      <tr>
+        <th>조회수</th>
+        <td th:text="*{hit}"></td>
+      </tr>
+      <tr>
+        <th>작성일</th>
+        <td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd HH:mm')}"></td>
+      </tr>
+      <tr>
+        <th>작성자</th>
+        <td th:text="*{member_id}"></td>
+      </tr>
+      
+      <tr th:each="file, fileStat: ${files}">
+        <th>첨부파일
+        	<a th:text="${fileStat.count}"></a>
+       	</th>
+        <th>
+        	<a th:if="${file}" th:href="@{/image/__${file.SAVED_FILENAME}__}" th:data-title="|${fileStat.count}번째 사진|"  data-lightbox="example-set">
+		 		<img th:src="@{/image/__${file.SAVED_FILENAME}__}" alt="" th:width="100" th:height="100" >
+		 	</a>
+		</th>
+      </tr>
+      
+    </table>
+    <p>
+    <div class="center">
+      <input type="button" onclick="location.href='/review/list'" value="목록으로">
+      <th:block th:if="${session.loginMember.member_id == review.member_id}">
+        <input type="button" th:onclick="|location.href='/review/update?review_id=${review.review_id}'|" value="수정하기">
+        <input type="button" th:onclick="|location.href='/review/delete?review_id=${review.review_id}'|" value="삭제하기">
+      </th:block>
     </div>
-
+    <p>
+    <div>
+      <label for="reply">리플쓰기: </label>
+      <input type="text" id="reply" name="reply">
+      <input type="button" value="등록" onclick="writeReply()">
+    </div>
+    <p>
+    <div id="replies"></div>
+    
     
 </div>
 </body>
 </html>
+ -->
