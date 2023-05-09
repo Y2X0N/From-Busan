@@ -9,11 +9,10 @@
 <link rel="stylesheet" href="/css/header.css" />
 <link rel="stylesheet" href="/css/Info.css" />
 <script src="/js/index.js"></script>
+	<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZDS2Huu1p2-ZjV4J6TzNyJikS9OCVqkw&callback=getRestaurant&v=weekly"></script>
+
+
 <style type="text/css">
-.asd {
-	width: 400px;
-	height: 300px;
-}
 </style>
 <script th:inline="javascript">
 
@@ -54,7 +53,7 @@ function getDb(){
 	                "click",
 	                (function(marker){
 	                    return function (){
-	                        infowindow.setContent("<img src="+img_date+" class='asd'>"+"<h1>"+main_title+"</h1>"+"<p>"+itemcntnts
+	                        infowindow.setContent("<img src="+img_date+" class='asd'>"+"<h1>"+main_title+"</h1>"+"<p>"
 	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByRail(" +lat+","+lng + ")'>Rail로 도착</button> "
 	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByBus(" +lat+","+lng + ")'>Bus로 도착</button> "+"<p>"
 	                        );
@@ -139,6 +138,36 @@ function calcRouteByRail(lat,lng) {
       if (status === google.maps.DirectionsStatus.OK) {
     	  directionsDisplay.setDirections(response);
     	  
+    	// 모달 엘리먼트와 닫기 버튼을 가져옵니다.
+          let modal = document.querySelector(".modal");
+          let modalContent = document.querySelector("#modalText");
+          let closeBtn = document.querySelector(".close");
+
+          // 닫기 버튼을 클릭하면 모달을 숨깁니다.
+          closeBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+          });
+          
+          for (i = 0; i < response.routes.length; i++) {
+          	  let route = response.routes[i];
+          	  for (j = 0; j < route.legs.length; j++) {
+          	    let leg = route.legs[j];
+          	    let instruction1 = '';
+          	    for (k = 0; k < leg.steps.length; k++) {
+          	      let step = leg.steps[k];
+          	      let distance = step.distance.text;
+          	      let duration = step.duration.text;
+          	      let instruction = step.instructions + " " + duration + ",";
+          	      instruction1 += instruction;
+          	      let mode = step.travel_mode;
+          	    }
+          	    let result1 = instruction1.slice(0, -1);
+          	    const modal = document.querySelector('.modal');
+          	    modal.style.visibility = 'visible';
+          	    modalContent.innerHTML = result1;
+          	    modal.style.display = "block"; // 모달을 표시합니다.
+          	  }
+          	}
    	  }else{
    		  return getDb()
    		  };
@@ -173,6 +202,37 @@ function calcRouteByBus(lat,lng) {
        if (status === google.maps.DirectionsStatus.OK) {
      	  directionsDisplay.setDirections(response);
      	  
+     	  
+     	 // 모달 엘리먼트와 닫기 버튼을 가져옵니다.
+          let modal = document.querySelector(".modal");
+          let modalContent = document.querySelector("#modalText");
+          let closeBtn = document.querySelector(".close");
+
+          // 닫기 버튼을 클릭하면 모달을 숨깁니다.
+          closeBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+          });
+          
+          for (i = 0; i < response.routes.length; i++) {
+          	  let route = response.routes[i];
+          	  for (j = 0; j < route.legs.length; j++) {
+          	    let leg = route.legs[j];
+          	    let instruction1 = '';
+          	    for (k = 0; k < leg.steps.length; k++) {
+          	      let step = leg.steps[k];
+          	      let distance = step.distance.text;
+          	      let duration = step.duration.text;
+          	      let instruction = step.instructions + " " + duration + ",";
+          	      instruction1 += instruction;
+          	      let mode = step.travel_mode;
+          	    }
+          	    let result1 = instruction1.slice(0, -1);
+         	    const modal = document.querySelector('.modal');
+         	    modal.style.visibility = 'visible';
+          	    modalContent.innerHTML = result1;
+          	    modal.style.display = "block"; // 모달을 표시합니다.
+          	  }
+          	}
     	  }else{
     		  return getDb()
     		  };
@@ -349,25 +409,36 @@ function calcRoute(lat,lng) {
          if (status === google.maps.DirectionsStatus.OK) {
        	  directionsDisplay.setDirections(response);
        	  
-       	  for (i = 0; i < response.routes.length; i++) {
-       		  let route = response.routes[i];
-       	        for (j = 0; j < route.legs.length; j++) {
-       	        	let leg = route.legs[j];
-       	            // Do something with leg attributes...
-       	            let instruction1 ='';
-       	            for (k = 0; k < leg.steps.length; k++) {
-       	            	let step = leg.steps[k];
-       	            	let distance = step.distance.text;    // fine
-       	            	let duration = step.duration.text;    // fine
-       	            	let instruction = step.instructions +" "+duration+",";   ////////////////////
-       	                instruction1 += instruction;
-       	                let mode = step.travel_mode;          // works
-       	            }
-       	            let result1 = instruction1.slice(0, -1);
-       	                result1=result1.replaceAll(',','<br>'); 
-       	            $("#mapContent").append(result1);
-       	        }        
-       	    }
+       	 // 모달 엘리먼트와 닫기 버튼을 가져옵니다.
+          let modal = document.querySelector(".modal");
+          let modalContent = document.querySelector("#modalText");
+          let closeBtn = document.querySelector(".close");
+
+          // 닫기 버튼을 클릭하면 모달을 숨깁니다.
+          closeBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+          });
+          
+          for (i = 0; i < response.routes.length; i++) {
+          	  let route = response.routes[i];
+          	  for (j = 0; j < route.legs.length; j++) {
+          	    let leg = route.legs[j];
+          	    let instruction1 = '';
+          	    for (k = 0; k < leg.steps.length; k++) {
+          	      let step = leg.steps[k];
+          	      let distance = step.distance.text;
+          	      let duration = step.duration.text;
+          	      let instruction = step.instructions + " " + duration + ",";
+          	      instruction1 += instruction;
+          	      let mode = step.travel_mode;
+          	    }
+          	    let result1 = instruction1.slice(0, -1);
+         	    const modal = document.querySelector('.modal');
+         	    modal.style.visibility = 'visible';
+          	    modalContent.innerHTML = result1;
+          	    modal.style.display = "block"; // 모달을 표시합니다.
+          	  }
+          	}
       	  }else{
    		return getDb()
   	 };
@@ -604,14 +675,17 @@ function myList(touristSpotId) {
 
 			<div id="mapContainer">
 				<div id="map"></div>
-				<div id="mapContent"></div>
+				<div class="modal">
+					<span class="close">&times;</span>
+					<div id="modalText"></div>
+				</div>
+				<div>
+					<input type="button" onclick="getRestaurant()" value="맛집 찾기"> 
+					<input type="button" onclick="getDb()" value="명소 찾기">
+				</div>
 			</div>
 
-
-			<script async
-				src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZDS2Huu1p2-ZjV4J6TzNyJikS9OCVqkw&callback=getRestaurant&v=weekly"></script>
-
-
+		
 
 
 		</div>

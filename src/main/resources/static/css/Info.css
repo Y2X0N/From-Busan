@@ -88,11 +88,16 @@ img {
 }
 
 
-#mapContainer{
+/*#mapContainer{
 	width:100%;
 	height : 1000px;
 	display:flex;
+}*/
+
+#mapContainer {
+	position: relative;
 }
+
 #mapContent{
 	height:600px;
 	width:600px;
@@ -236,8 +241,37 @@ a {
   }
 }
 
+.modal {
+	position: absolute;
+	top: 80%;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 10%;
+	background-color: rgba(255, 255, 255, 0.9);
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	z-index: 1;
+    overflow: hidden; /* 스크롤 없애기 */
+	visibility: hidden;
+}
 
+.modal-content {
+	background-color: white;
+	height:100%;
+	overflow: hidden; /* 스크롤 없애기 */
+	
+}
+#modalText {
+	height: 200px;
+}
 
+.asd {
+	width: 400px;
+	height: 300px;
+}
 /* .heart{
   width: 30px;
   height: 30px;
