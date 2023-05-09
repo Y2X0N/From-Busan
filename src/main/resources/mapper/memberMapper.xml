@@ -22,4 +22,12 @@
     <select id="findMember" resultType="member">
         select * from member where member_id = #{member_id}
     </select>
+    
+    <select id="findAllMemberId" resultType="String">
+        select member_id from member 
+    </select>
+    
+    <select id="findIdOrPassword" resultType="map">
+        select member_id,password,name,phone_number from member 
+    </select>
 </mapper>
