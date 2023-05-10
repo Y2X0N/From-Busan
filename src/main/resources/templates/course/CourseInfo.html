@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>게시판 리스트</title>
 <link rel="stylesheet" href=/css/default.css>
+<link rel="stylesheet" href=/css/courseInfo.css>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <link
@@ -11,7 +12,7 @@
 	rel="stylesheet"
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
-	
+
 <link rel="stylesheet" href="/css/header.css" />
 <link rel="stylesheet" href="/css/Info.css" />
 <script src="/js/index.js"></script>
@@ -22,6 +23,53 @@
 }
 </style>
 <script th:inline="javascript">
+let  data = [[${course}]];
+console.log(data.course_id);
+$(function(){
+	
+	if(data.course_id==1){
+		$("table").css("border-top", "2px solid rgb(227, 255, 226)")
+		.css("border-bottom", "2px solid rgb(227, 255, 226)")
+		$("table th").css("background-color", "rgb(227, 255, 226)")
+		$(".img1").css("border", "3px solid rgb(227, 255, 226)")
+		$(".course-text1").css("border", "3px solid rgb(227, 255, 226)")
+	}
+	
+	if(data.course_id==2){
+		$("table").css("border-top", "2px solid rgb(230, 225, 255)")
+		.css("border-bottom", "2px solid rgb(230, 225, 255)")
+		$("table th").css("background-color", "rgb(230, 225, 255)")
+		$(".img1").css("border", "3px solid rgb(230, 225, 255)")
+		$(".course-text1").css("border", "3px solid rgb(230, 225, 255)")
+	}
+	
+	if(data.course_id==3){
+		$("table").css("border-top", "2px solid rgb(208, 234, 253)")
+		.css("border-bottom", "2px solid rgb(208, 234, 253)")
+		$("table th").css("background-color", "rgb(208, 234, 253)")
+		$(".img1").css("border", "3px solid rgb(208, 234, 253)")
+		$(".course-text1").css("border", "3px solid rgb(208, 234, 253)")
+		
+	} 
+	
+	if(data.course_id==4){
+		$("table").css("border-top", "2px solid rgb(203, 195, 255)")
+		.css("border-bottom", "2px solid rgb(203, 195, 255)")
+		$("table th").css("background-color", "rgb(203, 195, 255)")
+		$(".img1").css("border", "3px solid rgb(203, 195, 255)")
+		$(".course-text1").css("border", "3px solid rgb(203, 195, 255)")
+	}
+	
+	if(data.course_id==5){
+		$("table").css("border-top", "2px solid rgb(255, 249, 218)")
+		.css("border-bottom", "2px solid rgb(255, 249, 218)")
+		$("table th").css("background-color", "rgb(255, 249, 218)")
+		$(".img1").css("border", "3px solid rgb(255, 249, 218)")
+		$(".course-text1").css("border", "3px solid rgb(255, 249, 218)")
+	}
+	
+	
+})
 	
 
 
@@ -78,7 +126,10 @@ function myList(course_id) {
 	console.error(error);
 	}
 	});
-}         
+}  
+
+
+
 
 	
 </script>
@@ -88,75 +139,93 @@ function myList(course_id) {
 	<div th:replace="fragments/header :: header"></div>
 	<div id="container" th:object="${course}">
 
-		<div class="btn-group" role="group"
-			aria-label="Basic mixed styles example">
-			
-			<a th:unless="${#lists.contains(findCourseLikes, member_id)}">
-				<input type="button" class="btn btn-danger"
-				th:onclick="|like(*{course_id})|" value="좋아요" id="like-btn"> 
-			</a>
-			<a th:if="${#lists.contains(findCourseLikes, member_id)}">
-			<input type="button" class="btn btn-success"
-				th:onclick="|like(*{course_id})|" value="좋아요 취소" id="like-btn"> 
-			</a>
-			
-			
-			<a th:unless="${#lists.contains(findCourseMyList, member_id)}">
-				<input type="button" class="btn btn-primary" th:onclick="|myList(*{course_id})|" value="찜하기" id="myList-btn"> 
-			</a>
-			<a th:if="${#lists.contains(findCourseMyList, member_id)}">
-				<input type="button" class="btn btn-warning" th:onclick="|myList(*{course_id})|" value="찜하기 취소" id="myList-btn"> 
-			</a>
-			
-			
-					
-			<input type="button" class="btn btn-info"
-				onclick="location.href='/member/jjimList'" value="나의 찜 목록">
-			 
+	
 
-		
-			<a class="btn btn-danger" th:utext="'좋아요 수 : '+*{place_like}"></a>
+		<p>
+		<div class="course-container">
+
+			<div class="course-title-container">
+				<table>
+					<tr>
+						<th>코스 제목</th>
+						<td th:text="*{course_title}"></td>
+					</tr>
+					<tr>
+						<th>코스 순서</th>
+						<td th:text="*{course_sequense}"></td>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<div class="course-container1" th:each="pic, i : ${coursePics}">
+
+				<div class="course-image1"  th:width="400px" th:height="250px">
+
+					<img class="img1" th:src="@{${pic.MAIN_IMG_NORMAL}}" >
+
+				</div>
+
+				<div class="course-text1">
+
+					<h3 class="h2-1" th:text="*{course_title}"></h3>
+
+					<p class="p-1" th:text="*{course_content__${i.count}__}"></p>
+
+				</div>
+
+			</div>
 			
-			<a class="btn btn-warning" th:utext="'조회수 : '+*{hit}"></a>
 			
+				<div id="spot-header-container">
+			<div class="itemcntnts" id="itemcntnts">
+
+				<img th:src="*{main_img_normal}" th:alt="*{main_title}">
+
+				<div class="heartWish">
+					<div class="left_area">
+						<a th:unless="${#lists.contains(findTouristSpotLikes, member_id)}"
+							href="javascript:;" class="icon heart"
+							th:onclick="|like(*{tourist_Spot_id})|"> <img
+							class="like_img" src="/image/heart-regular.svg" alt="하트">
+						</a>
+						<!--좋아요를 햇으면  -->
+						<a th:if="${#lists.contains(findTouristSpotLikes, member_id)}"
+							href="javascript:;" class="icon heart"
+							th:onclick="|like(*{tourist_Spot_id})|"> <img
+							class="like_img"
+							src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
+							alt="하트">
+						</a>
+					</div>
+
+					<div class="right_area">
+
+						<a
+							th:unless="${#lists.contains(findTouristSpotMyList, member_id)}"
+							href="javascript:;" class="icon wish"
+							th:onclick="|myList(*{tourist_Spot_id})|"> <img
+							class="wish_img" src="/image/bookmark-regular%20(1).svg"
+							alt="찜하기">
+						</a>
+						<!--찜을 햇으면  -->
+						<a th:if="${#lists.contains(findTouristSpotMyList, member_id)}"
+							href="javascript:;" class="icon wish"
+							th:onclick="|myList(*{tourist_Spot_id})|"> <img
+							class="wish_img" src="/image/bookmark-solid%20(2).svg" alt="찜하기">
+						</a>
+					</div>
+				</div>
+			</div>
+
 		</div>
 
-		<p>
-		
-		
-		<table lass="btn-group" role="group"
-			aria-label="Basic mixed styles example">
-			<tr >
-				<th>코스 제목</th>
-				<td th:text="*{course_title}"></td>
-			</tr>
-			<tr>
-				<th>코스 순서</th>
-				<td th:text="*{course_sequense}"></td>
-			</tr>
-		</table>
-		<p>
-		
-		<table lass="btn-group" role="group"
-			aria-label="Basic mixed styles example">
-			<thead>
-				<tr>
-					<th>사진</th>
-					<th>내용</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="pic, i : ${coursePics}">
-            <td><img th:src="@{${pic.MAIN_IMG_NORMAL}}" th:weight="500px" th:height="180px"></td>
-    	    <td th:text="*{course_content__${i.count}__}"></td>
-				</tr>
-			</tbody>
-		</table>
-
+	
 
 	</div>
-	
-	
+
+
 
 
 </body>
