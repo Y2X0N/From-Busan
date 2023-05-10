@@ -35,7 +35,7 @@
     <select id="findReviews" resultType="review">
         select * from review
         <if test="_parameter != null">
-            where title like '%' || #{searchText} || '%'
+            where review_place like '%' || #{searchText} || '%'
         </if>
         order by created_time desc
     </select>
