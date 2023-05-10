@@ -257,5 +257,28 @@ public class MemberController {
 		return ResponseEntity.ok("변경성공");
     }
     
+    @GetMapping("updateMember")
+    public String updateMember(Model model,@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+    	
+        model.addAttribute("findIdForm", new findIdForm());
+        model.addAttribute("loginMember", loginMember);
+        return "member/updateMember";
+    }
+    
+    @PostMapping("updateMember")
+    public ResponseEntity<String> updateMember2(Model model
+    		,@RequestParam String name, @RequestParam String password, @RequestParam String phone_number
+    		,@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+    	
+    	
+    	loginMember.setPassword(password);
+    	loginMember.setName(name);
+    	loginMember.setPhone_number(phone_number);
+    	
+        memberMapper.updateMember(loginMember);
+        
+        return ResponseEntity.ok("변경성공");
+    }
+    
     
 }

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/js/index.js"></script>
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/loginForm.css" />
+    
+   <style>
+	.popup-content {
+	  position: absolute;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	}
+	
+.modal {
+  display: none; /* 모달 숨기기 */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* 배경 흐리게 */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+}
+
+.modal-content p {
+  font-size: 1.2em;
+}
+
+.modal-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+   </style> 
+    
+    <script th:inline="javascript">
+    
+
+    function updateMember() {
+    	
+    	
+        let name = $("#name").val();
+        let phone_number = $("#phone_number").val();
+        console.log(phone_number);
+        let password = $("#password").val();
+        let password2 = $("#password2").val();
+    	let oldPassword =[[${loginMember.password}]];
+
+      // 리플 내용이 없으면 등록하지 않는다.
+      if (name === "") {
+        alert("이름을 입력하세요");
+        return;
+      }
+      if (phone_number === "") {
+        alert("전화번호를 입력하세요");
+        return;
+      }
+      if (password === "") {
+    	     alert("비밀번호를 입력하세요");
+    	     return;
+    	   }
+  	   if (password2 === "") {
+  	     alert("비밀번호를 재입력하세요");
+  	     return;
+    	   }
+  	 if (password !== password2) {
+  	     alert("비밀번호를 동일하게 입력하세요");
+  	     return;
+  	   }
+  	if (password.length < 4 || password.length > 20) {
+		alert("비밀번호는 5 ~ 10자리 사이여야 합니다.");
+		password.focus();
+		return ;
+	}
+  	if (password=== oldPassword) {
+		alert("예전 비밀번호로 고칠 수 없습니다.");
+		password.focus();
+		return ;
+	}
+  	if (phone_number.charAt(3) !== '-' || phone_number.charAt(8) !== '-') {
+        alert("-의 위치가 정확하지 않습니다.");
+        phone_number.focus();
+        return false;
+    }
+    if (phone_number.length !== 13) {
+        alert("전화번호 수가 정확하지 않습니다.");
+        phone_number.focus();
+        return false;
+    }
+  	
+    $.ajax({
+        url: "/member/updateMember",
+        type: "post",
+        data: {
+        	name: name,
+            password:password,
+            phone_number:phone_number,
+        },
+        
+        success: function (data, success, xhr) {
+        	
+        	    // 비밀번호를 모달 창에 표시
+        	    document.getElementById("password").innerHTML = password;
+
+        	    // 모달 열기
+        	    const modal = document.querySelector(".modal");
+        	    modal.style.display = "block";
+
+        	    // 카운트다운 시작
+        	    let timeLeft = 3; // 3초 카운트다운
+        	    const countDownEl = document.getElementById("countdown"); // 카운트다운을 표시할 엘리먼트
+        	    countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
+
+        	    const timer = setInterval(() => {
+        	      if (timeLeft <= 0) {
+        	        clearInterval(timer);
+        	        modal.style.display = "none"; // 모달 닫기
+        	       window.location.href = '/member/myPage';
+        	      } else {
+        	        countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
+        	        timeLeft--;
+        	      }
+        	    }, 1000);
+
+        	}
+        ,error: function (xhr, status, error) {
+       	alert("업데이트에 실패하였습니다.");
+          console.log(status);
+        }
+      });
+    }
+
+	
+    </script>
+</head>
+<body>
+	
+    <div class="popup-content">
+	  <div id="login-container">
+        <img class="img" src="/image/bugi.png" alt="bugi">
+			<form  th:object="${findIdForm}" >
+	            <h1>Find Password</h1>
+	            <div class="login-input">
+	                <input type="text" id="name" th:field="${findIdForm.name}" placeholder="  이름을 입력해주세요.">
+	                <input type="text" id="phone_number" th:field="${findIdForm.phone_number}" placeholder="   전화번호를 '-'와 함께 입력해주세요.">
+	                <input type="text" id="password"th:field="${findIdForm.password}" placeholder="   비밀번호를 입력해주세요.">
+	                <input type="text" id="password2" placeholder="   비밀번호를 재입력해주세요.">
+	            </div>
+				<br>
+				<br>
+	            <div class="login-submit">
+				<input class="btn-login" type="button" value="PASSWORD" onclick="updateMember()" >
+	            </div>
+	            <div id="countdown"></div>
+       		 </form>
+         </div> 
+    	</div>
+    
+    
+    <div class="modal">
+	    <div class="modal-content">
+	      <h2>회원 정보가 변경되었습니다.</h2>
+	      <p>마이 페이지로 이동합니다.</p>
+	    </div>
+  </div>
+  
+  
+</body>
+</html>
