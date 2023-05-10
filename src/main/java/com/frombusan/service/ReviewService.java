@@ -1,6 +1,7 @@
 package com.frombusan.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.frombusan.model.AttachedImg;
 import com.frombusan.model.review.Review;
+import com.frombusan.model.review.ReviewLikes;
 import com.frombusan.repository.ReviewMapper;
 import com.frombusan.util.FileService;
 
@@ -144,4 +146,25 @@ public class ReviewService {
     public List<Review> findReviewsByMemberId(String member_id) {
         return reviewMapper.findReviewsByMemberId(member_id);
     }
+    
+    
+    //좋아요
+ 	public List<String> findLikesMemberId(Long review_id ){
+ 		return reviewMapper.findLikesMemberId( review_id);
+ 	}
+ 	
+ 	public List<Map<String,Object>> findLikesById(Long review_id){
+ 		return reviewMapper.findLikesById(review_id);
+ 	}
+ 	
+ 	public void saveLikes(ReviewLikes reviewLikes) {
+ 		reviewMapper.saveLikes(reviewLikes);
+ 	}
+ 	
+ 	public void deleteLike(Object like_id) {
+ 		reviewMapper.deleteLike(like_id);
+ 	}
+    
+    
+    
 }

@@ -19,6 +19,10 @@ public class Review {
     private LocalDateTime created_time;
     @NotBlank
     private String review_place;
+    
+	private boolean liked;
+    
+    
 
 
     public static ReviewUpdateForm toReviewUpdateForm(Review review) {
@@ -36,7 +40,21 @@ public class Review {
         return reviewUpdateForm;
     }
 
-    public void addHit() {
-        this.hit++;
+	public void addReview_like() {
+		this.review_like++;
+	}
+
+	public void removeReview_like() {
+		this.review_like--;
+	}
+
+
+	public void setLiked(boolean liked) {
+		this.liked = liked;
+	}
+
+
+	public void addHit() {
+		this.hit++;
     }
 }

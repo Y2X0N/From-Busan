@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -28,11 +29,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
 import com.frombusan.model.AttachedImg;
+import com.frombusan.model.festival.Festival;
+import com.frombusan.model.festival.FestivalLikes;
 import com.frombusan.model.member.Member;
 import com.frombusan.model.review.Review;
+import com.frombusan.model.review.ReviewLikes;
 import com.frombusan.model.review.ReviewUpdateForm;
 import com.frombusan.model.review.ReviewWriteForm;
 import com.frombusan.repository.FestivalMapper;
+import com.frombusan.repository.MemberMapper;
 import com.frombusan.repository.ReviewMapper;
 import com.frombusan.repository.TouristSpotMapper;
 import com.frombusan.service.ReviewService;
@@ -148,6 +153,8 @@ public class ReviewController {
         // PageNavigation 객체를 model 에 저장한다.
         model.addAttribute("navi", navi);
         model.addAttribute("searchText", searchText);
+        
+
 
         // board/list.html 를 찾아서 리턴한다.
         return "review/list";
@@ -172,6 +179,10 @@ public class ReviewController {
         // 첨부파일을 찾는다.
         List<AttachedImg> files = reviewService.findFilesByReviewId(review_id);
         model.addAttribute("files", files);
+        
+        List<String> findReviewLikes = reviewService.findLikesMemberId(review_id);
+		log.info("findReviewLikes:{}",findReviewLikes);
+		model.addAttribute("findReviewLikes", findReviewLikes);
 
         // board/read.html 를 찾아서 리턴한다.
         return "review/read";
@@ -322,4 +333,50 @@ public class ReviewController {
 
     	return "member/myReviewList";
     }
+    
+    
+  //좋아요 기능
+ 	@PostMapping("/like")
+	public ResponseEntity<Review> likeReview(@RequestParam("review_id") Long review_id
+											,@SessionAttribute(value = "loginMember", required = false) Member loginMember
+											) {
+
+ 		List<String> findReviewLikes = reviewService.findLikesMemberId(review_id);
+		List<Map<String, Object>> findLikesById = reviewService.findLikesById(review_id);
+		
+		Review review= reviewService.findReview(review_id);
+		ReviewLikes reviewLikes = new ReviewLikes();
+		String member_id = loginMember.getMember_id();
+
+		Object like_id = null;
+		for (int i = 0; i < findLikesById.size(); i++) {
+		    Map<String, Object> map = findLikesById.get(i);
+		    if (member_id.equals((String)map.get("MEMBER_ID"))) {
+		        like_id =map.get("LIKE_ID");
+		        break;
+		    }
+		}
+
+		if (review != null) {
+			if(!findReviewLikes.contains(member_id)) {
+				review.addReview_like();
+				reviewLikes.setMember_id(member_id);
+				reviewLikes.setReview_id(review_id);
+				reviewService.saveLikes(reviewLikes);
+				review.setLiked(true);
+			}
+			else {
+				review.removeReview_like();
+				reviewService.deleteLike(like_id);
+				review.setLiked(false);
+		    }
+			log.info("festival:{}",review);
+			reviewService.updateReview(review,false,null);
+	    return ResponseEntity.ok(review);
+	  } else {
+	    // 관광지 정보가 없는 경우, 오류 응답을 반환합니다.
+	    return ResponseEntity.badRequest().build();
+	  }
+	}
+    
 }

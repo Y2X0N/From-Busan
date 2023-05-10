@@ -1,12 +1,16 @@
 package com.frombusan.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import com.frombusan.model.AttachedImg;
+import com.frombusan.model.festival.Festival;
+import com.frombusan.model.festival.FestivalLikes;
 import com.frombusan.model.review.Review;
+import com.frombusan.model.review.ReviewLikes;
 
 @Mapper
 public interface ReviewMapper {
@@ -49,6 +53,17 @@ public interface ReviewMapper {
    
    //모든mainTitle가져오기
    List<String> findAllMainTitle();
+   
+   
+ //좋아요 기능	
+ 	List<String> findLikesMemberId(Long review_id);
+ 	
+ 	List<Map<String,Object>> findLikesById(Long review_id);
+ 	
+ 	void saveLikes(ReviewLikes reviewLikes);
+ 	
+ 	void deleteLike(Object like_id);
+ //	
    
    
    
