@@ -30,21 +30,8 @@ public class ReviewService {
     @Value("${file.upload.path}")
     private String uploadPath;
 
-    public void saveReview(Review review, MultipartFile file1,MultipartFile file2) {
-    	
-    	
+    public void saveReview(Review review) {
     	reviewMapper.saveReview(review);
-        // 파일을 저장한다.
-        if (file1 != null && file1.getSize() > 0) {
-        	AttachedImg attachedImg = fileService.saveFile(file1);
-        	attachedImg.setReview_id(review.getReview_id());
-            reviewMapper.saveImg(attachedImg);
-        }
-        if (file2 != null && file2.getSize() > 0) {
-        	AttachedImg attachedImg2 = fileService.saveFile(file2);
-        	attachedImg2.setReview_id(review.getReview_id());
-            reviewMapper.saveImg(attachedImg2);
-        }
     }
 
     public List<Review> findReviews(String searchText, int startRecord, int countPerPage) {

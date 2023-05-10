@@ -3,6 +3,11 @@
 
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
 
+.error{
+	color:red;
+}
+
+
 .write-container{
 	/* margin-left: 20%; */
 	width: 1200px;
@@ -19,6 +24,17 @@
 	flex-direction: column; 
 	}
 
+.write-header{
+	display:flex;
+	justify-content: space-between;
+	font-size: 23px;
+    width: 100%;
+    height: 45px;
+    margin-top: 65px;
+    color: #6E6E6E;
+}
+
+
 h3{
 		font-size: 23px;
     width: 40%;
@@ -29,6 +45,7 @@ h3{
 }
 
 .write-table{
+		margin-top:2px;
 		width:100%;
     height: 10%;
     text-align: left;
@@ -54,6 +71,7 @@ h3{
      border-bottom: 1px solid #ccc;
 }
 
+
 .write-btn{
     height: 35px;
     width: 100px;
@@ -68,8 +86,7 @@ h3{
 }
 #summer-box{
 	width:100%;
-	height:400px;
-	overflow: hidden;
+	height:1000px;
 }
 
  #summernote{
