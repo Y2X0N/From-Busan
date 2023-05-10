@@ -203,8 +203,8 @@ public class ReviewController {
     public String update(@SessionAttribute(value = "loginMember", required = false) Member loginMember,
                          @RequestParam Long review_id,
                          @Validated @ModelAttribute("review") ReviewUpdateForm updateReview,
-                         BindingResult result,
-                         @RequestParam(required = false) MultipartFile file) {
+                         BindingResult result) {
+                         
         // validation 에 에러가 있으면 board/update.html 페이지로 돌아간다.
         if (result.hasErrors()) {
             return "review/update";
@@ -223,7 +223,7 @@ public class ReviewController {
         review.setContents(updateReview.getContents());
         
         // 수정한 Board 를 데이터베이스에 update 한다.
-        reviewService.updateReview(review, updateReview.isFileRemoved(), file);
+        reviewService.updateReview(review);
         // 수정이 완료되면 리스트로 리다이렉트 시킨다.
         return "redirect:/review/list";
     }
@@ -357,7 +357,7 @@ public class ReviewController {
 				review.setLiked(false);
 		    }
 			log.info("festival:{}",review);
-			reviewService.updateReview(review,false,null);
+			reviewService.updateReview(review);
 	    return ResponseEntity.ok(review);
 	  } else {
 	    // 관광지 정보가 없는 경우, 오류 응답을 반환합니다.
