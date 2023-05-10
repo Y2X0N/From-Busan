@@ -63,7 +63,7 @@ public class ReviewController {
     @Value("${file.upload.path}")
     private String uploadPath;
 
-    // 글쓰기 페이지 이동
+    // 후기 글쓰기 페이지 이동
     @GetMapping("write")
     public String writeForm(Model model,RedirectAttributes redirectAttributes) {
         // writeForm.html의 필드 표시를 위해 빈 BoardWriteForm 객체를 생성하여 model 에 저장한다.
@@ -74,27 +74,13 @@ public class ReviewController {
         // board/writeForm.html 을 찾아 리턴한다.
         return "review/write";
     }
-    /*
-    @GetMapping("write")
-    public String writeForm(Model model) {
-        // writeForm.html의 필드 표시를 위해 빈 BoardWriteForm 객체를 생성하여 model 에 저장한다.
-        model.addAttribute("writeForm", new ReviewUpdateForm());
-        List<String> findAllName = reviewService.findAllMainTitle();
-        model.addAttribute("findAllName", findAllName);
-        
-        // board/writeForm.html 을 찾아 리턴한다.
-        return "review/write";
-    }
-    */
+  
 
     // 게시글 쓰기
     @PostMapping("write")
     public String write(@SessionAttribute(value = "loginMember", required = false) Member loginMember,
                         @Validated @ModelAttribute("writeForm") ReviewWriteForm reviewWriteForm,
-                        BindingResult result,
-                        @RequestParam(required = false) MultipartFile file1,MultipartFile file2
-                        ,Model model,RedirectAttributes redirectAttributes) {
-    	
+                        BindingResult result,Model model,RedirectAttributes redirectAttributes) {
         // 로그인 상태가 아니면 로그인 페이지로 보낸다.
         if (loginMember == null) {
             return "redirect:/member/login";
@@ -129,7 +115,7 @@ public class ReviewController {
         // board 객체를 저장한다.
         
         // board 객체를 저장한다.
-        reviewService.saveReview(review, file1,file2);
+        reviewService.saveReview(review);
    
         // board/list 로 리다이렉트한다.
         return "redirect:/review/list";
