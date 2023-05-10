@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/css/lightbox.min.css">
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.min.js"></script>
     
+    
     <script src="/js/index.js"></script>
     
     <script th:inline="javascript">
@@ -166,13 +167,13 @@
      //     });
      // });
 
-      function like(festivalId) {
-    		console.log(festivalId);
+      function like(review_id) {
+    		console.log(review_id);
     		
     	 	$.ajax({
     	 	url: "like",
     	 	type: "POST",
-    		data: { festivalId: festivalId },
+    		data: { review_id: review_id },
     	 	success: function (result) {
     	 		        if (result.liked===true) {
     	 		          alert("좋아요가 추가되었습니다.");
@@ -193,7 +194,31 @@
     	 	}		
     	 });
     	}  
-      
+    //좋아요 버튼
+      $(function like() {
+        var $likeBtn = $('.icon.heart');
+
+        $likeBtn.click(function () {
+          $likeBtn.toggleClass('active');
+  				//active가 잇으면
+          if ($likeBtn.hasClass('active')) {
+           		 $(this).find('img').attr({
+              'src': 'https://cdn-icons-png.flaticon.com/512/803/803087.png',
+              alt: '좋아요하기 완료'
+            });
+
+
+          } 
+          //active가 없는경우
+          else {
+            $(this).find('i').removeClass('fas').addClass('far')
+            $(this).find('img').attr({
+              'src': '/image/heart-regular.svg',
+              alt: "좋아요하기"
+            })
+          }
+        })
+      });
     </script>
 </head>
 <body>
@@ -201,87 +226,108 @@
   	</div>
 <div id="container">
 
- <div class="read-container">
-        <table>
-            <h2>Read Review</h2>
+		<div class="read-container">
+			<table>
+				<h2>Read Review</h2>
 
-            <table th:object="${review}" class="read-table">
+				<table th:object="${review}" class="read-table">
 
-				<tr>
-                    <th>리뷰 장소</th>
-                    <td th:text="*{review_place}" colspan="3"></td>
-                </tr>
+					<tr>
+						<th>리뷰 장소</th>
+						<td th:text="*{review_place}" colspan="3"></td>
+					</tr>
 
-                <tr>
-                    <th>제목</th>
-                    <td th:text="*{title}" colspan="3"></td>
-                </tr>
+					<tr>
+						<th>제목</th>
+						<td th:text="*{title}" colspan="3"></td>
+					</tr>
 
-                <tr>
-                    <th>작성자</th>
-                    <td th:text="*{member_id}" colspan="3"></td>
-                </tr>
-                <tr>
-                <tr>
-                    <th>작성일</th>
-                    <td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd HH:mm')}"></td>
-                    <th>조회수</th>
-                    <td th:text="*{hit}"></td>
-                </tr>
-                
-                <tr th:each="file, fileStat: ${files}">
-                    <th>사진	
-                    <a th:text="${fileStat.count}"></a>
-       				</th>
-        			<th>
-		        	<a th:if="${file}" th:href="@{/image/__${file.SAVED_FILENAME}__}" th:data-title="|${fileStat.count}번째 사진|"  data-lightbox="example-set">
-				 		<img th:src="@{/image/__${file.SAVED_FILENAME}__}" alt="" th:width="100" th:height="100" >
-				 	</a>
-                </tr>
+					<tr>
+						<th>작성자</th>
+						<td th:text="*{member_id}" colspan="3"></td>
+					</tr>
+					<tr>
+					<tr>
+						<th>작성일</th>
+						<td
+							th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd HH:mm')}"></td>
+						<th>조회수</th>
+						<td th:text="*{hit}"></td>
+					</tr>
 
-                <tr>
-                    <th>내용</th>
-                    <td th:utext="*{contents}" colspan="3">
-                       
-                    </td>
-                </tr>
+					<tr th:each="file, fileStat: ${files}">
+						<th>사진 <a th:text="${fileStat.count}"></a>
+						</th>
+						<th><a th:if="${file}"
+							th:href="@{/image/__${file.SAVED_FILENAME}__}"
+							th:data-title="|${fileStat.count}번째 사진|"
+							data-lightbox="example-set"> <img
+								th:src="@{/image/__${file.SAVED_FILENAME}__}" alt=""
+								th:width="100" th:height="100">
+						</a>
+					</tr>
 
-
-            </table>
+					<tr>
+						<th>내용</th>
+						<td th:utext="*{contents}" colspan="3"></td>
+					</tr>
 
 
-            <div class="heart-btn">
-                <div class="content">
-                    <span class="heart"></span>
-                    <a th:unless="${#lists.contains(findFestivalLikes, member_id)}"
+				</table>
+
+				<div class="heartWish">
+					<div class="left_area">
+						<a th:unless="${#lists.contains(findReviewLikes, member_id)}"
 							href="javascript:;" class="icon heart"
-							th:onclick="|like(*{festival_id})|"> <img
-							class="like_img" src="/image/heart-regular.svg" alt="하트">
+							th:onclick="|like(${review.review_id})|"> <img class="like_img"
+							src="/image/heart-regular.svg" alt="하트">
 						</a>
 						<!--좋아요를 햇으면  -->
-						<a th:if="${#lists.contains(findFestivalLikes, member_id)}"
+						<a th:if="${#lists.contains(findReviewLikes, member_id)}"
 							href="javascript:;" class="icon heart"
-							th:onclick="|like(*{festival_id})|"> <img
-							class="like_img"
+							th:onclick="|like(${review.review_id})|"> <img class="like_img"
 							src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
 							alt="하트">
-						</a>
-                    
-                    <span class="like">Like</span>
-                    <span class="numb"></span>
-                </div>
-            </div>
-            
-            </div>
+					</div>
+				</div>
 
-        </div>
-          </div>
+			</table>
 
-        </table>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<div class="center">
+				<input type="button" onclick="location.href='/review/list'"
+					value="목록으로">
+				<th:block
+					th:if="${session.loginMember.member_id == review.member_id}">
+					<input type="button"
+						th:onclick="|location.href='/review/update?review_id=${review.review_id}'|"
+						value="수정하기">
+					<input type="button"
+						th:onclick="|location.href='/review/delete?review_id=${review.review_id}'|"
+						value="삭제하기">
+				</th:block>
+			</div>
+			<p>
+			<div>
+				<label for="reply">리플쓰기: </label> <input type="text" id="reply"
+					name="reply"> <input type="button" value="등록"
+					onclick="writeReply()">
+			</div>
+			<p>
+			<div id="replies"></div>
 
-    </div>
 
-    
-</div>
+
+		</div>
+
+
+	</div>
 </body>
 </html>

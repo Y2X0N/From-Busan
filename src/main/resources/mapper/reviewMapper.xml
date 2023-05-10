@@ -46,12 +46,13 @@
     </select>
 
     <!--  게시글 수정  -->
-    <update id="updateReview">
+       <update id="updateReview">
         update review
         <set>
             <if test="title != null">title = #{title},</if>
             <if test="contents != null">contents = #{contents},</if>
             <if test="hit != null">hit = #{hit},</if>
+            <if test="review_like != null">review_like = #{review_like},</if>
         </set>
         where review_id = #{review_id}
     </update>
@@ -126,5 +127,35 @@
 	    SELECT main_title FROM tourist_Spot UNION SELECT main_title FROM festival
 	</select>
 
+ <!-- /////////좋아요 테이블은 내가 아닌 다른 아이디로 봤을때에는 좋아요가 아닌 버튼이 나고에 하기위해서 필요//////////////////////////////////////////////////////////////////////// -->
+ 
+   <select id="findLikesMemberId" resultType="string">
+        select member_id from review_like where review_id=#{review_id}
+    </select>
     
+    
+    <select id="findLikesById" resultType="map">
+        select member_id,like_id from review_like where review_id=#{review_id}
+    </select>
+    
+    
+    <insert id="saveLikes">
+    <selectKey keyProperty="like_id" resultType="long" order="BEFORE">
+            select seq_review.nextval from dual
+        </selectKey>
+        insert into review_like (
+        	like_id,
+            member_id,
+            review_id
+        ) values (
+            #{like_id},
+            #{member_id},
+            #{review_id}
+        )
+    </insert>
+    
+     <delete id="deleteLike">
+        delete from review_like where like_id = #{like_id} 
+    </delete>
+       
 </mapper>
