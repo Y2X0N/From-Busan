@@ -629,7 +629,9 @@ function myList(touristSpotId) {
 					</div>
 				</div>
 
-
+				<input type="button" class="btn btn-success"
+					th:onclick="location.href='/review/reviewList?main_title=[[${tourist_Spot.main_title}]]'"
+					value="관련 리뷰 찾기">
 
 
 				<div class="explain">

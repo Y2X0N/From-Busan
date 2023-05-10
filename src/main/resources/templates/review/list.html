@@ -36,13 +36,11 @@
 					<!-- board seach area -->
 					<div id="review-search">
 						<div class="search-window">
-							<form action="">
 								<div class="search-wrap">
-									<input id="search" type="search" name=""
+									<input id="searchText" type="search" name="searchText"
 										placeholder="검색어를 입력해주세요.">
-									<button type="submit" class="btn search-btn">검색</button>
+									<button type="button" onclick="search()" class="btn search-btn">검색</button>
 								</div>
-							</form>
 						</div>
 					</div>
 
@@ -54,18 +52,23 @@
 								<th scope="col" class="th-num">No</th>
 								<th scope="col" class="th-place">Place</th>
 								<th scope="col" class="th-title">Title</th>
+								<th scope="col" class="th-writer">Writer</th>
 								<th scope="col" class="th-date">Date</th>
 								<th scope="col" class="th-hit">HIT</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="review, reviewsStat: ${reviews}">
+							<tr th:if="${reviews}" th:each="review, reviewsStat: ${reviews}">
 								<td class="color" th:text="${reviewsStat.count}"></td>
 								<td class="color" th:text="${review.review_place}"></td>
 								<th><a th:text="${review.title}"
 									th:href="@{/review/read(review_id=${review.review_id})}"></a></th>
+								<td th:text="${review.member_id}" class="center"></td>
 								<td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
 								<td th:text="${review.hit}"></td>
+							</tr>
+							<tr th:if="${reviews.empty}">
+							    <td class="color" colspan="6">리뷰가 없습니다.</td>
 							</tr>
 						</tbody>
 					</table>
