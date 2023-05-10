@@ -30,9 +30,11 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CourseController {
 	
+	
+	
 	@Autowired
-	private CourseMapper courseMapper;
 	private ReviewService reviewService;
+	private CourseMapper courseMapper;
 	
 	 // 게시판 관련 상수 값
     final int countPerPage = 10;    // 페이지 당 글 수

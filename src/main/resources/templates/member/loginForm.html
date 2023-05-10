@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>로그인</title>
+    <title>[[#{alert.Login}]]</title>
     <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/js/index.js"></script>
@@ -41,23 +41,31 @@
         <img class="img" src="/image/bugi.png" alt="bugi">
         
         <form action="/member/login" method="post" th:object="${loginForm}">
-            <h1>Login</h1>
+            <h1>[[#{alert.Login}]]</h1>
             <div th:if="${#fields.hasGlobalErrors()}">
                 <p class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
             </div>
 			
             <div class="login-input">
-                <input type="text" th:field="*{member_id}" placeholder="  아이디를 입력해주세요.">
-                <input type="password" th:field="*{password}" placeholder="   비밀번호를 입력해주세요.">
+                <input type="text" th:field="*{member_id}" th:attr="placeholder=#{${'alert.plsID'}}">
+                <input type="password" th:field="*{password}"th:attr="placeholder=#{${'alert.plsPas'}}">
             </div>
 
             <div class="login-submit">
-                <input class="btn-login" type="submit" value="LOGIN" >
+                <input class="btn-login" type="submit" data-value="#{alert.Login}" th:value="#{alert.Login}" >
             </div>
             
-                <input class="btn-login" type="text" value="Find ID" onclick="findId()">
+                <input class="btn-login" type="text" data-value="#{alert.Findid}" th:value="#{alert.Findid}" onclick="findId()">
             
-                <input class="btn-login" type="text" value="Find Password" onclick="findPassword()" >
+                <input class="btn-login" type="text" data-value="#{alert.FindPas}" th:value="#{alert.FindPas}"  onclick="findPassword()" >
+                
+			<script th:inline="javascript">
+				$(document).ready(function() {
+					  $('input[type="submit"], input[type="text"]').each(function() {
+					    $(this).val($(this).attr('value'));
+					  });
+					});
+			</script>
         </form>
     </div>
 </body>
