@@ -53,12 +53,13 @@
 
             <div class="login-submit">
                 <input class="btn-login" type="submit" data-value="#{alert.Login}" th:value="#{alert.Login}" >
-            </div>
-            
+
                 <input class="btn-login" type="text" data-value="#{alert.Findid}" th:value="#{alert.Findid}" onclick="findId()">
             
                 <input class="btn-login" type="text" data-value="#{alert.FindPas}" th:value="#{alert.FindPas}"  onclick="findPassword()" >
-                
+                              
+            </div>
+            
 			<script th:inline="javascript">
 				$(document).ready(function() {
 					  $('input[type="submit"], input[type="text"]').each(function() {
