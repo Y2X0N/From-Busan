@@ -30,8 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CourseController {
 	
-	
-	
 	@Autowired
 	private ReviewService reviewService;
 	private CourseMapper courseMapper;
@@ -42,18 +40,17 @@ public class CourseController {
     
     @PostMapping("/{course_id}")
     public ResponseEntity<List<Course>> findCourse(Long course_id, Model model) {
-    	
 		List<Course> findAllCourse = courseMapper.findAllCourse();
-
-    	
     	return ResponseEntity.ok(findAllCourse);
     }
     
     @GetMapping("list")
 	public String list(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam(value = "searchText", defaultValue = "") String searchText, Model model) {
+			 Model model) {
     	
+    	log.info("안녕"); 	
 		List<Course> findAllCourse = courseMapper.findAllCourse();
+		log.info("추천리스트 :{}",findAllCourse);
 		model.addAttribute("findAllCourse", findAllCourse);
 		
 		return "course/CourseList";

@@ -96,7 +96,7 @@
   	     return;
   	   }
   	if (password.length < 4 || password.length > 20) {
-		alert("비밀번호는 5 ~ 10자리 사이여야 합니다.");
+		alert("비밀번호는 4 ~ 10자리 사이여야 합니다.");
 		password.focus();
 		return ;
 	}
@@ -167,7 +167,7 @@
 	  <div id="login-container">
         <img class="img" src="/image/bugi.png" alt="bugi">
 			<form  th:object="${findIdForm}" >
-	            <h1>Find Password</h1>
+	            <h1>Update Information</h1>
 	            <div class="login-input">
 	                <input type="text" id="name" th:field="${findIdForm.name}" placeholder="  이름을 입력해주세요.">
 	                <input type="text" id="phone_number" th:field="${findIdForm.phone_number}" placeholder="   전화번호를 '-'와 함께 입력해주세요.">

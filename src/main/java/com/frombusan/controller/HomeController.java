@@ -33,8 +33,8 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public String home(Model model) {
-		List<Tourist_Spot> findAllTourist = tourMapper.findAllTourist();
-		List<Festival> findAllFestival = festivalMapper.findAllFestival();
+		List<Tourist_Spot> findAllTourist = tourMapper.findAllTouristForMain();
+		List<Festival> findAllFestival = festivalMapper.findAllFestivalForMain();
 		model.addAttribute("tourist",findAllTourist);
 		model.addAttribute("festival",findAllFestival);
 		return "main/index";
