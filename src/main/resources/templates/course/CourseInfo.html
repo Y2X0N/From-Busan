@@ -139,8 +139,6 @@ function myList(course_id) {
 	<div th:replace="fragments/header :: header"></div>
 	<div id="container" th:object="${course}">
 
-	
-
 		<p>
 		<div class="course-container">
 
@@ -161,9 +159,9 @@ function myList(course_id) {
 
 			<div class="course-container1" th:each="pic, i : ${coursePics}">
 
-				<div class="course-image1"  th:width="400px" th:height="250px">
+				<div class="course-image1" th:width="400px" th:height="250px">
 
-					<img class="img1" th:src="@{${pic.MAIN_IMG_NORMAL}}" >
+					<img class="img1" th:src="@{${pic.MAIN_IMG_NORMAL}}">
 
 				</div>
 
@@ -176,57 +174,54 @@ function myList(course_id) {
 				</div>
 
 			</div>
-			
-			
-				<div id="spot-header-container">
-			<div class="itemcntnts" id="itemcntnts">
 
-				<img th:src="*{main_img_normal}" th:alt="*{main_title}">
 
-				<div class="heartWish">
-					<div class="left_area">
-						<a th:unless="${#lists.contains(findTouristSpotLikes, member_id)}"
-							href="javascript:;" class="icon heart"
-							th:onclick="|like(*{tourist_Spot_id})|"> <img
-							class="like_img" src="/image/heart-regular.svg" alt="하트">
-						</a>
-						<!--좋아요를 햇으면  -->
-						<a th:if="${#lists.contains(findTouristSpotLikes, member_id)}"
-							href="javascript:;" class="icon heart"
-							th:onclick="|like(*{tourist_Spot_id})|"> <img
-							class="like_img"
-							src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
-							alt="하트">
-						</a>
-					</div>
+			<div id="spot-header-container">
+				<div class="itemcntnts" id="itemcntnts">
 
-					<div class="right_area">
+					<!-- <img th:src="*{main_img_normal}" th:alt="*{main_title}"> -->
 
-						<a
-							th:unless="${#lists.contains(findTouristSpotMyList, member_id)}"
-							href="javascript:;" class="icon wish"
-							th:onclick="|myList(*{tourist_Spot_id})|"> <img
-							class="wish_img" src="/image/bookmark-regular%20(1).svg"
-							alt="찜하기">
-						</a>
-						<!--찜을 햇으면  -->
-						<a th:if="${#lists.contains(findTouristSpotMyList, member_id)}"
-							href="javascript:;" class="icon wish"
-							th:onclick="|myList(*{tourist_Spot_id})|"> <img
-							class="wish_img" src="/image/bookmark-solid%20(2).svg" alt="찜하기">
-						</a>
-					</div>
+					<!-- <div class="heartWish">
+						<div class="left_area">
+							<a
+								th:unless="${#lists.contains(findTouristSpotLikes, member_id)}"
+								href="javascript:;" class="icon heart"
+								th:onclick="|like(*{tourist_Spot_id})|"> <img
+								class="like_img" src="/image/heart-regular.svg" alt="하트">
+							</a>
+							좋아요를 햇으면 
+							<a th:if="${#lists.contains(findTouristSpotLikes, member_id)}"
+								href="javascript:;" class="icon heart"
+								th:onclick="|like(*{tourist_Spot_id})|"> <img
+								class="like_img"
+								src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
+								alt="하트">
+							</a>
+						</div>
+
+						<div class="right_area">
+
+							<a
+								th:unless="${#lists.contains(findTouristSpotMyList, member_id)}"
+								href="javascript:;" class="icon wish"
+								th:onclick="|myList(*{tourist_Spot_id})|"> <img
+								class="wish_img" src="/image/bookmark-regular%20(1).svg"
+								alt="찜하기">
+							</a>
+							찜을 햇으면 
+							<a th:if="${#lists.contains(findTouristSpotMyList, member_id)}"
+								href="javascript:;" class="icon wish"
+								th:onclick="|myList(*{tourist_Spot_id})|"> <img
+								class="wish_img" src="/image/bookmark-solid%20(2).svg" alt="찜하기">
+							</a>
+						</div>
+					</div> -->
 				</div>
+
 			</div>
 
+
+
 		</div>
-
-	
-
-	</div>
-
-
-
-
 </body>
 </html>
