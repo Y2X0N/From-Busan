@@ -1,12 +1,14 @@
 @charset "UTF-8";
-
 .read-container {
     width: 1200px;
-    height: 120vh;
+    height: 150vh;
 	  margin: 0 auto;
  		margin-top : 30px;
  		text-align: center;
 }
+/* body{
+	height: 200vh;
+} */
 review_place{
 	margin: 20px 0;
 	font-size: 30px;
@@ -85,22 +87,31 @@ h2 {
         border: 2px solid black;
     }
 
-
+.center{
+	text-align: center;
+}
 /* -------대댓글-------------------------------------------------------------------- */
 
-
+#replies{
+	margin-top : 20px;
+}
 
 .reply-div{
     margin-top: 6%;
+    width:100%;
+    display:flex;
+    justify-content:center; 
 }
-
+.reply-container{
+	width:100%;
+	height: 200px;
+	text-align: center;
+}
 .reply-table {
     width: 80%;
-    height: 50px;
     border-collapse: collapse;
     text-align: left;
-    margin: auto;
-    margin-top: 11%;
+    margin: 0 auto;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
 }
