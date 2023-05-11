@@ -167,6 +167,7 @@ public class MemberController {
 		    Tourist_Spot touristSpot= touristMapper.findTouristSpot(touristSpotid);
 		    findMyListSpots.add(touristSpot);
     	}
+    	//log.info("count : {}",findMyListSpots.size());
     	model.addAttribute("findMyListSpots", findMyListSpots);
     	
     	
@@ -180,6 +181,7 @@ public class MemberController {
 		    Festival festival= festivalMapper.findFestival(festival_id);
 		    findMyListFes.add(festival);
     	}
+    	//log.info("count : {}",findMyListFes.size());
     	model.addAttribute("findMyListFes", findMyListFes);
     	
     	
@@ -193,8 +195,9 @@ public class MemberController {
 		    Course course= courseMapper.findCourse(courseId);
 		    findMyListCos.add(course);
     	}
+    	//log.info("count : {}",findMyListCos.size());
     	model.addAttribute("findMyListCos", findMyListCos);
-    	
+    	model.addAttribute("loginMember",loginMember.getMember_id());
     	
         return "member/myJjimList"  ;
     }
