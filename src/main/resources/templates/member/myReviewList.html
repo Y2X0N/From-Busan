@@ -1,65 +1,97 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>게시판 리스트</title>
-    <link rel="stylesheet" href="/css/default.css">
-    
- <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>   
-    <script src="/js/index.js"></script>
+<meta charset="UTF-8">
+<title>게시판 리스트</title>
 <link rel="stylesheet" href="/css/header.css" />
-<link rel="stylesheet" href="/css/myPage.css">
+<link rel="stylesheet" href="/css/default.css">
+<link rel="stylesheet" href="/css/reviewList.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
 
-    <script>
-      function search() {
-        let searchText = document.getElementById("searchText").value;
-        location.href="/review/list?searchText=" + searchText;
-      }
-    </script>
+<script>
+	function search() {
+		let searchText = document.getElementById("searchText").value;
+		location.href = "/review/list?searchText=" + searchText;
+	}
+</script>
 </head>
 <body>
-  
-  <div th:replace="fragments/header :: header"></div>
-  
-  
- <div id="container">
-  <h1>[ 게시판 - 나의 리뷰 리스트 ]</h1> 
-  <div class="right">
-    <label for="searchText">검색</label>
-    <input type="search" id="searchText" name="searchText" th:value="${searchText}">
-    <input type="button" onclick="search()" value="검색">
-  </div>
-  <p>
-  <table>
-    <tr>
-      <th>No</th>
-      <th>리뷰 장소</th>
-      <th>제목</th>
-      <th>작성자</th>
-      <th>조회수</th>
-      <th>작성일</th>
-    </tr>
-    <!-- 로그인한 사용자 정보가 있다면, 해당 사용자가 작성한 글만 가져오도록 메서드 호출 -->
-	<th:block th:if="${session.loginMember != null}">
-    <tr th:each="review, reviewStat: ${reviews}">
-      <td th:text="${reviewStat.count}" class="center"></td>
-      <td th:text="${review.review_place}" class="center"></td>
-      <td class="center"><a th:text="${review.title}" th:href="@{/review/read(review_id=${review.review_id})}"></a></td>
-      <td th:text="${review.member_id}" class="center"></td>
-      <td th:text="${review.hit}" class="center"></td>
-      <td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd HH:mm')}" class="center"></td>
-        
-     </tr>
-    </th:block>
-  </table>
-  <p>
-  
-  <div class="center">
-    <input type="button" onclick="location.href='/review/list'" value="목록으로">
-    <input type="button" onclick="location.href='/review/write'" value="글쓰기">
-    <input type="button" onclick="location.href='/'" value="메인으로">
-  </div>
-</div>
+
+	<div th:replace="fragments/header :: header"></div>
+	<div class="header-container">
+		<div class="review">
+
+
+			<section class="notice">
+				<div class="page-title">
+					<h1>[ 게시판 - 나의 리뷰 리스트 ]</h1>
+				</div>
+					
+				<div class="review-container">
+					<!-- board seach area -->
+					<div id="review-search">
+						<div class="search-window">
+								<div class="search-wrap">
+									<input id="searchText" type="search" name="searchText"
+										placeholder="검색어를 입력해주세요.">
+									<button type="button" onclick="search()" class="btn search-btn">검색</button>
+								</div>
+						</div>
+					</div>
+				
+				
+				
+					<p>
+					<table class="review-table">
+						<thead>
+							<tr class="mainTitle">
+								<th scope="col" class="th-num">No</th>
+								<th scope="col" class="th-place">Place</th>
+								<th scope="col" class="th-title">Title</th>
+								<th scope="col" class="th-writer">Writer</th>
+								<th scope="col" class="th-date">Date</th>
+								<th scope="col" class="th-hit">HIT</th>
+							</tr>
+						</thead>
+						<tbody th:if="${session.loginMember != null}">
+							<tr th:if="${reviews}" th:each="review, reviewsStat: ${reviews}">
+								<td class="color" th:text="${reviewsStat.count}"></td>
+								<td class="color" th:text="${review.review_place}"></td>
+								<th><a th:text="${review.title}"
+									th:href="@{/review/read(review_id=${review.review_id})}"></a></th>
+								<td th:text="${review.member_id}" class="center"></td>
+								<td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
+								<td th:text="${review.hit}"></td>
+							</tr>
+							<tr th:if="${reviews.empty}">
+							    <td class="color" colspan="6">리뷰가 없습니다.</td>
+							</tr>
+
+						</tbody>
+					
+				</table>
+				<p>
+				<div class="center">
+					<input type="button" onclick="location.href='/review/list'"
+						value="목록으로" class="input-btn"> 
+					<input type="button" class="input-btn"
+						onclick="location.href='/review/write'" value="글쓰기"> 
+					<input class="input-btn"
+						type="button" onclick="location.href='/'" value="메인으로">
+				</div>
+				</div>
+			</section>
+
+		</div>
+			
+	
+			
+	</div>
 </body>
 </html>

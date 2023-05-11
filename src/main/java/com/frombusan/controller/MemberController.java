@@ -160,9 +160,9 @@ public class MemberController {
     	//명소 찜 목록 **서비스 처리 필요
     	List<Map<String, Object>> resultList = touristMapper.findMyListByMemberId(loginMember.getMember_id());
     	List<Tourist_Spot> findMyListSpots = new ArrayList<>();
+    	
     	for (int i = 0; i < resultList.size(); i++) {
-    		 Map<String, Object> resultMap = resultList.get(i);
-		    Object idObj = resultMap.get("TOURIST_SPOT_ID");
+		    Object idObj = resultList.get(i).get("TOURIST_SPOT_ID");
 		    Long touristSpotid = ((Number) idObj).longValue(); // id가 Number 타입일 수도 있으므로 longValue()로 Long 타입으로 변환
 		    Tourist_Spot touristSpot= touristMapper.findTouristSpot(touristSpotid);
 		    findMyListSpots.add(touristSpot);
@@ -175,8 +175,7 @@ public class MemberController {
     	List<Festival> findMyListFes = new ArrayList<>();
     	
     	for (int i = 0; i < resultList2.size(); i++) {
-    		 Map<String, Object> resultMap2 = resultList2.get(i);
-		    Object idObj2 = resultMap2.get("FESTIVAL_ID");
+		    Object idObj2 = resultList2.get(i).get("FESTIVAL_ID");
 		    Long festival_id = ((Number) idObj2).longValue(); // id가 Number 타입일 수도 있으므로 longValue()로 Long 타입으로 변환
 		    Festival festival= festivalMapper.findFestival(festival_id);
 		    findMyListFes.add(festival);
@@ -189,8 +188,7 @@ public class MemberController {
     	List<Course> findMyListCos = new ArrayList<>();
 
     	for (int i = 0; i < resultList3.size(); i++) {
-    		 Map<String, Object> resultMap3 = resultList3.get(i);
-		    Object idObj3 = resultMap3.get("COURSE_ID");
+		    Object idObj3 = resultList3.get(i).get("COURSE_ID");
 		    Long courseId = ((Number) idObj3).longValue(); // id가 Number 타입일 수도 있으므로 longValue()로 Long 타입으로 변환
 		    Course course= courseMapper.findCourse(courseId);
 		    findMyListCos.add(course);
@@ -255,6 +253,29 @@ public class MemberController {
     	memberMapper.updateMember(member);
     	
 		return ResponseEntity.ok("변경성공");
+    }
+    
+    @GetMapping("updateMember")
+    public String updateMember(Model model,@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+    	
+        model.addAttribute("findIdForm", new findIdForm());
+        model.addAttribute("loginMember", loginMember);
+        return "member/updateMember";
+    }
+    
+    @PostMapping("updateMember")
+    public ResponseEntity<String> updateMember2(Model model
+    		,@RequestParam String name, @RequestParam String password, @RequestParam String phone_number
+    		,@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+    	
+    	
+    	loginMember.setPassword(password);
+    	loginMember.setName(name);
+    	loginMember.setPhone_number(phone_number);
+    	
+        memberMapper.updateMember(loginMember);
+        
+        return ResponseEntity.ok("변경성공");
     }
     
     
