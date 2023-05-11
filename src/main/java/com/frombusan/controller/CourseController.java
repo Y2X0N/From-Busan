@@ -33,7 +33,6 @@ public class CourseController {
 	
 	
 	@Autowired
-	private ReviewService reviewService;
 	private CourseMapper courseMapper;
 	
 	 // 게시판 관련 상수 값
