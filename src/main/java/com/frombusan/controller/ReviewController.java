@@ -51,10 +51,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("review")
 @Controller
 public class ReviewController {
-
+	//의존성주입
     private final ReviewService reviewService;
-    private final TouristSpotMapper touristSpotMapper;
-    private final FestivalMapper fstivalMapper;
     
     // 게시판 관련 상수 값
     final int countPerPage = 10;    // 페이지 당 글 수
