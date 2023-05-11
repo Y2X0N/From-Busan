@@ -637,7 +637,7 @@ function myList(festival_id) {
 
 				<p>
 				<div class="explain">
-					<h3 th:text="*{itemcntnts}"></h3>
+					<p th:text="*{itemcntnts}"></p>
 				</div>
 			</div>
 
@@ -669,7 +669,7 @@ function myList(festival_id) {
 					</tr>
 
 					<tr>
-						<th>???</th>
+						<th>복지 시설</th>
 						<td th:utext="*{middle_size_rm1}"></td>
 					</tr>
 
@@ -678,14 +678,15 @@ function myList(festival_id) {
 			</div>
 
 			<div id="mapContainer">
+				<div class="find">
+					<input class="findRT" type="button" onclick="getRestaurant()" value="맛집 찾기"> 
+					<input class="findRT" type="button" onclick="getDb()" value="명소 찾기">
+				</div>
+			
 				<div id="map"></div>
 				<div class="modal">
 					<span class="close">&times;</span>
 					<div id="modalText"></div>
-				</div>
-				<div>
-					<input type="button" onclick="getRestaurant()" value="맛집 찾기"> 
-					<input type="button" onclick="getDb()" value="명소 찾기">
 				</div>
 			</div>
 			

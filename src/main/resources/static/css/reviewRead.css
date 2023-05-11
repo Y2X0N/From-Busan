@@ -246,3 +246,55 @@ h2 {
 	margin-right: 20px;
 }
 
+/* ---댓글달기----------------------------------------------------------------------- */
+
+
+.reply-div{
+    margin-top: 6%;
+}
+
+.reply-table {
+    width: 50%;
+    height: 50px;
+    border-collapse: collapse;
+    text-align: left;
+    margin: auto;
+    /* margin-top: 3%; */
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.reply-table th {
+    color: rgb(142, 141, 141);
+    padding: 5px 5px;
+    border-bottom: 1px solid #ccc;
+
+}
+
+.reply-table td {
+    font-size: 14px;
+    padding: 3px 3px;
+}
+
+.reply-input {
+    height: 30px;
+    width: 40%;
+    font-size: 14px;
+    /* padding: 7px 14px; */
+    border: 1px solid #ccc;
+    margin-top: 2%;
+}
+
+.reply-btn {
+    height: 30px;
+    width: 70px;
+    background-color: white;
+    border: 2px solid #545457;
+}
+
+.reply-btn:hover {
+    background-color: #545457;
+    color: white;
+    border: 2px solid #545457;
+}
+
