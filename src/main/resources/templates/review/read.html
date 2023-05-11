@@ -5,6 +5,7 @@
 <title>게시글 읽기</title>
 <link rel="stylesheet" href="/css/header.css">
 <link rel="stylesheet" href="/css/reviewRead.css">
+<script src="/js/index.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <link rel="stylesheet"
@@ -69,11 +70,11 @@
       function showReplies(data) {
         $("#replies").html("");
         let str = "";
-        str += "<table>";
+        str += "<table class='reply-table'>";
         str += "  <tr>";
         str += "      <th>No.</th>";
-        str += "      <th>내용.</th>";
         str += "      <th>작성자.</th>";
+        str += "      <th>내용.</th>";
         str += "      <th>작성일</th>";
         str += "  </tr>";
         if (data.length > 0) {
@@ -86,7 +87,8 @@
                     + created_time.getMinutes();
 
             str += "<tr>";
-            str += "  <td class='center'>" + (idx + 1) + "</td>";
+            str += "  <td>" + (idx + 1) + "</td>";
+            str += "  <td>" + obj.member_id + "</td>";
             if (obj.writer == true) {
               str += "  <td><input type='text' id='reply_" + obj.reply_id + "' value='" + obj.content + "'>";
               str += "<input type='button' value='수정' onclick='updateReply(" + obj.reply_id + ")'>";
@@ -95,13 +97,12 @@
               str += "  <td>" + obj.content;
             }
             str += "  </td>";
-            str += "  <td class='center'>" + obj.member_id + "</td>";
-            str += "  <td class='center'>" + time + "</td>";
+            str += "  <td>" + time + "</td>";
             str += "</tr>";
           });
         } else {
           str += "<tr>"
-          str += "<td class='center' colspan='4'>등록된 리플이 없습니다.</td>"
+          str += "<td colspan='4'>등록된 리플이 없습니다.</td>"
           str += "<tr>"
         }
         str += "</table>";
@@ -285,35 +286,7 @@
 		</div>
 
 
- <div class="reply-div">
-                <table class="reply-table">
-                    <tr>
-                        <th>No.</th>
-                        <th>작성자</th>
-                        <th>내용</th>
-                        <th>작성일</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>실크로드</td>
-                        <td>재밋겠네용</td>
-                        <td>2023.5.30</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>메롱</td>
-                        <td>으</td>
-                        <td>2023.5.30</td>
-                    </tr>
-                </table>
 
-                <div class="reply-container">
-                    <input class="reply-input" id="reply" type="text" placeholder=" 댓글을 작성해주세요." name="reply" value="">
-                    <button class="reply-btn" onclick="writeReply()">작성</button>
-                </div>
-               
-                
-            </div>
 
 
 	</div>

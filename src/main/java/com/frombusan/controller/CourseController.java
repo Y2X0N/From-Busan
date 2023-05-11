@@ -57,9 +57,9 @@ public class CourseController {
     
  // 게시글 읽기
  	@GetMapping("/CourseInfo")
- 	public String read(@RequestParam("course_id") Long course_id,@SessionAttribute(value = "loginMember", required = false) Member loginMember,
+ 	public String read(@RequestParam Long course_id, @SessionAttribute(value = "loginMember", required = false) Member loginMember,
  			 Model model) {
-
+ 		log.info("course_id:{}",course_id);
  		// board_id 에 해당하는 게시글을 데이터베이스에서 찾는다.
  		Course course= courseMapper.findCourse(course_id);
  		

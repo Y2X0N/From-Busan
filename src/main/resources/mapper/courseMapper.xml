@@ -13,7 +13,7 @@
 
 		<!-- 죻아요 순으로 재정렬 -->
 	 <select id="findAllCourse" resultType="course">
-		select course_title, main_img, place_like,hit from course order by hit desc
+		select course_id,course_title, main_img, place_like,hit from course order by hit desc
 	</select>
 
     
