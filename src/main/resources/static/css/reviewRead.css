@@ -37,43 +37,6 @@ h2 {
 }
 
 
-
-/* .read-table {
-    width: 100%;
-    height: 200px;
-    border-collapse: collapse;
-    text-align: left;
-    margin: auto;
-    margin-top: 2%;
-   
-    border-top: 1px solid #ccc;
-
-}
-
-.read-table tr {
-    padding: 10px;
-    font-weight: bold;
-    border-bottom: 1px solid #ccc;
-}
-
-.read-table th {
-    padding: 15px 0;
-    color: rgb(142, 141, 141);
-    background-color: #e6f6ff;
-    width: 15%;
-    text-align: center;
-}
-
-.read-table td {
-    text-align: center;
-    font-size: 14px;
-    width: 250px;
-    padding: 10px;
-    vertical-align: top;
-    border-bottom: 1px solid #ccc;
-}
- */
-
  input[type=button]{
         height: 35px;
         width: 100px;
@@ -90,65 +53,7 @@ h2 {
 .center{
 	text-align: center;
 }
-/* -------대댓글-------------------------------------------------------------------- */
 
-#replies{
-	margin-top : 20px;
-}
-
-.reply-div{
-    margin-top: 6%;
-    width:100%;
-    display:flex;
-    justify-content:center; 
-}
-.reply-container{
-	width:100%;
-	height: 200px;
-	text-align: center;
-}
-.reply-table {
-    width: 80%;
-    border-collapse: collapse;
-    text-align: left;
-    margin: 0 auto;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-}
-
-.reply-table th {
-    color: rgb(142, 141, 141);
-    padding: 5px 5px;
-    border-bottom: 1px solid #ccc;
-
-}
-
-.reply-table td {
-    font-size: 14px;
-    padding: 3px 3px;
-}
-
-.reply-input {
-    height: 30px;
-    width: 60%;
-    font-size: 14px;
-    /* padding: 7px 14px; */
-    border: 1px solid #ccc;
-    margin-top: 2%;
-}
-
-.reply-btn {
-    height: 30px;
-    width: 70px;
-    background-color: white;
-    border: 2px solid #545457;
-}
-
-.reply-btn:hover {
-    background-color: #545457;
-    color: white;
-    border: 2px solid #545457;
-}
 
 /* -----------------좋아요------------ */
 
@@ -246,15 +151,13 @@ h2 {
 	margin-right: 20px;
 }
 
-/* ---댓글달기----------------------------------------------------------------------- */
-
 
 .reply-div{
     margin-top: 6%;
 }
 
 .reply-table {
-    width: 50%;
+    width: 80%;
     height: 50px;
     border-collapse: collapse;
     text-align: left;
@@ -275,6 +178,20 @@ h2 {
     font-size: 14px;
     padding: 3px 3px;
 }
+/* .reply-input-btn{
+	
+} */
+.reply-table button{
+	height: 30px;
+    width: 70px;
+    background-color: white;
+    border: 2px solid #545457;
+}
+.review-button{
+	margin-left:10px;
+	width: 150px;
+}
+
 
 .reply-input {
     height: 30px;

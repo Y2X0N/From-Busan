@@ -90,9 +90,12 @@
             str += "  <td>" + (idx + 1) + "</td>";
             str += "  <td>" + obj.member_id + "</td>";
             if (obj.writer == true) {
-              str += "  <td><input type='text' id='reply_" + obj.reply_id + "' value='" + obj.content + "'>";
-              str += "<input type='button' value='수정' onclick='updateReply(" + obj.reply_id + ")'>";
-              str += "<input type='button' value='삭제' onclick='removeReply(" + obj.reply_id + ")'>";
+              str += "  <td><input class='reply-input-btn' type='text' id='reply_" + obj.reply_id + "' value='" + obj.content + "'>";
+              //str += "<button type='button' class='reply-btn'  >작성</button>";
+              str += " <button type='button' class='reply-btn'  onclick=updateReply(" + obj.reply_id + ")>수정</button>";
+              str += "<button type='button' class='reply-btn'  onclick=removeReply(" + obj.reply_id + ")>삭제</button>";
+               //str += "<button class='review-button' type='button' value='수정' onclick='updateReply(" + obj.reply_id + ")'>";
+              //str += "<button class='review-button' type='button' value='삭제' onclick='removeReply(" + obj.reply_id + ")'>";
             } else {
               str += "  <td>" + obj.content;
             }
@@ -284,7 +287,14 @@
 					value="삭제하기">
 			</th:block>
 		</div>
+		
+		<div class="reply-container">
+		<div id="replies" class="reply-div"></div>
 
+			<input class="reply-input" id="reply" name="reply" type="text"
+				placeholder=" 댓글을 작성해주세요."  value="">
+			<button type="button" class="reply-btn" onclick="writeReply()">작성</button>
+		</div>
 
 
 
