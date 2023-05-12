@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>회원가입</title>
-    <link rel="stylesheet" href="/css/default.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/joinForm.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="/js/index.js"></script>
-    <script>
+<meta charset="UTF-8">
+<title>회원가입</title>
+<link rel="stylesheet" href="/css/default.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<link rel="stylesheet" href="/css/header.css" />
+<link rel="stylesheet" href="/css/joinForm.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="/js/index.js"></script>
+<script>
       	let idck = 0;
+       function isEmpty(obj,msg){
+    	   if(obj.val().length==0){
+    		   alert(msg);
+    		   obj.focus();
+    		   return true;
+    	   }
+    	   return false;
+       }
     	 function formCheck() {
-    		  //let idForm = $('#idForm');
+    		  //let form = $('#idForm');
     			let member_id = $("#member_id");
         	let password = $("#password");
 					let passwordCheck=$("#passwordCheck");
@@ -21,11 +33,36 @@
 					let now = new Date();
         	let phone_number = $("#phone_number");
         	let birthDate = new Date(birth.val());
-       	if(idck==0){
+        	
+       		if(idck==0){
 	            alert('아이디 중복체크를 해주세요');
 	            return false;
 	        }
-        else if (member_id.val().length < 4 || member_id.val().length > 20) {
+       		
+       		if(isEmpty(member_id,"[[#{alert.alertid}]]")) return;
+       		if(isEmpty(password,"[[#{alert.alertPassword}]]")) return;
+       		if(isEmpty(name,"[[#{alert.alertName}]]")) return;
+       		//비밀번호 일치확인
+       		if(password.val() != passwordCheck.val()){
+					alert("[[#{alert.alertPassword2}]]");
+					password.focus();
+       		return;
+       		}
+       		if(isEmpty(birth,"[[#{alert.alertbirth}]]")) return;
+       		//생년월일 체크
+       		if (now < birthDate) {
+        		alert("[[#{alert.alerttoday}]]");
+        		birth.focus();
+        		return;
+        	}
+       		
+       		if(isEmpty(phone_number,"[[#{alert.alertPhone}]]")) return;
+       		if(isEmpty(password,"[[#{alert.alertPassword}]]")) return;
+       		if(isEmpty(password,"[[#{alert.alertPassword}]]")) return;
+       		
+       		//submit
+       		return true;
+        /* else if (member_id.val().length < 4 || member_id.val().length > 20) {
     			alert("[[#{alert.alertid}]]");
     			member_id.focus();
     			return false;
@@ -37,7 +74,7 @@
 				alert("[[#{alert.alertPassword2}]]");
 				password.focus();
 				return false;
-			}else if (name.val() == "") {
+						}else if (name.val() == "") {
         		alert("[[#{alert.alertName}]]");
         		name.focus();
         		return false;
@@ -65,17 +102,11 @@
                 alert("[[#{alert.alertlength}]]");
                 phone_number.focus();
                 return false;
-            }else if(idCheck()==0){
-            	alert("아이디중복확인을 해주세요");
-            	return false;
+            }else{
            		alert(name.val()+"님 회원가입이 완료되었습니다.감사합니다.");
-            }
-            
-            else{
-            		
+            	event.preventDefault()	
             	return true;
-            }
-       			return true;
+            } */
             /* if(idCheckResult===false){
                 alert("[[#{alert.alertidCheck}]]");
                 return false;
@@ -101,23 +132,16 @@
     	             success : function(data) {
     	                 if (data.cnt > 0) {
     	                     alert("아이디가 존재합니다. 다른 아이디를 입력해주세요.");
-    	                     //아이디가 존제할 경우 빨깡으로 , 아니면 파랑으로 처리하는 디자인
-    	                     //$("#divInputId").addClass("has-error")
-    	                     //$("#divInputId").removeClass("has-success")
     	                     $("#member_id").focus();
     	                 } else {
     	                     alert("사용가능한 아이디입니다.");
-    	                     //아이디가 존제할 경우 빨깡으로 , 아니면 파랑으로 처리하는 디자인
-    	                     //$("#divInputId").addClass("has-success")
-    	                     //$("#divInputId").removeClass("has-error")
     	                     $("#password").focus();
     	                     //아이디가 중복하지 않으면  idck = 1 
     	                     idck = 1;
     	                 }
     	             },
     	             error : function(error) {
-    	                 
-    	                 alert("다시입력해줘");
+    	                 alert("다시입력해주세요");
     	             }
     	         });
     	     });
@@ -127,63 +151,74 @@
     </script>
 </head>
 <body>
-<div th:replace ="fragments/header :: header">
-	</div>
-<div id="join-container">
-        <form id="idForm" action="/member/join" method="post" th:object="${joinForm}" onsubmit="return formCheck()">
-            <div class="logo-container">
-                <h2> [[#{alert.welcome}]]</h2>
-                <img class="img" src="/image/bugi.png" alt="부기">
-            </div>
-            <table>
-                <tr>
-                    <td class="leftTd">[[#{alert.ID}]]</td>
-                    <td class="rightTd">
-                        <input type="text" th:field="*{member_id}">
-                        <input class="butID" id="idck" type="button" data-value="#{alert.Duplicate}" th:value="#{alert.Duplicate}">
-                   
-                    </td>
-                </tr>
-                <tr>
-                    <td class="leftTd">[[#{alert.Password}]]</td>
-                    <td class="rightTd">
-                        <input type="password" th:field="*{password}">
-                        <p>[[#{alert.password1}]] <span class="red">[[#{alert.password2}]]</span>[[#{alert.password3}]]</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="leftTd">[[#{alert.Check}]]</td>
-                    <td class="rightTd"><input type="password" id="passwordCheck"></td>
-                </tr>
-               <tr>
-                <td class="leftTd">[[#{alert.name}]]</td>
-                <td class="rightTd"><input type="text" th:field="*{name}"></td>
-               </tr>
-                <tr>
-                    <td class="leftTd">[[#{alert.birth}]]</td>
-                    <td class="rightTd"><input type="date" th:field="*{birth}"></td>
-                </tr>
-                <tr>
-                    <td class="leftTd">[[#{alert.Phone}]]</td>
-                    <td class="rightTd"><input type="tel" th:field="*{phone_number}"></td>
-                </tr>
-            </table>
+	<div th:replace="fragments/header :: header"></div>
+	<div id="join-container">
+		<form id="idForm" action="/member/join" method="post"
+			th:object="${joinForm}" onsubmit="return formCheck()">
+			<div th:if="${#fields.hasGlobalErrors()}">
+      <p class="error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+    	</div>
+			<div class="logo-container">
+				<h2>[[#{alert.welcome}]]</h2>
+				<img class="img" src="/image/bugi.png" alt="부기">
+			</div>
+			<table>
+				<tr>
+					<td class="leftTd">[[#{alert.ID}]]</td>
+					<td class="rightTd"><input type="text" th:field="*{member_id}">
+						<input class="butID" id="idck" type="button"
+						data-value="#{alert.Duplicate}" th:value="#{alert.Duplicate}">
+						<span class="error" th:errors="*{member_id}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="leftTd">[[#{alert.Password}]]</td>
+					<td class="rightTd"><input type="password"
+						th:field="*{password}">
+						<p>
+							[[#{alert.password1}]] <span class="red">[[#{alert.password2}]]</span>[[#{alert.password3}]]
+						</p></td>
+				</tr>
+				<tr>
+					<td class="leftTd">[[#{alert.Check}]]</td>
+					<td class="rightTd"><input type="password" id="passwordCheck"></td>
+				</tr>
+				<tr>
+					<td class="leftTd">[[#{alert.name}]]</td>
+					<td class="rightTd"><input type="text" th:field="*{name}">
+					<span class="error" th:errors="*{name}"></span></td>
+				</tr>
+				<tr>
+					<td class="leftTd">[[#{alert.birth}]]</td>
+					<td class="rightTd"><input type="date" th:field="*{birth}">
+					<span class="error" th:errors="*{birth}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="leftTd">[[#{alert.Phone}]]</td>
+					<td class="rightTd"><input type="tel"
+						th:field="*{phone_number}">
+						</td>
+				</tr>
+			</table>
 
-            <div class="join-button">
-                <input class="btn-join" type="submit" data-value="#{alert.join}" th:value="#{alert.join}" >
-                <input class="btn-cancel" type="reset" data-value="#{alert.cancel}" th:value="#{alert.cancel}">
-            </div>		
-            
-        </form>
-    </div>
-			<script th:inline="javascript">
+			<div class="join-button">
+				<input class="btn-join" type="submit" data-value="#{alert.join}"
+					th:value="#{alert.join}"> <input class="btn-cancel"
+					type="reset" data-value="#{alert.cancel}"
+					th:value="#{alert.cancel}">
+			</div>
+
+		</form>
+	</div>
+	<script th:inline="javascript">
 				$(document).ready(function() {
 					  $('input[type="submit"], input[type="reset"]').each(function() {
 					    $(this).val($(this).attr('value'));
 					  });
 					});
 			</script>
-			<script th:inline="javascript">
+	<script th:inline="javascript">
 					$(document).ready(function() {
 					  $('input[type="button"]').each(function() {
 					    $(this).val($(this).attr('value'));
