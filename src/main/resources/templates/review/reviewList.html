@@ -16,7 +16,7 @@
 
 <script>
 
-let createTime = [[${reviews.size()}]];
+/* let createTime = [[${reviews}]];
 console.log(createTime);
 function timeForToday() {
     const displayCreatedAt = (createdAt) => {
@@ -43,7 +43,7 @@ function timeForToday() {
 	  //console.log(result);
     return result;
   }
-
+ */
       function search() {
         let searchText = document.getElementById("searchText").value;
         location.href="/review/list?searchText=" + searchText;
@@ -93,12 +93,12 @@ function timeForToday() {
 								<th><a th:text="${review.title}"
 									th:href="@{/review/read(review_id=${review.review_id})}"></a></th>
 								<td th:text="${review.member_id}" class="center"></td>
-								<td id="myTd"></td>
+								<!-- <td id="myTd"></td>
 								<script>
      							 // 결과를 span에 표시하는 함수 실행
      								 document.getElementById("myTd").innerHTML = timeForToday();
-    							</script>
-								<!-- <td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td> -->
+    							</script> -->
+								<td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
 								<td th:text="${review.hit}"></td>
 							</tr>
 							<tr th:if="${findReviewsByMainTitle.empty}">

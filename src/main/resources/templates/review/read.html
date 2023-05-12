@@ -19,126 +19,7 @@
 <script th:inline="javascript">
 
 
-/* function timeForToday(value) {
-    const today = new Date();
-    const timeValue = new Date(value);
 
-    const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
-    if (betweenTime < 1) return '방금전';
-    if (betweenTime < 60) {
-        return `${betweenTime}분전`;
-    }
-
-    const betweenTimeHour = Math.floor(betweenTime / 60);
-    if (betweenTimeHour < 24) {
-        return `${betweenTimeHour}시간전`;
-    }
-
-    const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-    if (betweenTimeDay < 365) {
-        return `${betweenTimeDay}일전`;
-    }
-
-    return `${Math.floor(betweenTimeDay / 365)}년전`;
-}
- */
- 
- /* 	function timeForToday() {
-	 const displayCreatedAt = (createdAt) => {
-		    let startTime = new Date(createdAt);
-		    let nowTime = Date.now();
-		    if (parseInt(startTime - nowTime) > -60000) {
-		      return <Moment format="방금 전">{startTime}</Moment>;
-		    }
-		    if (parseInt(startTime - nowTime) < -86400000) {
-		      return <Moment format="MMM D일">{startTime}</Moment>;
-		    }
-		    if (parseInt(startTime - nowTime) > -86400000) {
-		      return <Moment fromNow>{startTime}</Moment>;
-		    }
-		  };
- } */
-    
- 
- /* function timeForToday() {
-     const displayCreatedAt = (createdAt) => {
-       let startTime = new Date(createdAt);
-       let nowTime = Date.now();
-       if (parseInt(startTime - nowTime) > -60000) {
-    	   return `<span>방금 전</span>`;
-       }
-       if (parseInt(startTime - nowTime) < -86400000) {
-    	   return `<span>${Math.floor(timeDiff / 60000)} 분 전</span>`;
-       }
-       if (parseInt(startTime - nowTime) > -86400000) {
-    	   return `<span>${Math.floor(timeDiff / 3600000)} 시간 전</span>`;
-       }
-     };
-
-     // 특정 날짜 값 (createdAt)을 전달하여 결과 얻기
-     let result = displayCreatedAt("2023-05-12T10:30:00");
-     
-     return result;
-   } */
-   
-   
-  /*  function timeForToday() {
-       const displayCreatedAt = (createdAt) => {
-         let startTime = new Date(createdAt);
-         let nowTime = Date.now();
-         let timeDiff = nowTime - startTime;
-         let result = "";
-
-         if (timeDiff < 60000) {
-           result = "방금 전";
-         } else if (timeDiff < 3600000) {
-           result = `${Math.floor(timeDiff / 60000)} 분 전`;
-         } else if (timeDiff < 86400000) {
-           result = `${Math.floor(timeDiff / 3600000)} 시간 전`;
-         } else {
-           result = startTime.toLocaleDateString();
-         }
-
-         return `<span>${result}</span>`;
-       };
-
-       // 특정 날짜 값 (createdAt)을 전달하여 결과 얻기
-       let result = displayCreatedAt("2023-05-12T10:30:00");
-
-       return result;
-     }
-    */
-    
-    
-   /*  function timeForToday() {
-        const displayCreatedAt = (createdAt) => {
-          let startTime = new Date(createdAt);
-          let nowTime = Date.now();
-          let timeDiff = nowTime - startTime;
-          let result = "";
-
-          if (timeDiff < 60000) {
-            result = "방금 전";
-          } else if (timeDiff < 3600000) {
-            result = `${Math.floor(timeDiff / 60000)} 분 전`;
-          } else if (timeDiff < 86400000) {
-            result = `${Math.floor(timeDiff / 3600000)} 시간 전`;
-          } else {
-            result = startTime.toLocaleDateString();
-          }
-
-          return `<span>${result}</span>`;
-        };
-
-        // 특정 날짜 값 (createdAt)을 전달하여 결과 얻기
-        let result = displayCreatedAt("2023-05-12T10:30:00");
-
-        return result;
-      }
-    
-  */
-  
-  
   let createTime = [[${review.created_time}]];
   function timeForToday() {
       const displayCreatedAt = (createdAt) => {
@@ -150,9 +31,9 @@
         if (timeDiff < 60000) {
           result = "방금 전";
         } else if (timeDiff < 3600000) {
-          result = `${Math.floor(timeDiff / 60000)} 분 전`;
+          result = `${Math.floor(timeDiff / 60000)}분 전`;
         } else if (timeDiff < 86400000) {
-          result = `${Math.floor(timeDiff / 3600000)} 시간 전`;
+          result = `${Math.floor(timeDiff / 3600000)}시간 전`;
         } else {
           result = startTime.toLocaleDateString();
         }
