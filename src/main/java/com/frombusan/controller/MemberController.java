@@ -1,6 +1,7 @@
 package com.frombusan.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -85,12 +88,12 @@ public class MemberController {
             // member/joinForm.html 페이지를 리턴한다.
             return "member/joinForm";
         }
+        //redirectAttributes.addFlashAttribute("alertMessage", "회원가입이 완료되었습니다.");
         
-        redirectAttributes.addFlashAttribute("alertMessage", "회원가입이 완료되었습니다.");
         // MemberJoinForm 객체를 Member 타입으로 변환하여 데이터베이스에 저장한다.
         memberMapper.saveMember(MemberJoinForm.toMember(joinForm));
         // 메인 페이지로 리다이렉트한다.
-        return "redirect:member/loginForm";
+        return "redirect:/";
     }
 
     // 로그인 페이지 이동
@@ -203,14 +206,21 @@ public class MemberController {
     	
         return "member/myJjimList"  ;
     }
-    //id중복확인
-    @GetMapping("")
-    public ResponseEntity<List<String>> checkId(@Validated @ModelAttribute("loginForm") LoginForm loginForm
-    		,@SessionAttribute(value = "loginMember", required = false) Member loginMember)
-            {
-    	List<String> findAllMemberId = memberMapper.findAllMemberId();
-        log.info("findAllMemberId:{}",findAllMemberId);
-		return ResponseEntity.ok(findAllMemberId);
+   
+    
+    
+    
+    @ResponseBody
+    @PostMapping("idCheck")
+    public Map<Object, Object> idcheck(@RequestBody String member_id) {
+        int count = 0;
+        
+        Map<Object, Object> map = new HashMap<Object, Object>();
+        System.out.println(map);
+        count = memberMapper.idCheck(member_id);
+        map.put("cnt", count);
+ 
+        return map;
     }
     
     //id찾기

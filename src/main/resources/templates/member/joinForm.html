@@ -10,19 +10,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="/js/index.js"></script>
     <script>
-       	let idCheckResult = idCheck();
-       	console.log(idCheckResult);
+      	let idck = 0;
     	 function formCheck() {
-    		let member_id = $("#member_id");
+    		  //let idForm = $('#idForm');
+    			let member_id = $("#member_id");
         	let password = $("#password");
-			let passwordCheck=$("#passwordCheck");
-			let name = $('#name'); 
-			let birth = $("#birth");
-			let now = new Date();
+					let passwordCheck=$("#passwordCheck");
+					let name = $('#name'); 
+					let birth = $("#birth");
+					let now = new Date();
         	let phone_number = $("#phone_number");
         	let birthDate = new Date(birth.val());
-        	
-    		if (member_id.val().length < 4 || member_id.val().length > 20) {
+       	if(idck==0){
+	            alert('아이디 중복체크를 해주세요');
+	            return false;
+	        }
+        else if (member_id.val().length < 4 || member_id.val().length > 20) {
     			alert("[[#{alert.alertid}]]");
     			member_id.focus();
     			return false;
@@ -65,42 +68,61 @@
             }else if(idCheck()==0){
             	alert("아이디중복확인을 해주세요");
             	return false;
-            }else{
-            	alert("토나와");
+           		alert(name.val()+"님 회원가입이 완료되었습니다.감사합니다.");
+            }
+            
+            else{
+            		
             	return true;
             }
+       			return true;
             /* if(idCheckResult===false){
                 alert("[[#{alert.alertidCheck}]]");
                 return false;
             }	 */
     	}
     	
-    	
-    	async function idCheck() {
-    	    let member_id = $("#member_id").val(); // 입력한 아이디 값 가져오기
-    	    try {
-    	        let response = await $.ajax({
-    	            url: "/member/",
-    	            method: "GET"
-    	        });
-    	        for (let i = 0; i < response.length; i++) {
-    	            if (member_id === response[i]) {
-    	                alert("[[#{alert.alertidCheck}]]");
-    	                $("#member_id").focus(); // id selector를 사용하여 해당 요소에 포커스 설정
-    	                return 0;
-    	            }
-    	        	if (member_id.length < 4 || member_id.length > 20) {
-    	        		alert("[[#{alert.alertid}]]");
-    	                $("#member_id").focus(); // id selector를 사용하여 해당 요소에 포커스 설정
-    	        		return 0;
-    	        	}
-    	        }
-    	        alert("[[#{alert.alertid2}]]")
-    	        return 1;
-    	    } catch (error) {
-    	        console.log(error);
-    	    }
-    	}
+    	//아이디 체크여부 확인 (아이디 중복일 경우 = 0 , 중복이 아닐경우 = 1 )
+    	 
+    	 $(function() {
+    	     //idck 버튼을 클릭했을 때 
+    	     $("#idck").click(function() {
+    	         
+    	         //userid 를 param.
+    	         let member_id =  $("#member_id").val(); 
+    	         
+    	         $.ajax({
+    	             async: true,
+    	             type : 'POST',
+    	             data : member_id,
+    	             url : "/member/idCheck",
+    	             dataType : "json",
+    	             contentType: "application/json; charset=UTF-8",
+    	             success : function(data) {
+    	                 if (data.cnt > 0) {
+    	                     alert("아이디가 존재합니다. 다른 아이디를 입력해주세요.");
+    	                     //아이디가 존제할 경우 빨깡으로 , 아니면 파랑으로 처리하는 디자인
+    	                     //$("#divInputId").addClass("has-error")
+    	                     //$("#divInputId").removeClass("has-success")
+    	                     $("#member_id").focus();
+    	                 } else {
+    	                     alert("사용가능한 아이디입니다.");
+    	                     //아이디가 존제할 경우 빨깡으로 , 아니면 파랑으로 처리하는 디자인
+    	                     //$("#divInputId").addClass("has-success")
+    	                     //$("#divInputId").removeClass("has-error")
+    	                     $("#password").focus();
+    	                     //아이디가 중복하지 않으면  idck = 1 
+    	                     idck = 1;
+    	                 }
+    	             },
+    	             error : function(error) {
+    	                 
+    	                 alert("다시입력해줘");
+    	             }
+    	         });
+    	     });
+    	 });
+    	  
     	
     </script>
 </head>
@@ -108,7 +130,7 @@
 <div th:replace ="fragments/header :: header">
 	</div>
 <div id="join-container">
-        <form action="/member/join" method="post" th:object="${joinForm}" onsubmit="return formCheck()">
+        <form id="idForm" action="/member/join" method="post" th:object="${joinForm}" onsubmit="return formCheck()">
             <div class="logo-container">
                 <h2> [[#{alert.welcome}]]</h2>
                 <img class="img" src="/image/bugi.png" alt="부기">
@@ -118,14 +140,8 @@
                     <td class="leftTd">[[#{alert.ID}]]</td>
                     <td class="rightTd">
                         <input type="text" th:field="*{member_id}">
-                        <input class="butID" th:field="*{member_id}" type="button" data-value="#{alert.Duplicate}" th:value="#{alert.Duplicate}" onclick="return idCheck()">
-                   <script th:inline="javascript">
-					$(document).ready(function() {
-					  $('input[type="button"]').each(function() {
-					    $(this).val($(this).attr('value'));
-					  });
-					});
-					</script>
+                        <input class="butID" id="idck" type="button" data-value="#{alert.Duplicate}" th:value="#{alert.Duplicate}">
+                   
                     </td>
                 </tr>
                 <tr>
@@ -157,6 +173,9 @@
                 <input class="btn-join" type="submit" data-value="#{alert.join}" th:value="#{alert.join}" >
                 <input class="btn-cancel" type="reset" data-value="#{alert.cancel}" th:value="#{alert.cancel}">
             </div>		
+            
+        </form>
+    </div>
 			<script th:inline="javascript">
 				$(document).ready(function() {
 					  $('input[type="submit"], input[type="reset"]').each(function() {
@@ -164,8 +183,12 @@
 					  });
 					});
 			</script>
-            
-        </form>
-    </div>
+			<script th:inline="javascript">
+					$(document).ready(function() {
+					  $('input[type="button"]').each(function() {
+					    $(this).val($(this).attr('value'));
+					  });
+					});
+					</script>
 </body>
 </html>
