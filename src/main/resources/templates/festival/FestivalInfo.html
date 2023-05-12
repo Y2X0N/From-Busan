@@ -596,7 +596,7 @@ function myList(festival_id) {
 
 				<img th:src="*{main_img_normal}" th:alt="*{main_title}">
 
-				<div class="heartWish">
+				<div class="heartWish" th:if="${member_id}">
 					<div class="left_area">
 						<a th:unless="${#lists.contains(findFestivalLikes, member_id)}"
 							href="javascript:;" class="icon heart"
@@ -625,7 +625,7 @@ function myList(festival_id) {
 						</a>
 					</div>
 				</div>
-
+			<br>
 				<input type="button" class="btn btn-success"
 					th:onclick="location.href='/review/reviewList?main_title=[[${festival.main_title}]]'"
 					value="관련 리뷰 찾기">
