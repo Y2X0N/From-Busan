@@ -29,17 +29,25 @@
 		    window.open(url, 'Popup', options);
 	
 	}
+	
+	
+	
     </script>
-    
+
     
 </head>
-<body>
+<body>	
 	<div th:replace ="fragments/header :: header">
  	</div>
   		
   <div id="login-container">
         <img class="img" src="/image/bugi.png" alt="bugi">
-        
+         
+
+           <script th:if="${not #strings.isEmpty(alertMessage)}">
+        alert([[${alertMessage}]]);
+    </script>    
+   
         <form action="/member/login" method="post" th:object="${loginForm}">
             <h1>[[#{alert.Login}]]</h1>
             <div th:if="${#fields.hasGlobalErrors()}">

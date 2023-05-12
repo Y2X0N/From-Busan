@@ -66,7 +66,7 @@ public class MemberController {
     // 회원가입
     @PostMapping("join")
     public String join(@Validated @ModelAttribute("joinForm") MemberJoinForm joinForm,
-                       BindingResult result,Model model) {
+                       BindingResult result,Model model, RedirectAttributes redirectAttributes) {
         log.info("joinForm: {}", joinForm);
 
         // validation 에 에러가 있으면 가입시키지 않고 member/joinForm.html 페이지로 돌아간다.
@@ -85,10 +85,12 @@ public class MemberController {
             // member/joinForm.html 페이지를 리턴한다.
             return "member/joinForm";
         }
+        
+        redirectAttributes.addFlashAttribute("alertMessage", "회원가입이 완료되었습니다.");
         // MemberJoinForm 객체를 Member 타입으로 변환하여 데이터베이스에 저장한다.
         memberMapper.saveMember(MemberJoinForm.toMember(joinForm));
         // 메인 페이지로 리다이렉트한다.
-        return "redirect:/";
+        return "redirect:member/loginForm";
     }
 
     // 로그인 페이지 이동
