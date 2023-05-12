@@ -34,7 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
     private String[] excludePaths = {"/", "/js/**","/member/join",
     		"/member/login", "/member/logout", "/css/**","/member/",
     		"/*.ico", "/error","/image/**","/member/findId","/member/findPassword",
-    		"/festival/**","/tourist/**","/restaurant/**"
+    		"/festival/**","/tourist/**","/restaurant/**","/review/reviewList"
     		};
 
 

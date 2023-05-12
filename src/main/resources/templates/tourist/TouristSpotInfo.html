@@ -602,7 +602,7 @@ function myList(touristSpotId) {
 
 				<img th:src="*{main_img_normal}" th:alt="*{main_title}">
 
-				<div class="heartWish">
+				<div class="heartWish" th:if="${member_id}">
 					<div class="left_area">
 						<a th:unless="${#lists.contains(findTouristSpotLikes, member_id)}"
 							href="javascript:;" class="icon heart"
@@ -636,6 +636,7 @@ function myList(touristSpotId) {
 						</a>
 					</div>
 				</div>
+			<br>
 
 				<input type="button" class="btn btn-success"
 					th:onclick="location.href='/review/reviewList?main_title=[[${tourist_Spot.main_title}]]'"
