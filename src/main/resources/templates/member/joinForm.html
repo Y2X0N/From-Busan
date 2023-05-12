@@ -9,83 +9,70 @@
     <link rel="stylesheet" href="/css/joinForm.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="/js/index.js"></script>
-    
     <script>
-    	async function formCheck() {
-    		// 아이디 체크(4~20자리 사이)
+       	let idCheckResult = idCheck();
+       	console.log(idCheckResult);
+    	 function formCheck() {
     		let member_id = $("#member_id");
+        	let password = $("#password");
+			let passwordCheck=$("#passwordCheck");
+			let name = $('#name'); 
+			let birth = $("#birth");
+			let now = new Date();
+        	let phone_number = $("#phone_number");
+        	let birthDate = new Date(birth.val());
+        	
     		if (member_id.val().length < 4 || member_id.val().length > 20) {
     			alert("[[#{alert.alertid}]]");
     			member_id.focus();
     			return false;
-    		}
-    		
-        	// 패스워드 체크(4~20자리 사이)
-        	let password = $("#password");
-    		if (password.val().length < 4 || password.val().length > 20) {
+    		}else if (password.val().length < 4 || password.val().length > 20) {
     			alert("[[#{alert.alertPassword}]]");
     			password.focus();
     			return false;
-    		}
-			//패스워드 중복체크
-			let passwordCheck=$("#passwordCheck");
-			if(password.val() != passwordCheck.val()){
+    		}else if(password.val() != passwordCheck.val()){
 				alert("[[#{alert.alertPassword2}]]");
 				password.focus();
 				return false;
-			}
-    		
-    		
-        	// 이름 체크(공백이 아님)
-        	let name = $("#name");
-        	if (name.val() == "") {
+			}else if (name.val() == "") {
         		alert("[[#{alert.alertName}]]");
         		name.focus();
         		return false;
-        	}
-        	
-        	// 생년월일 체크(오늘 이전 날짜만 가능)
-        	let birth = $("#birth");
-        	if (birth.val() == "") {
+        	}else if (birth.val() == "") {
         		alert("[[#{alert.alertbirth}]]");
         		birth.focus();
         		return false;
-        	}
-        	let now = new Date();
-        	let birthDate = new Date(birth.val());
-        	if (now < birthDate) {
+        	}else if (now < birthDate) {
         		alert("[[#{alert.alerttoday}]]");
         		birth.focus();
         		return false;
-        	}
-        
-        	let phone_number = $("#phone_number");
-        	if (phone_number.val() == "") {
+        	}else if (phone_number.val() == "") {
         		alert("[[#{alert.alertPhone}]]");
         		birth.focus();
         		return false;
-        	}
-            if (!phone_number.val().includes('-')) { // '-'가 포함되어 있지 않은 경우
+        	}else if (!phone_number.val().includes('-')) { // '-'가 포함되어 있지 않은 경우
                 alert("[[#{alert.alertincludes}]]");
                 phone_number.focus();
                 return false;
-            }
-            if (phone_number.val().charAt(3) !== '-' || phone_number.val().charAt(8) !== '-') {
+            }else if (phone_number.val().charAt(3) !== '-' || phone_number.val().charAt(8) !== '-') {
                 alert("[[#{alert.alertcharAt}]]");
                 phone_number.focus();
                 return false;
-            }
-            if (phone_number.length() !== 13) {
+            }else if (phone_number.length() !== 13) {
                 alert("[[#{alert.alertlength}]]");
                 phone_number.focus();
                 return false;
+            }else if(idCheck()==0){
+            	alert("아이디중복확인을 해주세요");
+            	return false;
+            }else{
+            	alert("토나와");
+            	return true;
             }
-            let idCheckResult = await idCheck();
-            if(idCheckResult===false){
+            /* if(idCheckResult===false){
                 alert("[[#{alert.alertidCheck}]]");
                 return false;
-            }
-            return idCheckResult;
+            }	 */
     	}
     	
     	
@@ -96,16 +83,20 @@
     	            url: "/member/",
     	            method: "GET"
     	        });
-    	        console.log(response);
     	        for (let i = 0; i < response.length; i++) {
     	            if (member_id === response[i]) {
     	                alert("[[#{alert.alertidCheck}]]");
     	                $("#member_id").focus(); // id selector를 사용하여 해당 요소에 포커스 설정
-    	                return false;
+    	                return 0;
     	            }
+    	        	if (member_id.length < 4 || member_id.length > 20) {
+    	        		alert("[[#{alert.alertid}]]");
+    	                $("#member_id").focus(); // id selector를 사용하여 해당 요소에 포커스 설정
+    	        		return 0;
+    	        	}
     	        }
     	        alert("[[#{alert.alertid2}]]")
-    	        return true;
+    	        return 1;
     	    } catch (error) {
     	        console.log(error);
     	    }
