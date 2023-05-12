@@ -87,6 +87,14 @@ img {
   border-collapse: collapse;
 }
 
+.information-table th{
+	width: 12%;
+}
+
+.information-table td{
+	width: 68%;
+}
+
 
 /*#mapContainer{
 	width:100%;

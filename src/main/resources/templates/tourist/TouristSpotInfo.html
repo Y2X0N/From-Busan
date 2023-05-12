@@ -493,7 +493,7 @@ function myList(touristSpotId) {
 	$.ajax({
 	url: "myList",
 	type: "POST",
-	data: { festival_id: festival_id },
+	data: { touristSpotId: touristSpotId },
 	success: function (result) {
 		        if (result.jjim===true) {
 		          alert("찜 목록에 추가되었습니다.");
@@ -650,11 +650,11 @@ function myList(touristSpotId) {
 			<div class="information" id="information">
 				<table class="information-table" border="1px solid black">
 					<tr>
-						<td>주소</td>
+						<th>주소</th>
 						<td th:text="*{addr1}"></td>
 					</tr>
 					<tr>
-						<td>전화번호</td>
+						<th>전화번호</th>
 						<td th:text="*{cntct_tel}"></td>
 					</tr>
 					<tr>
@@ -664,19 +664,19 @@ function myList(touristSpotId) {
 							th:text="${tourist_Spot.homepage_url}"></a></td>
 					</tr>
 					<tr>
-						<td>휴무일</td>
+						<th>휴무일</th>
 						<td th:text="*{hldy_info}"></td>
 					</tr>
 					<tr>
-						<td>운영요일 및 시간</td>
+						<th>운영요일 및 시간</th>
 						<td th:text="*{usage_day_week_and_time}"></td>
 					</tr>
 					<tr>
-						<td>요금</td>
+						<th>요금</th>
 						<td th:text="*{usage_amount}"></td>
 					</tr>
 					<tr>
-						<td>교통정보</td>
+						<th>교통정보</th>
 						<td th:text="*{trfc_info}"></td>
 					</tr>
 				</table>
