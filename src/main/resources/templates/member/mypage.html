@@ -5,7 +5,11 @@
 <title>myPage</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="/js/index.js"></script>
+<script src="/js/index.js">
+
+
+
+</script>
 <link rel="stylesheet" href="/css/header.css" />
 <link rel="stylesheet" href="/css/myPage.css">
 </head>
@@ -20,6 +24,10 @@
 			<input class="in1" type="button" value="My List" th:onclick="location.href='/review/myReviewList'"> 
 			<input class="in2" type="button" value="Wish List" th:onclick="location.href='/member/jjimList'"> 
 			<input class="in3" type="button" value="Update Info" onclick="location.href='/member/updateMember'">
+			
+      <input class="btn-login" type="button" data-value="#{alert.FindPas}" th:value="#{alert.FindPas}"  onclick="findPassword()" >
+			
+			
 		</div>
 
 	</div>

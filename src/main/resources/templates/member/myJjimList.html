@@ -40,16 +40,17 @@
 	</div>
 	<div id="card-container">
 		<div class="container">
+			<div th:else="${findMyListSpots.size()<1}">
+			<h1>찜 한 명소가 없습니다.</h1>
+			</div>
 			<div id="findTourist" class="card" style="--clr: #009688;"
-				th:each="tourist : ${findMyListSpots}" th:if="${findMyListSpots}">
+				th:each="tourist : ${findMyListSpots}" th:if="${findMyListSpots.size()>1}">
 				<div class="imgBx">
 					<img th:src="@{${tourist.main_img_normal}}">
 				</div>
 				<div class="content">
 					<h2 th:text="${tourist.main_title}"></h2>
 					<p th:text="${#strings.abbreviate(tourist.itemcntnts,50)}"></p>
-
-
 					<div class="listItem">
 						<i class="far fa-heart testHeart"
 							style="color: #da202c; font-size: 20px" title="like"></i> <span
