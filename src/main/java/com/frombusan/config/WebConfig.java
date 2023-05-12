@@ -32,9 +32,9 @@ import net.rakugakibox.util.YamlResourceBundle;
 public class WebConfig implements WebMvcConfigurer {
 	//url
     private String[] excludePaths = {"/", "/js/**","/member/join",
-    		"/member/login", "/member/logout", "/css/**","/member/",
+    		"/member/login", "/member/logout", "/css/**","/member/","/member/idCheck",
     		"/*.ico", "/error","/image/**","/member/findId","/member/findPassword",
-    		"/festival/**","/tourist/**","/restaurant/**"
+    		"/festival/**","/tourist/**","/restaurant/**","/member/**"
     		};
 
 
