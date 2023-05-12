@@ -82,18 +82,17 @@ public class MemberController {
         // 사용자 정보가 존재하면
         if (member != null) {
         	model.addAttribute("member", member);
-            log.info("이미 가입된 아이디 입니다.");
+            //log.info("이미 가입된 아이디 입니다.");
             // BindingResult 객체에 GlobalError 를 추가한다.
             result.reject("duplicate ID", "이미 가입된 아이디 입니다.");
             // member/joinForm.html 페이지를 리턴한다.
             return "member/joinForm";
         }
-        //redirectAttributes.addFlashAttribute("alertMessage", "회원가입이 완료되었습니다.");
-        
         // MemberJoinForm 객체를 Member 타입으로 변환하여 데이터베이스에 저장한다.
         memberMapper.saveMember(MemberJoinForm.toMember(joinForm));
-        // 메인 페이지로 리다이렉트한다.
-        return "redirect:/";
+        redirectAttributes.addFlashAttribute("alertMessage", "회원가입이 완료되었습니다.");
+        // 로그인 페이지로 리다이렉트한다.
+        return "redirect:/member/login";
     }
 
     // 로그인 페이지 이동
