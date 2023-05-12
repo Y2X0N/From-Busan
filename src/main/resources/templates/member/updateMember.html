@@ -10,12 +10,17 @@
     <link rel="stylesheet" href="/css/loginForm.css" />
     
    <style>
-	.popup-content {
-	  position: absolute;
-	  top: 50%;
-	  left: 50%;
-	  transform: translate(-50%, -50%);
-	}
+.btn-login{
+    margin-left: 45%;
+    
+}
+
+.popup-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 	
 .modal {
   display: none; /* 모달 숨기기 */
@@ -143,7 +148,8 @@
         	      if (timeLeft <= 0) {
         	        clearInterval(timer);
         	        modal.style.display = "none"; // 모달 닫기
-        	       window.location.href = '/member/myPage';
+        	        opener.location.href = '/member/myPage';
+                    window.close();
         	      } else {
         	        countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
         	        timeLeft--;
@@ -169,9 +175,9 @@
 			<form  th:object="${findIdForm}" >
 	            <h1>Update Information</h1>
 	            <div class="login-input">
-	                <input type="text" id="name" th:field="${findIdForm.name}" placeholder="  이름을 입력해주세요.">
-	                <input type="text" id="phone_number" th:field="${findIdForm.phone_number}" placeholder="   전화번호를 '-'와 함께 입력해주세요.">
-	                <input type="text" id="password"th:field="${findIdForm.password}" placeholder="   비밀번호를 입력해주세요.">
+	                <input type="text" id="name" th:field="${loginMember.name}" placeholder="  이름을 입력해주세요.">
+	                <input type="text" id="phone_number" th:field="${loginMember.phone_number}" placeholder="   전화번호를 '-'와 함께 입력해주세요.">
+	                <input type="text" id="password" placeholder="   비밀번호를 입력해주세요.">
 	                <input type="text" id="password2" placeholder="   비밀번호를 재입력해주세요.">
 	            </div>
 				<br>
