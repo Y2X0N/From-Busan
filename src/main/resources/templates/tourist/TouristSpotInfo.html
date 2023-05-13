@@ -579,24 +579,105 @@ function myList(touristSpotId) {
       })
     }) */
     
-  //팝업창 띄우기 
+  //팝업창 띄우기 (예제)
     function findTourist(homepage_url) {
         window.open(homepage_url, 'Popup');
-    }          
+    }     
+   
+    
+/////////////// 번역 /////////////////////////////////////////////////////////////////////////
+  
+  function translate(lang) {
+		// 번역할 코드
+		
+		//querySelector() 메소드를 사용하여 id가 "itemcntnts"인 div의 자식 중 첫번째 p 태그의 텍스트 내용을 가져옵니다. textContent 속성은 해당 엘리먼트의 텍스트 내용을 반환합니다.
+		//let itemcntnts = document.querySelector("#itemcntnts > p").textContent;
+		let itemcntnts = document.querySelector(".explain > p").getAttribute("data-original");
+		
+		let hldyInfo= document.getElementById("hldy_info").getAttribute("data-original");
+		let usage_day_week_and_time= document.getElementById("usage_day_week_and_time").getAttribute("data-original");
+		let usageAmount= document.getElementById("usage_amount").getAttribute("data-original");
+		let trfcInfo= document.getElementById("trfc_info").getAttribute("data-original");
+		//주소는 저작권 관련된걸로 보임. 번역불가
+		//let add1= document.getElementById("add1").getAttribute("data-original");
+		// ajax 호출 등의 코드 추가
+		$.ajax({
+			url : "/translate/tourInfo",
+			type : "post",
+			data : {
+				itemcntnts : itemcntnts,
+				//add1:add1,
+				hldyInfo:hldyInfo,
+				usage_day_week_and_time:usage_day_week_and_time,
+				usageAmount:usageAmount,
+				lang : lang,
+				trfcInfo : trfcInfo,
+			},
+			success : function(joined) {
+				
+				let index=0;
+				$(".explain > p").text(joined[index].translation);
+				index++;
+				
+				//$("#add1").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+				//index++;
+				
+				$("#hldy_info").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+				index++;
+				$("#usage_day_week_and_time").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+				index++;
+				$("#usage_amount").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+				index++;
+				$("#trfc_info").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+				index++;
+
+				
+				
+			},
+			error : function(xhr, status, error) {
+				console.error('AJAX error:', error);
+			}
+		});
+	}
+	
+    $(document).ready(function() {
+		$("#translate-en").click(function() {
+			translate('en');
+		});
+		$("#translate-ja").click(function() {
+			translate('ja');
+		});
+		$("#translatezh-CN").click(function() {
+			translate('zh-CN');
+		});
+	});
+    
+    
   </script>
 </head>
 
 
 <body>
-
+	
+	
+	
 	<div th:replace="fragments/header :: header"></div>
 	<div id="container" th:object="${tourist_Spot}">
+	
+		
+	
+	
 		<nav class="tabnav">
+		
 			<a class="item" href="#itemcntnts">상세 정보</a> <a class="item"
 				href="#information">이용 정보</a> <a class="item" href="#mapContainer"
 				onclick="getRestaurant()">주변 맛집 지도</a>
 		</nav>
 
+		<button id="translate-en">영어 번역하기</button>
+		<button id="translate-ja">일본어 번역하기</button>
+		<button id="translatezh-CN">중국어 번역하기</button>
+		
 		<div id="spot-header-container">
 			<div class="itemcntnts" id="itemcntnts">
 
@@ -643,8 +724,8 @@ function myList(touristSpotId) {
 					value="관련 리뷰 찾기">
 
 
-				<div class="explain">
-					<p th:text="*{itemcntnts}"></p>
+				<div class="explain" >
+					<p th:text="*{itemcntnts}"  th:data-original="*{itemcntnts}"></p>
 				</div>
 			</div>
 
@@ -652,7 +733,7 @@ function myList(touristSpotId) {
 				<table class="information-table" border="1px solid black">
 					<tr>
 						<th>주소</th>
-						<td th:text="*{addr1}"></td>
+						<td th:text="*{addr1}" id="add1" th:data-original="*{addr1}"></td>
 					</tr>
 					<tr>
 						<th>전화번호</th>
@@ -666,19 +747,22 @@ function myList(touristSpotId) {
 					</tr>
 					<tr>
 						<th>휴무일</th>
-						<td th:text="*{hldy_info}"></td>
+						<td th:text="*{hldy_info}" id="hldy_info" th:data-original="*{hldy_info}"></td>
 					</tr>
 					<tr>
 						<th>운영요일 및 시간</th>
-						<td th:text="*{usage_day_week_and_time}"></td>
+						<td th:text="*{usage_day_week_and_time}" 
+						id="usage_day_week_and_time" th:data-original="*{usage_day_week_and_time}"></td>
 					</tr>
 					<tr>
 						<th>요금</th>
-						<td th:text="*{usage_amount}"></td>
+						<td th:text="*{usage_amount}"
+						id="usage_amount" th:data-original="*{usage_amount}"></td>
 					</tr>
 					<tr>
 						<th>교통정보</th>
-						<td th:text="*{trfc_info}"></td>
+						<td th:text="*{trfc_info}"
+						id="trfc_info" th:data-original="*{trfc_info}"></td>
 					</tr>
 				</table>
 
