@@ -36,7 +36,7 @@ dependencies {
     implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
     
     
-    compile "com.modernmt:modernmt-java:1.1.0"
+    implementation 'com.modernmt:modernmt-java:1.1.0'
     
     
 }
