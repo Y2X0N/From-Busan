@@ -36,12 +36,18 @@
 						  </div>
 						</div>
           </div>
-          						<script th:inline="javascript">
-						  $(document).ready(function() {
-						    $('#languageDropdown').change(function() {
-						      window.location.href = $(this).val();
-						    });
-						  });
+ 						<script th:inline="javascript">
+ 						$(document).ready(function() {
+ 						  
+  						$('#languageDropdown').change(function() {
+  						    const newLang = $(this).val().substr(6);
+  						    window.localStorage.setItem("lang", newLang);
+  						    const searchParams = new URLSearchParams(window.location.search);
+  						    searchParams.set('lang', newLang);
+  						    const newUrl = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
+  						    window.location.href = newUrl;
+ 						 });
+ 						});
 						</script>
           
           <!-- nav -->

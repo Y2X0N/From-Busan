@@ -74,7 +74,6 @@
             "content": content
           },
           success: function (data, success, xhr) {
-            console.log(data);
             getReplies();
           },	
           error: function (xhr, status, error) {
@@ -88,7 +87,6 @@
         $.ajax({
           url: "/reply/" + review_id,
           success: function (data, success, xhr) {
-            console.log(data);
             showReplies(data);
           },
           error: function (xhr, status, error) {
@@ -115,12 +113,12 @@
                     + created_time.getDate() + ". "
                     + created_time.getHours() + ":"
                     + created_time.getMinutes();
-
+	
             str += "<tr>";
             str += "  <td>" + (idx + 1) + "</td>";
             str += "  <td>" + obj.member_id + "</td>";
             if (obj.writer == true) {
-              str += "  <td><input class='reply-input-btn' type='text' id='reply_" + obj.reply_id + "' value='" + obj.content + "'>";
+              str += "  <td><input class='reply-input-btn' type='text' data-original='" + obj.content + "' id='reply_" + obj.reply_id + "' value='" + obj.content + "'>";
               //str += "<button type='button' class='reply-btn'  >작성</button>";
               str += " <button type='button' class='reply-btn'  onclick=updateReply(" + obj.reply_id + ")>수정</button>";
               str += "<button type='button' class='reply-btn'  onclick=removeReply(" + obj.reply_id + ")>삭제</button>";
@@ -140,6 +138,8 @@
         }
         str += "</table>";
         $("#replies").append(str);
+        checkLang();
+        
       }
 
       function updateReply(reply_id) {
@@ -154,7 +154,6 @@
               "content": content
             },
             success: function (data) {
-              console.log(data);
               getReplies();
             },
             error: function (xhr, status, error) {
@@ -204,7 +203,6 @@
      // });
 
       function like(review_id) {
-    		console.log(review_id);
     		
     	 	$.ajax({
     	 	url: "like",
@@ -217,7 +215,7 @@
     		 		            'src': 'https://cdn-icons-png.flaticon.com/512/803/803087.png',
     		 		            alt: '좋아요삭제'
     		 		          });	
-    	 		        } else {
+    	 		        } else {	
     	 		          alert("좋아요가 삭제되었습니다.");
     	 		         		$(".like_img").attr({
     		 		            'src': '/image/heart-regular.svg',
@@ -255,6 +253,89 @@
           }
         })
       });
+    
+    
+/////////////////////////////////////번역////////////////////////
+
+
+function checkLang(){
+  const lang = window.localStorage.getItem("lang");
+  console.log(lang);
+  if(lang==="jp"){
+    translate('ja');
+  } else if(lang==="en"){
+    translate('en');
+  } else if(lang==="zh"){
+    translate('zh_CN');
+  }
+}
+
+function translate(lang) {
+	
+	let review_place = document.getElementById("review_place").getAttribute("data-original");
+	
+	let title = document.getElementById("title").getAttribute("data-original");
+	
+	let contents = document.getElementById("contents").getAttribute("data-original");
+	
+	let timeScript = document.getElementById("mySpan").innerHTML;
+	let time = timeScript.substring(6, timeScript.length - 7);
+	console.log(time);
+
+	  let reply = [];
+	  $(".reply-input-btn").each(function() {
+	    reply.push($(this).attr("data-original"));
+	  });
+	
+	  
+	
+	  $.ajax({
+	    url : "/translate/replyList",
+	    type : "post",
+	    data : {
+	      "reply[]" : reply,
+	      review_place :review_place,
+	      contents :contents,
+	      title:title,
+	      time:time,
+	      lang : lang,
+	    },
+	    success : function(joined) {
+	      var index=0;
+		  
+	      $("#review_place").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+		  index++;
+		  $("#title").html("<h1>" + joined[index].translation + "</h1>");
+		  index++;
+		  $("#time").append("<span>" + joined[index].translation + "</span>");
+		  index++;
+
+		  
+		  $("#contents").html(joined[index].translation);
+		  index++;
+	      
+	      var replyElements = $(".reply-input-btn");
+	      replyElements.each(function() {
+	        var replyElement = $(this);
+	        replyElement.val(joined[index].translation);
+	        replyElement.attr("data-translation", joined[index].translation);
+	        index++;
+	      });
+	    },
+	    error : function(xhr, status, error) {
+	      console.error('AJAX error:', error);
+	    }
+	  });
+	}
+
+if($(".reply-input-btn").length > 0 && $(".reply-input-btn").first().attr("data-translation") === "") {
+  checkLang();
+}
+
+
+    
+
+    
     </script>
 </head>
 <body>
@@ -262,11 +343,13 @@
 
 	<div class="read-container">
 
+
 		<div th:object="${review}" class="read-form">
-			<span style="font-size: 20px;"><</span><span
-				th:text="*{review_place}" class="review_place"></span><span
-				style="font-size: 20px;">></span>
-			<h1 th:text="*{title}"></h1>
+			<span style="font-size: 20px;"><</span> <span id="review_place"
+				th:data-original="*{review_place}" th:text="*{review_place}"
+				class="review_place"> </span> <span style="font-size: 20px;">>
+			</span>
+			<h1 th:text="*{title}" id="title" th:data-original="*{title}"></h1>
 
 			<div class="form-nav">
 				<!--아이디 -->
@@ -275,10 +358,10 @@
 						style="font-size: 20px; font-weight: bold;"></span>
 					<!--아이디 바로 옆 날짜  -->
 					<span id="mySpan"></span>
-					<script>
-      // 결과를 span에 표시하는 함수 실행
-      document.getElementById("mySpan").innerHTML = timeForToday();
-    </script>
+					<script id="time" >
+				      // 결과를 span에 표시하는 함수 실행
+				      document.getElementById("mySpan").innerHTML = timeForToday();
+				    </script>
 				</div>
 				<div id="heart-container">
 					<div class="heartWish">
@@ -303,7 +386,7 @@
 
 			<hr style="margin: 10px 0;" />
 
-			<div th:utext="*{contents}" class="form-contents"></div>
+			<div id="contents" th:data-original="*{contents}" th:utext="*{contents}" class="form-contents"></div>
 
 		</div>
 
@@ -333,6 +416,7 @@
 
 
 	</div>
+
 
 
 </body>

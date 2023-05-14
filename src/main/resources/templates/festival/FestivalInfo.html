@@ -469,7 +469,31 @@ function like(festivalId) {
  	}		
  });
 }  
-      
+//좋아요 버튼
+$(function like() {
+  var $likeBtn = $('.icon.heart');
+
+  $likeBtn.click(function () {
+    $likeBtn.toggleClass('active');
+			//active가 잇으면
+    if ($likeBtn.hasClass('active')) {
+     		 $(this).find('img').attr({
+        'src': 'https://cdn-icons-png.flaticon.com/512/803/803087.png',
+        alt: '좋아요하기 완료'
+      });
+
+
+    } 
+    //active가 없는경우
+    else {
+      $(this).find('i').removeClass('fas').addClass('far')
+      $(this).find('img').attr({
+        'src': '/image/heart-regular.svg',
+        alt: "좋아요하기"
+      })
+    }
+  })
+});     
 /////////////// 찜 기능 /////////////////////////////////////////////////////////////////////////
 function myList(festival_id) {
 	console.log(festival_id);
@@ -498,75 +522,110 @@ function myList(festival_id) {
 	}
 	});
 }
-	
-</script>
+//찜하기 버튼
+/* $(function wish(){
+  var $wishBtn = $('.icon.wish');
+
+  $wishBtn.click(function () {
+    $wishBtn.toggleClass('active');
+			
+    if ($wishBtn.hasClass('active')) {
+      $(this).find('img').attr({
+        'src': '/image/bookmark-solid%20(2).svg',
+        alt: '찜하기 완료'
+      });
+
+    } else {
+      $(this).find('i').removeClass('fas').addClass('far')
+      $(this).find('img').attr({
+        'src': '/image/bookmark-regular%20(1).svg',
+        alt: "찜하기"
+      })
+    }
+  })
+}) */
 
 
-<script>
+/////////////// 변역 /////////////////////////////////////////////////////////////////////////
+
+ function translate(lang) {
+		// 번역할 코드
 		
-    $(function () {
-      $("#spot-header-container > div").hide();
-      $('.tabnav a').click(function () {
-        $('#spot-header-container > div').hide().filter(this.hash).fadeIn();
-        $('.tabnav a').removeClass('active');
-        $(this).addClass('active');
-        return false;
-      }).filter(':eq(0)').click();
-    });
-
-
-    
-    //좋아요 버튼
-    $(function like() {
-      var $likeBtn = $('.icon.heart');
-
-      $likeBtn.click(function () {
-        $likeBtn.toggleClass('active');
-				//active가 잇으면
-        if ($likeBtn.hasClass('active')) {
-         		 $(this).find('img').attr({
-            'src': 'https://cdn-icons-png.flaticon.com/512/803/803087.png',
-            alt: '좋아요하기 완료'
-          });
-
-
-        } 
-        //active가 없는경우
-        else {
-          $(this).find('i').removeClass('fas').addClass('far')
-          $(this).find('img').attr({
-            'src': '/image/heart-regular.svg',
-            alt: "좋아요하기"
-          })
-        }
-      })
-    });
-
-    //찜하기 버튼
-    /* $(function wish(){
-      var $wishBtn = $('.icon.wish');
-
-      $wishBtn.click(function () {
-        $wishBtn.toggleClass('active');
+		//querySelector() 메소드를 사용하여 id가 "itemcntnts"인 div의 자식 중 첫번째 p 태그의 텍스트 내용을 가져옵니다. textContent 속성은 해당 엘리먼트의 텍스트 내용을 반환합니다.
+		//let itemcntnts = document.querySelector("#itemcntnts > p").textContent;
+		let itemcntnts = document.querySelector(".explain > p").getAttribute("data-original");
+		let usageAmount= document.getElementById("usage_amount").getAttribute("data-original");
+		let trfcInfo= document.getElementById("trfc_info").getAttribute("data-original");
+		let middle_size_rm1= document.getElementById("middle_size_rm1").getAttribute("data-original");
+		let main_title= document.getElementById("main_title").getAttribute("data-original");
+		//주소는 저작권 관련된걸로 보임. 번역불가
+		//let add1= document.getElementById("add1").getAttribute("data-original");
+		// ajax 호출 등의 코드 추가
+		$.ajax({
+			url : "/translate/fesInfo",
+			type : "post",
+			data : {
+				itemcntnts : itemcntnts,
+				//add1:add1,
+				middle_size_rm1:middle_size_rm1,
+				usageAmount:usageAmount,
+				main_title:main_title,
+				lang : lang,
+				trfcInfo : trfcInfo,
+			},
+			success : function(joined) {
 				
-        if ($wishBtn.hasClass('active')) {
-          $(this).find('img').attr({
-            'src': '/image/bookmark-solid%20(2).svg',
-            alt: '찜하기 완료'
-          });
+				let index=0;
+				$(".explain > p").text(joined[index].translation);
+				index++;
+				
+				//$("#add1").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+				//index++;
+				$("#usage_amount").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+				index++;
+				$("#trfc_info").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+				index++;
+				$("#middle_size_rm1").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+				index++;
+				$("#main_title").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+				index++;
 
-        } else {
-          $(this).find('i').removeClass('fas').addClass('far')
-          $(this).find('img').attr({
-            'src': '/image/bookmark-regular%20(1).svg',
-            alt: "찜하기"
-          })
-        }
-      })
-    }) */
-          
-    
-	//팝업창 띄우기 
+				
+				
+			},
+			error : function(xhr, status, error) {
+				console.error('AJAX error:', error);
+			}
+		});
+	}
+
+	 $(document).ready(function() {
+		 const lang = window.localStorage.getItem("lang");
+		  console.log(lang);
+		  if(lang==="jp"){
+		    translate('ja');
+		  } else if(lang==="en"){
+		    translate('en');
+		  } else if(lang==="zh"){
+		    translate('zh_CN');
+		  }
+	});
+	    
+	 
+	 
+	 
+/////////////// 기타등등 /////////////////////////////////////////////////////////////////////////
+
+   $(function () {
+       $("#spot-header-container > div").hide();
+       $('.tabnav a').click(function () {
+         $('#spot-header-container > div').hide().filter(this.hash).fadeIn();
+         $('.tabnav a').removeClass('active');
+         $(this).addClass('active');
+         return false;
+       }).filter(':eq(0)').click();
+     });
+ //팝업창 띄우기 
 	function findFestival(homepage_url) {
 	    window.open(homepage_url, 'Popup');
 	}
@@ -582,7 +641,7 @@ function myList(festival_id) {
 
 		<p>
 			<br> <br> <br>
-		<h1 th:text="*{main_title}"></h1>
+		<h1 th:text="*{main_title}" id="main_title" th:data-original="*{main_title}"></h1>
 
 
 		<nav class="tabnav">
@@ -590,7 +649,10 @@ function myList(festival_id) {
 				href="#information">이용 정보</a> <a class="item" href="#mapContainer"
 				onclick="getRestaurant()">주변 맛집 지도</a>
 		</nav>
-
+		
+		
+		
+		
 		<div id="spot-header-container">
 			<div class="itemcntnts" id="itemcntnts">
 
@@ -637,7 +699,7 @@ function myList(festival_id) {
 
 				<p>
 				<div class="explain">
-					<p th:text="*{itemcntnts}"></p>
+					<p th:text="*{itemcntnts}" th:data-original="*{itemcntnts}"></p>
 				</div>
 			</div>
 
@@ -646,7 +708,7 @@ function myList(festival_id) {
 				<table class="information-table" border="1px solid black">
 					<tr>
 						<th>주소</th>
-						<td th:utext="*{addr1}"></td>
+						<td th:utext="*{addr1}"id="add1" th:data-original="*{addr1}"></td>
 					</tr>
 					<tr>
 						<th>전화번호</th>
@@ -660,17 +722,17 @@ function myList(festival_id) {
 					</tr>
 					<tr>
 						<th>최단 교통정보</th>
-						<td th:utext="*{trfc_info}"></td>
+						<td th:utext="*{trfc_info}" id="trfc_info" th:data-original="*{trfc_info}"></td>
 					</tr>
 
 					<tr>
 						<th>이용 요금</th>
-						<td th:utext="*{usage_amount}"></td>
+						<td th:utext="*{usage_amount}" id="usage_amount" th:data-original="*{usage_amount}"></td>
 					</tr>
 
 					<tr>
 						<th>복지 시설</th>
-						<td th:utext="*{middle_size_rm1}"></td>
+						<td th:utext="*{middle_size_rm1}" id="middle_size_rm1" th:data-original="*{middle_size_rm1}"></td>
 					</tr>
 
 				</table>
