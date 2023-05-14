@@ -45,6 +45,7 @@ public class TranslatorController {
 	
 	
 	@PostMapping("reviewsList")
+
     public ResponseEntity<List<Translation>> list(@RequestParam String text1
            , @RequestParam(value="reviewPlaces[]") List<String> reviewPlace
            , @RequestParam(value="reviewTitle[]") List<String> reviewTitle
@@ -86,6 +87,7 @@ public class TranslatorController {
 		
         return ResponseEntity.ok(joined);
     }
+
 	
 	@PostMapping("fesInfo")
     public ResponseEntity<List<Translation>> fesInfo(@RequestParam String itemcntnts
@@ -149,6 +151,7 @@ public class TranslatorController {
         return ResponseEntity.ok(joined);
     }
 	
+
 	
-	
+
 }

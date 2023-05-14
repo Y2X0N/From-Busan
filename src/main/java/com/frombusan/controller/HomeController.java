@@ -18,6 +18,9 @@ import com.frombusan.model.tourist.Tourist_Spot;
 import com.frombusan.repository.FestivalMapper;
 import com.frombusan.repository.RestaurantMapper;
 import com.frombusan.repository.TouristSpotMapper;
+import com.modernmt.ModernMT;
+import com.modernmt.model.Memory;
+import com.modernmt.model.Translation;
 
 import lombok.extern.slf4j.Slf4j;
 
