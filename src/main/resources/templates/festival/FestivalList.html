@@ -71,15 +71,15 @@ function translate(lang) {
 
 
 $(document).ready(function() {
-	$("#translate-en").click(function() {
-		translate('en');
-	});
-	$("#translate-ja").click(function() {
-		translate('ja');
-	});
-	$("#translatezh-CN").click(function() {
-		translate('zh-CN');
-	});
+	const lang = window.localStorage.getItem("lang");
+	  console.log(lang);
+	  if(lang==="jp"){
+	    translate('ja');
+	  } else if(lang==="en"){
+	    translate('en');
+	  } else if(lang==="zh"){
+	    translate('zh_CN');
+	  }
 });
 
 </script>
@@ -88,10 +88,7 @@ $(document).ready(function() {
 	<div th:replace="fragments/header :: header"></div>
 
 	<div id="card-container">
-	<button id="translate-en">영어 번역하기</button>
-	<button id="translate-ja">일본어 번역하기</button>
-	<button id="translatezh-CN">중국어 번역하기</button>
-	
+
 		<div class="container">
 
 			<div class="card" style="--clr: #009688;"
@@ -104,7 +101,8 @@ $(document).ready(function() {
 					<h2 th:text="${festival.main_title}"
 					th:data-original="${festival.main_title}"id="main_title"></h2>
 					<p th:text="${#strings.abbreviate(festival.itemcntnts,50)}"
-					th:data-original="${#strings.abbreviate(festival.itemcntnts,50)}"id="itemcntnts"></p>
+					th:data-original="${#strings.abbreviate(festival.itemcntnts,50)}"
+					id="itemcntnts"></p>
 					
 					<div class="listItem">
 					 <i class="far fa-heart testHeart"

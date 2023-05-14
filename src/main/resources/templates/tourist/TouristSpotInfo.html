@@ -598,6 +598,8 @@ function myList(touristSpotId) {
 		let usage_day_week_and_time= document.getElementById("usage_day_week_and_time").getAttribute("data-original");
 		let usageAmount= document.getElementById("usage_amount").getAttribute("data-original");
 		let trfcInfo= document.getElementById("trfc_info").getAttribute("data-original");
+		let main_title= document.getElementById("main_title").getAttribute("data-original");
+
 		//주소는 저작권 관련된걸로 보임. 번역불가
 		//let add1= document.getElementById("add1").getAttribute("data-original");
 		// ajax 호출 등의 코드 추가
@@ -610,6 +612,7 @@ function myList(touristSpotId) {
 				hldyInfo:hldyInfo,
 				usage_day_week_and_time:usage_day_week_and_time,
 				usageAmount:usageAmount,
+				main_title:main_title,
 				lang : lang,
 				trfcInfo : trfcInfo,
 			},
@@ -630,6 +633,8 @@ function myList(touristSpotId) {
 				index++;
 				$("#trfc_info").text(joined[index].translation).attr("th:data-original", joined[index].translation);
 				index++;
+				$("#main_title").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+				index++;
 
 				
 				
@@ -641,15 +646,15 @@ function myList(touristSpotId) {
 	}
 	
     $(document).ready(function() {
-		$("#translate-en").click(function() {
-			translate('en');
-		});
-		$("#translate-ja").click(function() {
-			translate('ja');
-		});
-		$("#translatezh-CN").click(function() {
-			translate('zh-CN');
-		});
+    	 const lang = window.localStorage.getItem("lang");
+		  console.log(lang);
+		  if(lang==="jp"){
+		    translate('ja');
+		  } else if(lang==="en"){
+		    translate('en');
+		  } else if(lang==="zh"){
+		    translate('zh_CN');
+		  }
 	});
     
     
@@ -664,8 +669,10 @@ function myList(touristSpotId) {
 	<div th:replace="fragments/header :: header"></div>
 	<div id="container" th:object="${tourist_Spot}">
 	
-		
+		<p>
+			<br> <br> <br>
 	
+		<h1 th:text="*{main_title}" id="main_title" th:data-original="*{main_title}"></h1>
 	
 		<nav class="tabnav">
 		
@@ -674,9 +681,6 @@ function myList(touristSpotId) {
 				onclick="getRestaurant()">주변 맛집 지도</a>
 		</nav>
 
-		<button id="translate-en">영어 번역하기</button>
-		<button id="translate-ja">일본어 번역하기</button>
-		<button id="translatezh-CN">중국어 번역하기</button>
 		
 		<div id="spot-header-container">
 			<div class="itemcntnts" id="itemcntnts">

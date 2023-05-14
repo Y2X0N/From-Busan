@@ -77,15 +77,15 @@
 		});
 	}
 	$(document).ready(function() {
-		$("#translate-en").click(function() {
-			translate('en');
-		});
-		$("#translate-ja").click(function() {
-			translate('ja');
-		});
-		$("#translatezh-CN").click(function() {
-			translate('zh-CN');
-		});
+		const lang = window.localStorage.getItem("lang");
+		  console.log(lang);
+		  if(lang==="jp"){
+		    translate('ja');
+		  } else if(lang==="en"){
+		    translate('en');
+		  } else if(lang==="zh"){
+		    translate('zh_CN');
+		  }
 	});
 </script>
 </head>
@@ -94,10 +94,6 @@
 	<div class="header-container">
 
 
-		<button id="translate-en">영어 번역하기</button>
-		<button id="translate-ja">일본어 번역하기</button>
-		<button id="translatezh-CN">중국어 번역하기</button>
-		<div id="translation-result"></div>
 
 		<section class="notice">
 			<div class="page-title">

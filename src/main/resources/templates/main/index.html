@@ -11,10 +11,10 @@
 
 <script src="/js/index.js"></script>
 <script
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_FL3IrY7I_w7Cerf1pK28nSvyxby86Xg&callback=initialize"></script>
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_FL3IrY7I_w7Cerf1pK28nSvyxby86Xg&callback=initMap"></script>
 <script th:inline="javascript">
 
-	
+
 function calcRoute() {
     var start = document.getElementById('start').value;
     var end = document.getElementById('end').value;
@@ -78,6 +78,72 @@ function initialize() {
 // 초기화면 표시
 google.maps.event.addDomListener(window, 'load', initialize);
 
+
+
+
+/////////////// 번역 /////////////////////////////////////////////////////////////////////////
+
+function translate(lang) {
+	
+	let fesMainTitle = [];
+	$("[id='fesMainTitle']").each(function() {
+		fesMainTitle.push($(this).attr("data-original"));
+	});
+	let tourMainTitle = [];
+	$("[id='tourMainTitle']").each(function() {
+		tourMainTitle.push($(this).attr("data-original"));
+	});
+	
+
+	// ajax 호출 등의 코드 추가
+	$.ajax({
+		url : "/translate/main",
+		type : "post",
+		data : {
+			fesMainTitle : fesMainTitle,
+			tourMainTitle : tourMainTitle,
+			lang : lang,
+		},
+		success : function(joined) {
+			//성공
+			let index=0;
+
+			var fesElements = $("a#fesMainTitle");
+			fesElements.each(function() {
+				var fesElement = $(this);
+				fesElement.text(joined[index].translation);
+				fesElement.attr("data-translation",
+				joined[index].translation);
+				index++;
+				});
+			var tourElements = $("a#tourMainTitle");
+			tourElements.each(function() {
+				var tourElement = $(this);
+				tourElement.text(joined[index].translation);
+				tourElement.attr("data-translation",
+				joined[index].translation);
+				index++;
+				});
+			
+			
+		},
+		error : function(xhr, status, error) {
+			console.error('AJAX error:', error);
+		}
+	});
+}
+
+$(document).ready(function() {
+	const lang = window.localStorage.getItem("lang");
+	  console.log(lang);
+	  if(lang==="jp"){
+	    translate('ja');
+	  } else if(lang==="en"){
+	    translate('en');
+	  } else if(lang==="zh"){
+	    translate('zh_CN');
+	  }
+});
 </script>
 
 
@@ -143,7 +209,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
 				<img th:alt="${tour.main_title}" th:src="${tour.main_img_normal}">
 				</a>
 				<div class="innerContent">
-					<a th:text="${tour.main_title}"></a> <i
+					<a th:text="${tour.main_title}"
+					th:data-original="${tour.main_title}"id="tourMainTitle"></a> <i
 						class="far fa-heart testHeart"
 						style="color: #da202c; margin-left: 10px" title="like"></i> <span
 						th:text="${tour.place_like}" style="font-size: 24px"></span>
@@ -182,7 +249,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
 					th:src="${festival.main_img_normal}">
 				</a>
 				<div class="innerContent">
-					<a th:text="${festival.main_title}"></a> <i
+					<a th:text="${festival.main_title}"
+					th:data-original="${festival.main_title}"id="fesMainTitle"></a> <i
 						class="far fa-heart testHeart"
 						style="color: #da202c; margin-left: 10px" title="like"></i> <span
 						th:text="${festival.place_like}" style="font-size: 24px"></span>
@@ -190,7 +258,6 @@ google.maps.event.addDomListener(window, 'load', initialize);
 				
 			</div>
 		</div>
-	</div>
 	</div>
 	<script type="text/javascript">
 	
