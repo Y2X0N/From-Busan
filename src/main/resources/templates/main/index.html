@@ -188,9 +188,9 @@ $(document).ready(function() {
 		<div id="tourist-spot-container">
 
 			<div id="tourist-spot-title">
-				<span style="color: #111;">인기 명소</span>
+				<span style="color: rgb(98, 102, 105); font-size: 33px;">| 인기 명소 |</span>
 				<div class="tourist-spot-title-right">
-					<a href="/tourist/list" style="color: #da202c;">자세히&#8594;</a>
+					<a href="/tourist/list" style="color: #da202c; font-size: 25px;">자세히&#8594;</a>
 					<div>
 						<i class="fa-sharp fa-solid fa-play fa-rotate-180 fa-xs imagel"
 							style="color: #2f4365;"> </i> <i
@@ -227,9 +227,9 @@ $(document).ready(function() {
 		<div id="tourist-spot-container">
 
 			<div id="tourist-spot-title">
-				<span style="color: #111;">인기 축제</span>
+				<span style="color: rgb(98, 102, 105); font-size: 33px;">| 인기 축제 |</span>
 				<div class="tourist-spot-title-right">
-					<a href="/festival/list" style="color: #da202c;">자세히&#8594;</a>
+					<a href="/festival/list" style="color: #da202c; font-size: 25px;">자세히&#8594;</a>
 					<div>
 						<i class="fa-sharp fa-solid fa-play fa-rotate-180 fa-xs imageL"
 							style="color: #2f4365;"> </i> <i
@@ -264,9 +264,15 @@ $(document).ready(function() {
 	let page = 0; //현재 page
 	//오른쪽
 	document.querySelector('.imager').addEventListener('click',()=>{
-		page-=1200;
-		document.querySelector('.image-container').style.transform = 'translate('+page+'px)';
-		
+		if(page > -19200){
+			page-=1200;
+			document.querySelector('.image-container').style.transform = 'translate('+page+'px)';
+			console.log(page);
+		} else {
+			page = 0
+			document.querySelector('.image-container').style.transform = 'translate('+page+'px)';
+		}
+
 	});
 	//왼쪽
 	document.querySelector('.imagel').addEventListener('click',()=>{
@@ -279,9 +285,15 @@ $(document).ready(function() {
 	let page1 = 0; //현재 page
 	//오른쪽
 	document.querySelector('.imageR').addEventListener('click',()=>{
-		page1-=1200;
-		document.querySelector('.festival-container').style.transform = 'translate('+page1+'px)';
-		
+		if(page1 > -10800){
+			page1-=1200;
+			document.querySelector('.festival-container').style.transform = 'translate('+page1+'px)';
+			console.log(page1)
+		} else{
+			page1 = 0
+			document.querySelector('.festival-container').style.transform = 'translate('+page1+'px)';
+		}
+
 	});
 	//왼쪽
 	document.querySelector('.imageL').addEventListener('click',()=>{
