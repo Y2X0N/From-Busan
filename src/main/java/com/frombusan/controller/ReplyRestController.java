@@ -54,23 +54,27 @@ public class ReplyRestController {
 	
 	// 리플 목록
 	@GetMapping("{review_id}")
-	public ResponseEntity<List<ReplyDto>> findReplies(@SessionAttribute("loginMember") Member loginMember,
+	public ResponseEntity<List<ReplyDto>> findReplies(@SessionAttribute(name="loginMember", required=false) Member loginMember,
 												   	  @PathVariable Long review_id) {
 		List<Reply> replies = replyMapper.findReplies(review_id);
-		List<ReplyDto> replyDtos = new ArrayList<>();
-        if (replies != null && replies.size() > 0) {
-            for (Reply reply : replies) {
-                ReplyDto replyDto = Reply.toDto(reply);
-                if (reply.getMember_id().equals(loginMember.getMember_id())) {
-                    replyDto.setWriter(true);
-                }
-                replyDtos.add(replyDto);
-            }
-        }
-		
-		return ResponseEntity.ok(replyDtos);
+
+	    List<ReplyDto> replyDtos = new ArrayList<>();
+	    if (replies != null && replies.size() > 0) {
+	        for (Reply reply : replies) {
+	            ReplyDto replyDto = Reply.toDto(reply);
+	            // 로그인하지 않은 사용자일 경우 writer를 false로 설정합니다.
+	            if (loginMember == null || !reply.getMember_id().equals(loginMember.getMember_id())) {
+	                replyDto.setWriter(false);
+	            } else {
+	                replyDto.setWriter(true);
+	            }
+	            replyDtos.add(replyDto);
+	        }
+	    }
+
+	    return ResponseEntity.ok(replyDtos);
 	}
-	
+		
 	// 리플 수정
 	@PutMapping("{review_id}/{reply_id}")
 	public ResponseEntity<Reply> updateReply(@SessionAttribute("loginMember") Member loginMember,

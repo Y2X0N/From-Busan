@@ -147,7 +147,7 @@ public class ReviewController {
     // 게시글 읽기
     @GetMapping("read")
     public String read(@RequestParam Long review_id,
-                       Model model) {
+                       Model model,@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
 
         // board_id 에 해당하는 게시글을 데이터베이스에서 찾는다.
         Review review = reviewService.readReview(review_id);
@@ -159,7 +159,7 @@ public class ReviewController {
 
         // 모델에 Board 객체를 저장한다.
         model.addAttribute("review", review);
-
+        model.addAttribute("loginMember",loginMember);
         // 첨부파일을 찾는다.
 //        List<AttachedImg> files = reviewService.findFilesByReviewId(review_id);
 //        model.addAttribute("files", files);

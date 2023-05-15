@@ -214,4 +214,9 @@ h2 {
     color: white;
     border: 2px solid #545457;
 }
+.not-login-reply{
+	width:100%;
+	background-color:white;
+	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px
+}
 
