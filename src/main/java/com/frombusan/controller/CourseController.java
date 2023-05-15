@@ -49,7 +49,6 @@ public class CourseController {
     	
     	log.info("안녕"); 	
 		List<Course> findAllCourse = courseMapper.findAllCourse();
-		log.info("추천리스트 :{}",findAllCourse);
 		model.addAttribute("findAllCourse", findAllCourse);
 		
 		return "course/CourseList";
@@ -59,10 +58,8 @@ public class CourseController {
  	@GetMapping("/CourseInfo")
  	public String read(@RequestParam Long course_id, @SessionAttribute(value = "loginMember", required = false) Member loginMember,
  			 Model model) {
- 		log.info("course_id:{}",course_id);
  		// board_id 에 해당하는 게시글을 데이터베이스에서 찾는다.
  		Course course= courseMapper.findCourse(course_id);
- 		log.info("{}",course);
  		// board_id에 해당하는 게시글이 없으면 리스트로 리다이렉트 시킨다.
  		if (course == null) {
  			log.info("축제 없음");

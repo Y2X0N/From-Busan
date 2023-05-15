@@ -155,6 +155,27 @@ public class TranslatorController {
         return ResponseEntity.ok(joined);
     }
 	
+	@PostMapping("cosInfo")//코스 설명페이지
+    public ResponseEntity<List<Translation>> cosInfo(
+           @RequestParam(value="infoTitle[]") List<String> infoTitle
+           , @RequestParam(value="content[]") List<String> content
+    		,@RequestParam String lang
+    		,@RequestParam String title
+    		,@RequestParam String sequense
+    		) throws IOException {
+		
+		List<Translation> titles = mmt.translate("ko", lang, Arrays.asList(title));
+		List<Translation> sequenses = mmt.translate("ko", lang, Arrays.asList(sequense));
+		List<Translation> mainTitles = mmt.translate("ko",lang,infoTitle);
+		List<Translation> contents = mmt.translate("ko",lang,content);
+		List<Translation> joined = new ArrayList<>();
+		joined.addAll(titles);
+		joined.addAll(sequenses);
+		joined.addAll(mainTitles);
+		joined.addAll(contents);
+        return ResponseEntity.ok(joined);
+    }
+	
 
 	
 
