@@ -5,9 +5,11 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.servlet.Filter;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
@@ -99,10 +102,21 @@ public class WebConfig implements WebMvcConfigurer {
 	 * @return
 	 */
 	@Bean
-	public SessionLocaleResolver localeResolver() {
-		SessionLocaleResolver localeResolver = new SessionLocaleResolver();
-		localeResolver.setDefaultLocale(Locale.KOREAN);
-		return localeResolver;
+	public LocaleResolver localeResolver() {
+		CookieLocaleResolver localeResolver = new CookieLocaleResolver() {
+	        @Override
+	        protected Locale determineDefaultLocale(HttpServletRequest request) {
+	            String storedLang = request.getParameter("lang");
+	            if (storedLang != null && !storedLang.isEmpty()) {
+	                return new Locale(storedLang);
+	            }
+	            return super.determineDefaultLocale(request);
+	        }
+	    };
+	    localeResolver.setDefaultLocale(Locale.KOREAN);
+	    localeResolver.setCookieName("localeCookie");
+	    localeResolver.setCookieMaxAge(60 * 60 * 24 * 365); // 1 year
+	    return localeResolver;
 	}
 
 	/**
