@@ -19,6 +19,75 @@
 		let searchText = document.getElementById("searchText").value;
 		location.href = "/review/list?searchText=" + searchText;
 	}
+	
+	
+
+/////////////// 번역 /////////////////////////////////////////////////////////////////////////
+
+function translate(lang) {
+// 번역할 코드
+//ReviewList타이틀
+let text1 = document.getElementById("review1").getAttribute("data-original");
+//리류장소들 한꺼번에
+let reviewPlaces = [];
+$("[id='review_place']").each(function() {
+	reviewPlaces.push($(this).attr("data-original"));
+});
+
+let reviewTitle = [];
+$("[id='title']").each(function() {
+	reviewTitle.push($(this).attr("data-original"));
+});
+console.log(text1);
+
+// ajax 호출 등의 코드 추가
+$.ajax({
+	url : "/translate/reviewsList",
+	type : "post",
+	data : {
+		text1 : text1,
+		reviewPlaces : reviewPlaces,
+		reviewTitle:reviewTitle,
+		lang : lang,
+	},
+	success : function(joined) {
+		//성공
+		let index=0;
+		$("#review1").html("<h2>" + joined[index].translation + "</h2>");
+		index++;
+		
+		var reviewPlaceElements = $("td#review_place");
+		reviewPlaceElements.each(function() {
+			var reviewPlaceElement = $(this);
+			reviewPlaceElement.text(joined[index].translation);
+			reviewPlaceElement.attr("data-translation",
+			joined[index].translation);
+			index++;
+			});
+		var reviewTitleElements = $("a#title");
+		reviewTitleElements.each(function() {
+		    var reviewTitleElement = $(this);
+		    reviewTitleElement.text(joined[index].translation);
+		    reviewTitleElement.attr("data-translation", joined[index].translation);
+		    index++;
+		});
+	},
+	error : function(xhr, status, error) {
+		console.error('AJAX error:', error);
+	}
+});
+}
+$(document).ready(function() {
+const lang = window.localStorage.getItem("lang");
+console.log(lang);
+if(lang==="jp"){
+  translate('ja');
+} else if(lang==="en"){
+  translate('en');
+} else if(lang==="zh"){
+  translate('zh_CN');
+}
+});
 </script>
 </head>
 <body>
@@ -27,7 +96,7 @@
 	<div class="header-container">
 		<div class="review">
 			<section class="notice">
-				<div class="page-title">
+				<div class="page-title" id="review1" data-original="Review List">
 					<h2>my reviewList</h2>
 				</div>
 					
@@ -60,8 +129,9 @@
 						<tbody th:if="${session.loginMember != null}">
 							<tr th:if="${reviews}" th:each="review, reviewsStat: ${reviews}">
 								<td class="color" th:text="${reviewsStat.count}"></td>
-								<td class="color" th:text="${review.review_place}"></td>
-								<th><a th:text="${review.title}"
+								<td class="color" th:text="${review.review_place}"
+								id="review_place" th:data-original="${review.review_place}"></td>
+								<th><a th:text="${review.title}"  th:data-original="${review.title}" id="title"
 									th:href="@{/review/read(review_id=${review.review_id})}"></a></th>
 								<td th:text="${review.member_id}" class="center"></td>
 								<td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>

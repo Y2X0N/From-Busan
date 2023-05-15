@@ -23,6 +23,114 @@
       return false;
     }).filter(':eq(0)').click();
   });
+
+//////////////번역 /////////////////////////////////////////////////////////////////////////
+
+	function translate(lang,i) {
+	console.log(i);
+		let main_title = [];
+		let itemcntnts = [];
+	if(i==1){
+		$("[id='main_title_tour']").each(function() {
+			main_title.push($(this).attr("data-original"));
+		});
+		$("[id='tourItemcntnts']").each(function() {
+			itemcntnts.push($(this).attr("data-original"));
+	});
+	}else if(i==2){
+		$("[id='main_title_fes']").each(function() {
+			main_title.push($(this).attr("data-original"));
+		});
+		$("[id='fesItemcntnts']").each(function() {
+			itemcntnts.push($(this).attr("data-original"));
+		});
+	}else{
+		$("[id='main_title_cos']").each(function() {
+			main_title.push($(this).attr("data-original"));
+		});
+	}
+	
+	
+
+	// ajax 호출 등의 코드 추가
+	$.ajax({
+		url : "/translate/Lists",
+		type : "post",
+		data : {
+			main_title : main_title,
+			itemcntnts:itemcntnts,
+			lang : lang,
+		},
+		success : function(joined) {
+			//성공
+			let index=0;
+			if(i==1){
+			var main_titleElements = $("h2#main_title_tour");
+			main_titleElements.each(function() {
+				var main_titleElement = $(this);
+				main_titleElement.text(joined[index].translation);
+				main_titleElement.attr("data-translation",
+				joined[index].translation);
+				index++;
+				});
+			var itemcntntsElements = $("p#tourItemcntnts");
+			itemcntntsElements.each(function() {
+			    var itemcntntsElement = $(this);
+			    itemcntntsElement.text(joined[index].translation);
+			    itemcntntsElement.attr("data-translation", joined[index].translation);
+			    index++;
+			});
+			}else if(i==2){
+				var main_titleElements = $("h2#main_title_fes");
+				main_titleElements.each(function() {
+					var main_titleElement = $(this);
+					main_titleElement.text(joined[index].translation);
+					main_titleElement.attr("data-translation",
+					joined[index].translation);
+					index++;
+					});
+				var itemcntntsElements = $("p#fesItemcntnts");
+				itemcntntsElements.each(function() {
+				    var itemcntntsElement = $(this);
+				    itemcntntsElement.text(joined[index].translation);
+				    itemcntntsElement.attr("data-translation", joined[index].translation);
+				    index++;
+				});
+			}else{
+				var main_titleElements = $("h2#main_title_cos");
+				main_titleElements.each(function() {
+					var main_titleElement = $(this);
+					main_titleElement.text(joined[index].translation);
+					main_titleElement.attr("data-translation",
+					joined[index].translation);
+					index++;
+					});
+			}
+			
+		},
+		error : function(xhr, status, error) {
+			console.error('AJAX error:', error);
+		}
+	});
+}
+	
+	$(document).ready(function() {
+		const lang = window.localStorage.getItem("lang");
+		console.log(lang);
+		if(lang==="jp"){
+		  translate('ja',1);
+		  translate('ja',2);
+		  translate('ja',3);
+		} else if(lang==="en"){
+		  translate('en',1);
+		  translate('en',2);
+		  translate('en',3);
+		} else if(lang==="zh"){
+		  translate('zh_CN',1);
+		  translate('zh_CN',2);
+		  translate('zh_CN',3);
+		}
+		});
 </script>
 
 </head>
@@ -49,8 +157,12 @@
 					<img th:src="@{${tourist.main_img_normal}}">
 				</div>
 				<div class="content">
-					<h2 th:text="${tourist.main_title}"></h2>
-					<p th:text="${#strings.abbreviate(tourist.itemcntnts,50)}"></p>
+					<h2 th:text="${tourist.main_title}"
+					th:data-original="${tourist.main_title}"id="main_title_tour"></h2>
+					
+					<p th:text="${#strings.abbreviate(tourist.itemcntnts,50)}"
+					th:data-original="${#strings.abbreviate(tourist.itemcntnts,50)}"
+					id="tourItemcntnts"></p>
 					<div class="listItem">
 						<i class="far fa-heart testHeart"
 							style="color: #da202c; font-size: 20px" title="like"></i> <span
@@ -67,9 +179,12 @@
 					<img th:src="@{${festival.main_img_normal}}">
 				</div>
 				<div class="content">
-					<h2 th:text="${festival.main_title}"></h2>
-					<p th:text="${#strings.abbreviate(festival.itemcntnts,50)}"></p>
-
+					<h2 th:text="${festival.main_title}"
+					th:data-original="${festival.main_title}"id="main_title_fes"></h2>
+					<p th:text="${#strings.abbreviate(festival.itemcntnts,50)}"
+					th:data-original="${#strings.abbreviate(festival.itemcntnts,50)}"
+					id="fesItemcntnts"></p>
+					
 					<div class="listItem">
 						<i class="far fa-heart testHeart"
 							style="color: #da202c; font-size: 20px" title="like"></i> <span
@@ -90,7 +205,8 @@
 					<img th:src="@{${course.main_img}}">
 				</div>
 				<div class="content">
-					<h2 th:text="${course.course_title}"></h2>
+					<h2 th:text="${course.course_title}"
+					th:data-original="${course.course_title}"id="main_title_cos"></h2>
 					 <p th:text="${#strings.abbreviate(course.getCourse_content1(),50)}"></p>
 
 					<div class="listItem">
