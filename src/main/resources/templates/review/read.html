@@ -12,7 +12,11 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/css/lightbox.min.css">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.min.js"></script>
+<style type="text/css">
+.reply-input-btn{
 
+}
+</style>
 
 <script src="/js/index.js"></script>
 
@@ -125,7 +129,8 @@
                //str += "<button class='review-button' type='button' value='수정' onclick='updateReply(" + obj.reply_id + ")'>";
               //str += "<button class='review-button' type='button' value='삭제' onclick='removeReply(" + obj.reply_id + ")'>";
             } else {
-              str += "  <td>" + obj.content;
+            	str += "<td><input disabled='disabled' class='reply-input-btn not-login-reply' type='text' data-original='" + obj.content + " ' id='reply_" + obj.reply_id + "'  value='"+obj.content+"'>";
+               //"<td><p class='reply-input-btn' data-original='" + obj.content + " ' id='reply_" + obj.reply_id +"'>"+val.val() +"</p>";
             }
             str += "  </td>";
             str += "  <td>" + time + "</td>";
@@ -279,6 +284,7 @@ function translate(lang) {
 	let contents = document.getElementById("contents").getAttribute("data-original");
 	
 	let timeScript = document.getElementById("mySpan").innerHTML;
+	//console.log(timeScript);
 	let time = timeScript.substring(6, timeScript.length - 7);
 	console.log(time);
 
@@ -314,9 +320,8 @@ function translate(lang) {
 		  index++;
 		  $("#title").html("<h1>" + joined[index].translation + "</h1>");
 		  index++;
-		  $("#time").append("<span>" + joined[index].translation + "</span>");
+		  $("#mySpan").html("<span>" + joined[index].translation + "</span>");
 		  index++;
-
 		  $("#contents").html(joined[index].translation);
 		  index++;
 	      
@@ -363,25 +368,26 @@ if($(".reply-input-btn").length > 0 && $(".reply-input-btn").first().attr("data-
 				      document.getElementById("mySpan").innerHTML = timeForToday();
 				    </script>
 				</div>
-				<div id="heart-container">
-					<div class="heartWish">
-						<div class="left_area">
-							<a th:unless="${#lists.contains(findReviewLikes, member_id)}"
-								href="javascript:;" class="icon heart"
-								th:onclick="|like(${review.review_id})|"> <img
-								class="like_img" src="/image/heart-regular.svg" alt="하트">
-							</a>
-							<!-- 좋아요를 햇으면 -->
-							<a th:if="${#lists.contains(findReviewLikes, member_id)}"
-								href="javascript:;" class="icon heart"
-								th:onclick="|like(${review.review_id})|"> <img
-								class="like_img"
-								src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
-								alt="하트">
+				<div th:if="${loginMember}">
+					<div id="heart-container">
+						<div class="heartWish">
+							<div class="left_area">
+								<a th:unless="${#lists.contains(findReviewLikes, member_id)}"
+									href="javascript:;" class="icon heart"
+									th:onclick="|like(${review.review_id})|"> <img
+									class="like_img" src="/image/heart-regular.svg" alt="하트">
+								</a>
+								<!-- 좋아요를 햇으면 -->
+								<a th:if="${#lists.contains(findReviewLikes, member_id)}"
+									href="javascript:;" class="icon heart"
+									th:onclick="|like(${review.review_id})|"> <img
+									class="like_img"
+									src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
+									alt="하트">
+							</div>
 						</div>
 					</div>
 				</div>
-
 			</div>
 
 			<hr style="margin: 10px 0;" />
@@ -393,6 +399,8 @@ if($(".reply-input-btn").length > 0 && $(".reply-input-btn").first().attr("data-
 		<div style="margin-top: 20px;">
 			<!-- <input type="button" onclick="location.href='/review/list'"
 					value="목록으로"> -->
+			
+			<div th:if="${loginMember}">
 			<th:block
 				th:if="${session.loginMember.member_id == review.member_id}">
 				<input type="button"
@@ -402,14 +410,17 @@ if($(".reply-input-btn").length > 0 && $(".reply-input-btn").first().attr("data-
 					th:onclick="|location.href='/review/delete?review_id=${review.review_id}'|"
 					value="삭제하기">
 			</th:block>
+			</div>
 		</div>
 
 		<div class="reply-container">
 			<div id="replies" class="reply-div"></div>
 
+			<div th:if="${loginMebmer}">
 			<input class="reply-input" id="reply" name="reply" type="text"
 				placeholder=" 댓글을 작성해주세요." value="">
 			<button type="button" class="reply-btn" onclick="writeReply()">작성</button>
+			</div>
 		</div>
 
 
