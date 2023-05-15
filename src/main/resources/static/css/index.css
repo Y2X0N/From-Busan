@@ -77,8 +77,8 @@ input[type=button]{
 
 #map{
   float: left;
-  width: 50%;
-  height: 300px;
+  width: 75%;
+  height: 400px;
   background-color: grey;
   
 }
