@@ -62,7 +62,7 @@ public class CourseController {
  		log.info("course_id:{}",course_id);
  		// board_id 에 해당하는 게시글을 데이터베이스에서 찾는다.
  		Course course= courseMapper.findCourse(course_id);
- 		
+ 		log.info("{}",course);
  		// board_id에 해당하는 게시글이 없으면 리스트로 리다이렉트 시킨다.
  		if (course == null) {
  			log.info("축제 없음");

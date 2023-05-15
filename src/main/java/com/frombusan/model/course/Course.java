@@ -21,6 +21,11 @@ public class Course {
 	private String main_img;
 	private Long place_like;
 	private Long hit;
+	private String course_info_title1;
+	private String course_info_title2;
+	private String course_info_title3;
+	private String course_info_title4;
+	private String course_info_title5;
 
 	
 	//private Long wish_list; 코스도 혹시 찜한 총갯수 보여줄려면쓰고;;
