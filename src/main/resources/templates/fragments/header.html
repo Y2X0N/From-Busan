@@ -38,7 +38,10 @@
           </div>
  						<script th:inline="javascript">
  						$(document).ready(function() {
- 						  
+ 							const storedLang = window.localStorage.getItem("lang");
+ 							  if (storedLang) {
+ 							    $('#languageDropdown').val(storedLang);
+ 							  }
   						$('#languageDropdown').change(function() {
   						    const newLang = $(this).val().substr(6);
   						    window.localStorage.setItem("lang", newLang);

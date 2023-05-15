@@ -130,8 +130,8 @@ function myList(course_id) {
 }
 
 
-  
-  //좋아요 버튼
+///////////////   //좋아요 버튼/////////////////////////////////////////////////////////////////////////
+
   $(function like() {
     var $likeBtn = $('.icon.heart');
 
@@ -157,7 +157,79 @@ function myList(course_id) {
     })
   });
 
+/////////////// 변역 /////////////////////////////////////////////////////////////////////////
 
+  function translate(lang) {
+ 		
+ 		let title= document.getElementById("course_title").getAttribute("data-original");
+ 		let sequense= document.getElementById("course_sequense").getAttribute("data-original");
+ 		let infoTitle = [];
+		$("[id='course_info_title']").each(function() {
+			infoTitle.push($(this).attr("data-original"));
+		});
+		let content = [];
+		$("[id='course_content']").each(function() {
+			content.push($(this).attr("data-original"));
+		});
+		
+ 		$.ajax({
+ 			url : "/translate/cosInfo",
+ 			type : "post",
+ 			data : {
+ 				title : title,
+ 				sequense:sequense,
+ 				infoTitle:infoTitle,
+ 				lang : lang,
+ 				content : content,
+ 			},
+ 			success : function(joined) {
+ 				
+ 				let index=0;
+ 				$("#course_title").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+ 				index++;
+ 				$("#course_sequense").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+ 				index++;
+ 				
+ 				
+ 				var infoTitleElements = $("h3#course_info_title");
+ 				infoTitleElements.each(function() {
+					var infoTitleElement = $(this);
+					infoTitleElement.text(joined[index].translation);
+					infoTitleElement.attr("data-translation",
+					joined[index].translation);
+					index++;
+					});
+				
+				var contentElements = $("p#course_content");
+				contentElements.each(function() {
+				    var contentElement = $(this);
+				    contentElement.text(joined[index].translation);
+				    contentElement.attr("data-translation", joined[index].translation);
+				    index++;
+				});
+
+ 				
+ 				
+ 			},
+ 			error : function(xhr, status, error) {
+ 				console.error('AJAX error:', error);
+ 			}
+ 		});
+ 	}
+
+ 	 $(document).ready(function() {
+ 		 const lang = window.localStorage.getItem("lang");
+ 		  console.log(lang);
+ 		  if(lang==="jp"){
+ 		    translate('ja');
+ 		  } else if(lang==="en"){
+ 		    translate('en');
+ 		  } else if(lang==="zh"){
+ 		    translate('zh_CN');
+ 		  }
+ 	});
+ 	    
+ 	 
 	
 </script>
 
@@ -173,15 +245,17 @@ function myList(course_id) {
 				<table>
 					<tr>
 						<th>코스 제목</th>
-						<td th:text="*{course_title}"></td>
+						<td th:text="*{course_title}" 
+						id="course_title" th:data-original="*{course_title}"></td>
 					</tr>
 					<tr>
 						<th>코스 순서</th>
-						<td th:text="*{course_sequense}"></td>
+						<td th:text="*{course_sequense}"
+						id="course_sequense" th:data-original="*{course_sequense}"></td>
 					</tr>
 				</table>
 			</div>
-
+	
 			<div id="spot-header-container">
 				<div class="itemcntnts" id="itemcntnts">
 
@@ -235,9 +309,11 @@ function myList(course_id) {
 
 				<div class="course-text1" >
 
-					<h3 class="h2-1" th:text="${course.course_info_title__${i.count}__}"></h3>
+					<h3 class="h2-1" th:text="${course.course_info_title__${i.count}__}"
+					id="course_info_title" th:data-original="${course.course_info_title__${i.count}__}"	></h3>
 
-					<p class="p-1" th:text="*{course_content__${i.count}__}"></p>
+					<p class="p-1" th:text="*{course_content__${i.count}__}"
+					id="course_content" th:data-original="*{course_content__${i.count}__}"	></p>
 
 				</div>
 
