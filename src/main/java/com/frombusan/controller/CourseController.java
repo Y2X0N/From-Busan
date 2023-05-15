@@ -85,8 +85,9 @@ public class CourseController {
 		
 		List<String> findCourseMyList = courseMapper.findMyListMemberId(course_id);
 		model.addAttribute("findCourseMyList", findCourseMyList);
+		if(loginMember!=null) {
 		model.addAttribute("member_id", loginMember.getMember_id());
-		
+		}
 
  		// board/read.html 를 찾아서 리턴한다.
  		return "course/CourseInfo";
