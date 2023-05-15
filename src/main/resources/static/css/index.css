@@ -27,16 +27,17 @@ video {
 }
 #panel-container{
 	width:100%;
-
-	height:300px;
+	height:400px;
 	display:flex;
+	margin-top: 5%;
 	justify-content: center;
 	align-items: center;
+	border: 1px solid #ccc;
 }
 #panel{
 		width:50%;
 		display:flex;
-		margin-left : 20px;
+		margin-left: 27px;
 		flex-direction: column;
 }
 #panel>h1{
@@ -90,9 +91,10 @@ input[type=button]{
 }
 #tourist-spot-title{
   width: 100%;
-  height: 100px;
+  height: 70px;
   display: flex;
   justify-content: space-between;
+
 }
 #tourist-spot-title>span{
   height: 100px;
@@ -119,8 +121,7 @@ input[type=button]{
 /*===================================*/
 .image-container{
 	width: 1700%; /*1200px*17*/
-	height: 500px;
-	
+	height: 500px;	
 }
 .festival-container{
 	width: 1700%; /*1200px*17*/
@@ -128,7 +129,7 @@ input[type=button]{
 }
 .inner{
 	width:400px;
-	height:400px;
+	height:300px;
 	float:left;
 	position:relative;
 }
@@ -146,7 +147,7 @@ input[type=button]{
 	/* position:absolute;
 	top:310px;
 	left:40px; */
-	font-size:24px;
+	font-size:17px;
 	color:#222;
 }
 /*heart*/
