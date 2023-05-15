@@ -287,13 +287,12 @@ function translate(lang) {
 	    reply.push($(this).attr("data-original"));
 	  });
 	
-	  
 	
 	  $.ajax({
-	    url : "/translate/replyList",
+		url : "/translate/replyList",
 	    type : "post",
 	    data : {
-	      "reply[]" : reply,
+        "reply[]" : reply,
 	      review_place :review_place,
 	      contents :contents,
 	      title:title,
@@ -302,17 +301,6 @@ function translate(lang) {
 	    },
 	    success : function(joined) {
 	      var index=0;
-		  
-	      $("#review_place").text(joined[index].translation).attr("th:data-original", joined[index].translation);
-		  index++;
-		  $("#title").html("<h1>" + joined[index].translation + "</h1>");
-		  index++;
-		  $("#time").append("<span>" + joined[index].translation + "</span>");
-		  index++;
-
-		  
-		  $("#contents").html(joined[index].translation);
-		  index++;
 	      
 	      var replyElements = $(".reply-input-btn");
 	      replyElements.each(function() {
@@ -321,6 +309,18 @@ function translate(lang) {
 	        replyElement.attr("data-translation", joined[index].translation);
 	        index++;
 	      });
+	      
+	      $("#review_place").text(joined[index].translation).attr("th:data-original", joined[index].translation);
+		  index++;
+		  $("#title").html("<h1>" + joined[index].translation + "</h1>");
+		  index++;
+		  $("#time").append("<span>" + joined[index].translation + "</span>");
+		  index++;
+
+		  $("#contents").html(joined[index].translation);
+		  index++;
+	      
+	     
 	    },
 	    error : function(xhr, status, error) {
 	      console.error('AJAX error:', error);

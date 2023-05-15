@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequestMapping("translate")
-@RestController
+@Controller
 public class TranslatorController {
 
 	ModernMT mmt = new ModernMT("9F982625-12CF-5F66-37B2-D8B9A4B56415");
@@ -130,7 +130,7 @@ public class TranslatorController {
 	
 	@PostMapping("replyList")
     public ResponseEntity<List<Translation>> replyList(
-           @RequestParam(value="reply[]") List<String> reply
+    		@RequestParam(value="reply[]", defaultValue="") List<String> reply
     		,@RequestParam String lang
     		,@RequestParam String title
     		,@RequestParam String review_place
@@ -141,13 +141,15 @@ public class TranslatorController {
 		List<Translation> titles = mmt.translate("ko", lang, Arrays.asList(title));
 		List<Translation> content = mmt.translate("ko", lang, Arrays.asList(contents));
 		List<Translation> times = mmt.translate("ko", lang, Arrays.asList(time));
-		List<Translation> replys = mmt.translate("ko",lang,reply);
 		List<Translation> joined = new ArrayList<>();
+		if(!reply.isEmpty()) {
+		List<Translation> replys = mmt.translate("ko",lang,reply);
+		joined.addAll(replys);
+		}
 		joined.addAll(review_places);
 		joined.addAll(titles);
 		joined.addAll(times);
 		joined.addAll(content);
-		joined.addAll(replys);
         return ResponseEntity.ok(joined);
     }
 	

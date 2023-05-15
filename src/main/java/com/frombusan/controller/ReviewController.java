@@ -123,7 +123,7 @@ public class ReviewController {
     @GetMapping("list")
     public String list(@RequestParam(value = "page", defaultValue = "1") int page,
                        @RequestParam(value = "searchText", defaultValue = "") String searchText,
-                       Model model) {
+                       Model model, @SessionAttribute(value = "loginMember", required = false) Member loginMember) {
         log.info("searchText: {}", searchText);
         int total = reviewService.getTotal(searchText);
 
@@ -138,7 +138,7 @@ public class ReviewController {
         model.addAttribute("navi", navi);
         model.addAttribute("searchText", searchText);
         
-
+        model.addAttribute("loginMember", loginMember);
 
         // board/list.html 를 찾아서 리턴한다.
         return "review/list";

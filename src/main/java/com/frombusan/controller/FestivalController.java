@@ -173,7 +173,8 @@ public class FestivalController {
 					festivalMapper.deleteMyList(wishboard_id);
 					festival.setJjim(false);
 			    }
-			    
+				festivalMapper.updateFestival(festival);
+
 			    
 		    return ResponseEntity.ok(festival);
 		  } else {
