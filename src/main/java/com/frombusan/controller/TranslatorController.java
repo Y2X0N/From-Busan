@@ -130,7 +130,7 @@ public class TranslatorController {
         return ResponseEntity.ok(joined);
     }
 	
-	@PostMapping("replyList")
+	@PostMapping("replyList")	
     public ResponseEntity<List<Translation>> replyList(
     		@RequestParam(value="reply[]", defaultValue="") List<String> reply
     		,@RequestParam String lang
