@@ -186,7 +186,7 @@ function myList(course_id) {
 				<div class="itemcntnts" id="itemcntnts">
 
 
-					 <div class="heartWish">
+					 <div class="heartWish" th:if="${member_id}">
 						<div class="left_area">
 							<a
 								th:unless="${#lists.contains(findCourseLikes, member_id)}"
@@ -204,7 +204,6 @@ function myList(course_id) {
 						</div>
 
 						<div class="right_area">
-
 							<a
 								th:unless="${#lists.contains(findCourseMyList, member_id)}"
 								href="javascript:;" class="icon wish"

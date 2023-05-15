@@ -37,7 +37,7 @@ public class WebConfig implements WebMvcConfigurer {
         "/member/**","/festival/**","/tourist/**","/restaurant/**","/review/reviewList","/review/list"
     		,"/review/read?"//,"/translate/tourInfo","/translate/fesInfo"
     		,"/festival/list?","/review/list?"
-    		,"/translate/**"};
+    		,"/translate/**","/course/**"};
 
 
 //  @Bean
