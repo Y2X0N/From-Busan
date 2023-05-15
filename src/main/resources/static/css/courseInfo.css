@@ -60,6 +60,7 @@ table td{
 .h2-1{
   text-align: center;
   color: rgb(98, 102, 105);
+  margin-top: 15px;
 }
 
 .p-1{
@@ -75,6 +76,7 @@ table td{
   width: 400px;
   height: 250px;
   background-color:white;
+  overflow:auto;
   border: 1px solid #ccc;
   border: 3px solid rgb(208, 234, 253);
   /* margin-top: 10% */

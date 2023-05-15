@@ -233,9 +233,9 @@ function myList(course_id) {
 
 				</div>
 
-				<div class="course-text1" style="overflow:hidden;">
+				<div class="course-text1" >
 
-					<h3 class="h2-1" th:text="*{course_title}"></h3>
+					<h3 class="h2-1" th:text="${course.course_info_title__${i.count}__}"></h3>
 
 					<p class="p-1" th:text="*{course_content__${i.count}__}"></p>
 
