@@ -47,17 +47,28 @@ public class TranslatorController {
 	@PostMapping("reviewsList")
 
     public ResponseEntity<List<Translation>> list(@RequestParam String text1
-           , @RequestParam(value="reviewPlaces[]") List<String> reviewPlace
-           , @RequestParam(value="reviewTitle[]") List<String> reviewTitle
+           , @RequestParam(value="reviewPlaces[]",defaultValue="") List<String> reviewPlace
+           , @RequestParam(value="reviewTitle[]",defaultValue="") List<String> reviewTitle
+           , @RequestParam(value="mainTitle[]",defaultValue="") List<String> mainTitle
     		,@RequestParam String lang) throws IOException {
 		
-		List<Translation> reviewList = mmt.translate("ko", lang, Arrays.asList(text1));
-		List<Translation> reviewPlaces = mmt.translate("ko",lang,reviewPlace);
-		List<Translation> reviewTitles = mmt.translate("ko",lang,reviewTitle);
 		List<Translation> joined = new ArrayList<>();
+		
+		if(!mainTitle.isEmpty()) {
+		List<Translation> mainTitles = mmt.translate("ko",lang,mainTitle);
+		joined.addAll(mainTitles);
+		}
+		List<Translation> reviewList = mmt.translate("ko", lang, Arrays.asList(text1));
 		joined.addAll(reviewList);
+
+		if(!reviewPlace.isEmpty()) {
+		List<Translation> reviewPlaces = mmt.translate("ko",lang,reviewPlace);
 		joined.addAll(reviewPlaces);
+		}
+		if(!reviewTitle.isEmpty()) {
+		List<Translation> reviewTitles = mmt.translate("ko",lang,reviewTitle);
 		joined.addAll(reviewTitles);
+		}
         return ResponseEntity.ok(joined);
     }
 	
@@ -130,30 +141,38 @@ public class TranslatorController {
         return ResponseEntity.ok(joined);
     }
 	
-	@PostMapping("replyList")	
+	@PostMapping("replyList")	//게시글 읽기
     public ResponseEntity<List<Translation>> replyList(
     		@RequestParam(value="reply[]", defaultValue="") List<String> reply
     		,@RequestParam String lang
-    		,@RequestParam String title
+    		,@RequestParam(defaultValue="") String title
     		,@RequestParam String review_place
-    		,@RequestParam String time
-    		,@RequestParam String contents
+    		,@RequestParam(defaultValue="") String time
+    		,@RequestParam(defaultValue="") String contents
     		) throws IOException {
 		List<Translation> review_places = mmt.translate("ko", lang, Arrays.asList(review_place));
-		List<Translation> titles = mmt.translate("ko", lang, Arrays.asList(title));
-		List<Translation> content = mmt.translate("ko", lang, Arrays.asList(contents));
-		List<Translation> times = mmt.translate("ko", lang, Arrays.asList(time));
 		List<Translation> joined = new ArrayList<>();
 		if(!reply.isEmpty()) {
 		List<Translation> replys = mmt.translate("ko",lang,reply);
 		joined.addAll(replys);
 		}
 		joined.addAll(review_places);
+		if(!title.isEmpty()) {
+		List<Translation> titles = mmt.translate("ko", lang, Arrays.asList(title));
 		joined.addAll(titles);
+		}
+		if(!time.isEmpty()) {
+		List<Translation> times = mmt.translate("ko", lang, Arrays.asList(time));
 		joined.addAll(times);
+		}
+		if(!contents.isEmpty()) {
+		List<Translation> content = mmt.translate("ko", lang, Arrays.asList(contents));
 		joined.addAll(content);
+		}
         return ResponseEntity.ok(joined);
     }
+	
+	
 	
 	@PostMapping("cosInfo")//코스 설명페이지
     public ResponseEntity<List<Translation>> cosInfo(

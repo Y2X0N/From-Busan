@@ -59,7 +59,9 @@ $(document).ready(function() {
 		};
 		reader.readAsDataURL(input.files[0]);
 	}
- */</script>
+ */
+ 
+ </script>
 
 <style>
 #image-preview-container {
@@ -94,8 +96,9 @@ $(document).ready(function() {
 				</div>
 			<table class="write-table">
 				<th>리뷰 장소</th>
-				<td><input type="text" list="searchOptions"
-					th:field="*{review_place}" style="width: 600px;" /> <datalist id="searchOptions">
+				<td>
+					<input type="text" list="searchOptions" th:field="*{review_place}" style="width: 600px;" />
+					 <datalist id="searchOptions">
 						<option th:each="main_title : ${findAllName}">
 								<span th:text="${main_title}"></span>
 						</option>

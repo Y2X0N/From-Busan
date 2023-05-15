@@ -275,12 +275,12 @@ function translate(lang) {
 	
 	let title = document.getElementById("title").getAttribute("data-original");
 	
-	let contents = document.getElementById("contents").getAttribute("data-original");
+	//let content = document.getElementById("contents").getAttribute("data-original");
+	//let contents = content.replace(/<img[^>]*>/g, '');
+	//let imgValue = content.match(/<img[^>]*>/g)[0];
 	
 	let timeScript = document.getElementById("mySpan").innerHTML;
-	//console.log(timeScript);
 	let time = timeScript.substring(6, timeScript.length - 7);
-	console.log(time);
 
 	  let reply = [];
 	  $(".reply-input-btn").each(function() {
@@ -294,7 +294,7 @@ function translate(lang) {
 	    data : {
         "reply[]" : reply,
 	      review_place :review_place,
-	      contents :contents,
+	      //contents :contents,
 	      title:title,
 	      time:time,
 	      lang : lang,
@@ -316,8 +316,8 @@ function translate(lang) {
 		  index++;
 		  $("#mySpan").html("<span>" + joined[index].translation + "</span>");
 		  index++;
-		  $("#contents").html(joined[index].translation);
-		  index++;
+		  //$("#contents").html(joined[index].translation);
+		  //index++;
 	      
 	     
 	    },
@@ -327,8 +327,8 @@ function translate(lang) {
 	  });
 	}
 
-if($(".reply-input-btn").length > 0 && $(".reply-input-btn").first().attr("data-translation") === "") {
-  checkLang();
+	if($(".reply-input-btn").length > 0 && $(".reply-input-btn").first().attr("data-translation") === "") {
+ 	 checkLang();
 }
 
 
