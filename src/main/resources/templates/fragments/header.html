@@ -29,7 +29,7 @@
 						    <i class="fa-solid fa-globe">&nbsp;</i><select id="languageDropdown">
 						    <option value="/">[[#{alert.Language}]]</option>
 						      <option value="?lang=ko">한국어</option>
-						      <option value="?lang=jp">日本語</option>
+						      <option value="?lang=ja">日本語</option>
 						      <option value="?lang=zh">中文</option>
 						      <option value="?lang=en">English</option>
 						    </select>
@@ -38,10 +38,6 @@
           </div>
  						<script th:inline="javascript">
  						$(document).ready(function() {
- 							const storedLang = window.localStorage.getItem("lang");
- 							  if (storedLang) {
- 							    $('#languageDropdown').val(storedLang);
- 							  }
   						$('#languageDropdown').change(function() {
   						    const newLang = $(this).val().substr(6);
   						    window.localStorage.setItem("lang", newLang);
