@@ -44,7 +44,7 @@
 			<h1>찜 한 명소가 없습니다.</h1>
 			</div>
 			<div id="findTourist" class="card" style="--clr: #009688;"
-				th:each="tourist : ${findMyListSpots}" th:if="${findMyListSpots.size()>1}">
+				th:each="tourist : ${findMyListSpots}" th:if="${findMyListSpots.size()>0}">
 				<div class="imgBx">
 					<img th:src="@{${tourist.main_img_normal}}">
 				</div>
@@ -62,7 +62,7 @@
 				</div>
 			</div>
 			<div id="findFestival" class="card" style="--clr: #009688;"
-				th:each="festival : ${findMyListFes}">
+				th:each="festival : ${findMyListFes}" th:if="${findMyListFes.size()>0}">
 				<div class="imgBx">
 					<img th:src="@{${festival.main_img_normal}}">
 				</div>
@@ -85,7 +85,7 @@
 
 
 			<div id="findCourse" class="card" style="--clr: #009688;"
-				th:each="course : ${findMyListCos}">
+				th:each="course : ${findMyListCos}" th:if="${findMyListCos.size()>0}">
 				<div class="imgBx">
 					<img th:src="@{${course.main_img}}">
 				</div>
