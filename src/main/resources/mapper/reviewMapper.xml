@@ -61,54 +61,8 @@
     <delete id="removeReview">
         delete from review where review_id = #{review_id}
     </delete>
-
-	
-	 <select id="findImg" resultType="file">
-        select * from review_img where img_id=#{img_id}
-    </select>
     
-    <!--  첨부파일 저장  -->
-    <insert id="saveImg">
-        <selectKey keyProperty="img_id" resultType="long" order="BEFORE">
-            select seq_review.nextval from dual
-        </selectKey>
-        insert into review_img (
-            img_id,
-            review_id,
-            original_filename,
-            saved_filename,
-            file_size
-        ) values (
-            #{img_id},
-            #{review_id},
-            #{original_filename},
-            #{saved_filename},
-            #{file_size}
-        )
-    </insert>
 
-    <!--  게시글 아이디로 첨부파일 검색  -->
-    <select id="findFileByReviewId" resultType="file">
-        select * from review_img where review_id = #{review_id} and original_filename=#{original_filename}
-    </select>
-    
-     <select id="findFilesByReviewId" resultType="map">
-        select * from review_img where review_id = #{review_id}
-    </select>
-    
-     <select id="findFilesForRemove" resultType="file">
-        select * from review_img where review_id = #{review_id}
-    </select>
-
-    <!--  첨부파일 아이디로 첨부파일 검색  -->
-    <select id="findFileByAttachedFileId" resultType="file">
-        select * from review_img where img_id = #{img_id}
-    </select>
-
-    <!--  첨부파일 삭제  -->
-    <delete id="removeAttachedFile">
-        delete from review_img where img_id = #{img_id}
-    </delete>
     
     <!-- /////////////////특정 리뷰찾기  기능//////////////////////////////////////////////////////////////// -->
    	<select id="findReviewsByMainTitle" resultType="review">

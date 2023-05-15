@@ -160,9 +160,6 @@ public class ReviewController {
         // 모델에 Board 객체를 저장한다.
         model.addAttribute("review", review);
         model.addAttribute("loginMember",loginMember);
-        // 첨부파일을 찾는다.
-//        List<AttachedImg> files = reviewService.findFilesByReviewId(review_id);
-//        model.addAttribute("files", files);
         
         List<String> findReviewLikes = reviewService.findLikesMemberId(review_id);
 		log.info("findReviewLikes:{}",findReviewLikes);
@@ -187,10 +184,6 @@ public class ReviewController {
         }
         // model 에 board 객체를 저장한다.
         model.addAttribute("review", Review.toReviewUpdateForm(review));
-
-        // 첨부파일을 찾는다.
-        List<AttachedImg> files = reviewService.findFilesByReviewId(review_id);
-        model.addAttribute("files", files);
 
         // board/update.html 를 찾아서 리턴한다.
         return "review/update";
@@ -245,45 +238,15 @@ public class ReviewController {
         return "redirect:/review/list";
     }
     
-    @DeleteMapping("/deleteFile/{review_id}")
-    public ResponseEntity<String> deleteFile(@PathVariable("review_id") Long review_id
-    		,@SessionAttribute(value = "loginMember", required = false) Member loginMember						
-    		, @RequestParam("img_id") Long img_id) {
-    		
-    		log.info("img_id:{}",img_id);
-	        // board_id 에 해당하는 게시글을 가져온다.
-	        Review review = reviewService.findReview(review_id);
-	        // 게시글이 존재하지 않거나 작성자와 로그인 사용자의 아이디가 다르면 리스트로 리다이렉트 한다.
-	        if (review == null || !review.getMember_id().equals(loginMember.getMember_id())) {
-	            log.info("삭제 권한 없음");
-	            return ResponseEntity.ok("삭제 권한 없음") ;
-	        }
-	        // 게시글을 삭제한다.
 
-        reviewService.removeImg(img_id,review_id);
-        log.info("review:{}",review);
-        // board/list 로 리다이렉트 한다.
-        return ResponseEntity.ok("삭제 성공") ;
-    }
-
-    @GetMapping("download/{id}")
-    public ResponseEntity<Resource> download(@PathVariable Long id) throws MalformedURLException {
-        AttachedImg attachedFile = reviewService.findFileByAttachedFileId(id);
-        String fullPath = uploadPath + "/" + attachedFile.getSaved_filename();
-        UrlResource resource = new UrlResource("file:" + fullPath);
-        String encodingFileName = UriUtils.encode(attachedFile.getOriginal_filename(), StandardCharsets.UTF_8);
-        String contentDisposition = "attachment; filename=\"" + encodingFileName + "\"";
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
-                .body(resource);
-    }
-    
     
  // 한 장소 게시글 전체 보기
     @GetMapping("reviewList")
     public String reviewList(@RequestParam(value = "page", defaultValue = "1") int page,
                        @RequestParam(value = "searchText", defaultValue = "") String searchText,
-                       Model model,@RequestParam("main_title") String review_place) {
+                       Model model,@RequestParam("main_title") String review_place
+                       ,@SessionAttribute(value = "loginMember", required = false) Member loginMember
+    					) {
         log.info("review_place: {}", review_place);
         //int total = reviewService.getTotal(searchText);
         //PageNavigator navi = new PageNavigator(countPerPage, pagePerGroup, page, total);
@@ -292,7 +255,7 @@ public class ReviewController {
         
         List<Review> findReviewsByMainTitle = reviewService.findReviewsByMainTitle(review_place);
         log.info("findReviewsByMainTitle: {}", findReviewsByMainTitle);
-        
+        model.addAttribute("member_id",loginMember.getMember_id());
         // Board 리스트를 model 에 저장한다.
         model.addAttribute("findReviewsByMainTitle", findReviewsByMainTitle);
         // PageNavigation 객체를 model 에 저장한다.

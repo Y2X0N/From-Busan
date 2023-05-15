@@ -12,12 +12,6 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/css/lightbox.min.css">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.min.js"></script>
-<style type="text/css">
-.reply-input-btn{
-
-}
-</style>
-
 <script src="/js/index.js"></script>
 
 <script th:inline="javascript">
@@ -266,7 +260,7 @@
 function checkLang(){
   const lang = window.localStorage.getItem("lang");
   console.log(lang);
-  if(lang==="jp"){
+  if(lang==="ja"){
     translate('ja');
   } else if(lang==="en"){
     translate('en');
@@ -416,11 +410,11 @@ if($(".reply-input-btn").length > 0 && $(".reply-input-btn").first().attr("data-
 		<div class="reply-container">
 			<div id="replies" class="reply-div"></div>
 
-			<div th:if="${loginMebmer}">
+			<th:block th:if="${loginMember}">
 			<input class="reply-input" id="reply" name="reply" type="text"
 				placeholder=" 댓글을 작성해주세요." value="">
 			<button type="button" class="reply-btn" onclick="writeReply()">작성</button>
-			</div>
+			</th:block>
 		</div>
 
 

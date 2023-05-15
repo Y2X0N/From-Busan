@@ -55,56 +55,16 @@ public class ReviewService {
     @Transactional
     public void updateReview(Review updateReview) {
         if (updateReview != null) {
-            log.info("review_id5: {}", updateReview);
+            //log.info("review_id5: {}", updateReview);
             reviewMapper.updateReview(updateReview);
         }
     }
 
     @Transactional
-    public void removeAttachedFile(Long img_id) {
-        AttachedImg attachedFile = reviewMapper.findFileByAttachedFileId(img_id);
-        if (attachedFile != null) {
-            String fullPath = uploadPath + "/" + attachedFile.getSaved_filename();
-            fileService.deleteFile(fullPath);
-            log.info("기존 파일 삭제: {}", attachedFile);
-            reviewMapper.removeAttachedFile(attachedFile.getImg_id());
-        }
-    }
-
     public void removeReview(Long review_id) {
-    	
-    	List<AttachedImg> files = reviewMapper.findFilesForRemove(review_id);
-    	
-        if (files!= null) {
-        	for (int i = 0; i < files.size(); i++) {
-				removeAttachedFile(files.get(i).getImg_id());
-				reviewMapper.removeAttachedFile(files.get(i).getImg_id());
-			}
-        }
         reviewMapper.removeReview(review_id);	
     }
     
-    public void removeImg(Long img_id,Long review_id) {
-    	
-	   AttachedImg img = reviewMapper.findImg(img_id);
-        if (img!= null) {
-            removeAttachedFile(img.getImg_id());
-        }
-    }
-    
-    
-    
-    public AttachedImg findImg(Long review_id,Long img_id) {
-        return reviewMapper.findImg(img_id);
-    }
-    
-    public List<AttachedImg> findFilesByReviewId(Long review_id) {
-        return reviewMapper.findFilesByReviewId(review_id);
-    }
-
-    public AttachedImg findFileByAttachedFileId(Long img_id) {
-        return reviewMapper.findFileByAttachedFileId(img_id);
-    }
 
     public int getTotal(String searchText) {
         return reviewMapper.getTotal(searchText);
