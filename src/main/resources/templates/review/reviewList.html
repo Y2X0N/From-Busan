@@ -15,112 +15,141 @@
 <script src="/js/index.js"></script>
 
 <script>
+	/* let createTime = [[${reviews}]];
+	 console.log(createTime);
+	 function timeForToday() {
+	 const displayCreatedAt = (createdAt) => {
+	 let startTime = new Date(createdAt);
+	 let nowTime = Date.now();
+	 let timeDiff = nowTime - startTime;
+	 let result = "";
 
-/* let createTime = [[${reviews}]];
-console.log(createTime);
-function timeForToday() {
-    const displayCreatedAt = (createdAt) => {
-      let startTime = new Date(createdAt);
-      let nowTime = Date.now();
-      let timeDiff = nowTime - startTime;
-      let result = "";
+	 if (timeDiff < 60000) {
+	 result = "방금 전";
+	 } else if (timeDiff < 3600000) {
+	 result = `${Math.floor(timeDiff / 60000)} 분 전`;
+	 } else if (timeDiff < 86400000) {
+	 result = `${Math.floor(timeDiff / 3600000)} 시간 전`;
+	 } else {
+	 result = startTime.toLocaleDateString();
+	 }
 
-      if (timeDiff < 60000) {
-        result = "방금 전";
-      } else if (timeDiff < 3600000) {
-        result = `${Math.floor(timeDiff / 60000)} 분 전`;
-      } else if (timeDiff < 86400000) {
-        result = `${Math.floor(timeDiff / 3600000)} 시간 전`;
-      } else {
-        result = startTime.toLocaleDateString();
-      }
+	 return `<td>${result}</td>`;
+	 };
 
-      return `<td>${result}</td>`;
-    };
+	 // 특정 날짜 값 (createdAt)을 전달하여 결과 얻기
+	 let result = displayCreatedAt(createTime);
+	 //console.log(result);
+	 return result;
+	 }
+	 */
+	function search() {
+		let searchText = document.getElementById("searchText").value;
+		location.href = "/review/list?searchText=" + searchText;
+	}
 
-    // 특정 날짜 값 (createdAt)을 전달하여 결과 얻기
-    let result = displayCreatedAt(createTime);
-	  //console.log(result);
-    return result;
-  }
- */
-      function search() {
-        let searchText = document.getElementById("searchText").value;
-        location.href="/review/list?searchText=" + searchText;
-      }
- 
- function translate(lang) {
-	    // 번역할 코드
+	/////////////// 번역 /////////////////////////////////////////////////////////////////////////
 
-			  let text = document.getElementById("review").innerHTML;
-			  // ajax 호출 등의 코드 추가
-			   $.ajax({
-			      url: "/translate",
-			      type: "post",
-			      data:{
-			    	  text : text,
-			    	  lang:lang,
-			      },
-			      success: function (data, success, xhr) {
-			    	    const name = data.name;
-			    	    const resultHTML = `
-			    	        <h1 id="review">
-			    	            ${name}
-			    	        </h1>
-			    	    `;
-			    	    document.body.innerHTML = resultHTML;
-			    	},
-			      error: function (xhr, status, error) {
-			        console.log(status);
-			      }
-			    });
+	function translate(lang) {
+		// 번역할 코드
+		//ReviewList타이틀
+		let text1 = document.getElementById("review1").getAttribute(
+				"data-original");
+		//리류장소들 한꺼번에
+		let reviewPlaces = [];
+		$("[id='review_place']").each(function() {
+			reviewPlaces.push($(this).attr("data-original"));
+		});
+
+		let reviewTitle = [];
+		$("[id='title']").each(function() {
+			reviewTitle.push($(this).attr("data-original"));
+		});
+
+		// ajax 호출 등의 코드 추가
+		$.ajax({
+			url : "/translate/reviewsList",
+			type : "post",
+			data : {
+				text1 : text1,
+				reviewPlaces : reviewPlaces,
+				reviewTitle : reviewTitle,
+				lang : lang,
+			},
+			success : function(joined) {
+				//성공
+				index=0;
+				
+				$("#review1").html("<h2>" + joined[index].translation + "</h2>");
+				index++;
+
+				var reviewPlaceElements = $("td#review_place");
+				reviewPlaceElements.each(function() {
+					var reviewPlaceElement = $(this);
+					reviewPlaceElement.text(joined[index].translation);
+					reviewPlaceElement.attr("data-translation",
+					joined[index].translation);
+					index++;
+				});
+
+				var reviewTitleElements = $("a#title");
+				reviewTitleElements.each(function() {
+					var reviewTitleElement = $(this);
+					reviewTitleElement.text(joined[index].translation);
+					reviewTitleElement.attr("data-translation",
+					joined[index].translation);
+					index++;
+				});
+
+
+			},
+			error : function(xhr, status, error) {
+				console.error('AJAX error:', error);
+			}
+		});
+	}
+
+	$(document).ready(function() {
+		const lang = window.localStorage.getItem("lang");
+		console.log(lang);
+		if (lang === "ja") {
+			translate('ja');
+		} else if (lang === "en") {
+			translate('en');
+		} else if (lang === "zh") {
+			translate('zh_CN');
 		}
- 
- $(document).ready(function(){
-	    $("#translate-en").click(function(){
-	        translate('en');
-	    });
-	    $("#translateja").click(function(){
-	        translate('ja');
-	    });
-	    $("#translatezh-CN").click(function(){
-	        translate('zh-CN');
-	    });
 	});
-    </script>
+</script>
 </head>
 <body>
 
 	<div th:replace="fragments/header :: header"></div>
 	<div class="header-container">
-	
-	
-	<button id="translate-en"> 번역하기</button>
-	
-	
+
+
 		<div class="review" id="review">
 
 			<section class="notice">
 				<div class="page-title">
-					<h1>[ 명소 & 상세 리스트]</h1>
+					<div >
+						<h2 th:text=${reviewPlace}
+						id="review1" th:data-original="${reviewPlace}"></h2>
+					</div>
 				</div>
-				
-					<div class="review-container">
+
+				<div class="review-container">
 					<!-- board seach area -->
 					<div id="review-search">
 						<div class="search-window">
-								<div class="search-wrap">
-									<input id="searchText" type="search" name="searchText"
-										placeholder="검색어를 입력해주세요.">
-									<button type="button" onclick="search()" class="btn search-btn">검색</button>
-								</div>
+							<div class="search-wrap"></div>
 						</div>
 					</div>
-				
-				
-				<p>
-				<table class="review-table">
-					<thead>
+
+
+					<p>
+					<table class="review-table">
+						<thead>
 							<tr class="mainTitle">
 								<th scope="col" class="th-num">No</th>
 								<th scope="col" class="th-place">Place</th>
@@ -129,12 +158,16 @@ function timeForToday() {
 								<th scope="col" class="th-date">Date</th>
 								<th scope="col" class="th-hit">HIT</th>
 							</tr>
-					</thead>
-					<tbody th:if="${session.loginMember != null}">
-							<tr th:if="${findReviewsByMainTitle}" th:each="review, reviewsStat: ${findReviewsByMainTitle}">
+						</thead>
+						<tbody>
+							<tr th:if="${findReviewsByMainTitle}"
+								th:each="review, reviewsStat: ${findReviewsByMainTitle}">
 								<td class="color" th:text="${reviewsStat.count}"></td>
-								<td class="color" th:text="${review.review_place}"></td>
+								<td id="review_place" class="color"
+									th:text="${review.review_place}"
+									th:data-original="${review.review_place}"></td>
 								<th><a th:text="${review.title}"
+									th:data-original="${review.title}" id="title"
 									th:href="@{/review/read(review_id=${review.review_id})}"></a></th>
 								<td th:text="${review.member_id}" class="center"></td>
 								<!-- <td id="myTd"></td>
@@ -142,42 +175,27 @@ function timeForToday() {
      							 // 결과를 span에 표시하는 함수 실행
      								 document.getElementById("myTd").innerHTML = timeForToday();
     							</script> -->
-								<td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
+								<td
+									th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
 								<td th:text="${review.hit}"></td>
 							</tr>
 							<tr th:if="${findReviewsByMainTitle.empty}">
-							    <td class="color" colspan="6">리뷰가 없습니다.</td>
+								<td class="color" colspan="6">리뷰가 없습니다.</td>
 							</tr>
-					</tbody>
-				</table>
-				<p>
-				<p>
-				<div class="center">
-					<input type="button" onclick="location.href='/review/list'"
-						value="목록으로" class="input-btn"> 
-					<th:block th:if="${member_id}">
-					<input href="javascript:;" type="button" class="input-btn"
-						onclick="location.href='/review/write'" value="글쓰기"> 
-					</th:block>
-				</div>
+						</tbody>
+					</table>
+					<p>
+					<p>
+					<div class="center">
+						<input type="button" onclick="location.href='/review/list'"
+							value="목록으로" class="input-btn">
+					</div>
 				</div>
 			</section>
-			
-			
-			
+
 		</div>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-</div>
+
+
+	</div>
 </body>
 </html>

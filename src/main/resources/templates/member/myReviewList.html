@@ -25,68 +25,69 @@
 /////////////// 번역 /////////////////////////////////////////////////////////////////////////
 
 function translate(lang) {
-// 번역할 코드
-//ReviewList타이틀
-let text1 = document.getElementById("review1").getAttribute("data-original");
-//리류장소들 한꺼번에
-let reviewPlaces = [];
-$("[id='review_place']").each(function() {
-	reviewPlaces.push($(this).attr("data-original"));
-});
-
-let reviewTitle = [];
-$("[id='title']").each(function() {
-	reviewTitle.push($(this).attr("data-original"));
-});
-console.log(text1);
-
-// ajax 호출 등의 코드 추가
-$.ajax({
-	url : "/translate/reviewsList",
-	type : "post",
-	data : {
-		text1 : text1,
-		reviewPlaces : reviewPlaces,
-		reviewTitle:reviewTitle,
-		lang : lang,
-	},
-	success : function(joined) {
-		//성공
-		let index=0;
-		$("#review1").html("<h2>" + joined[index].translation + "</h2>");
-		index++;
-		
-		var reviewPlaceElements = $("td#review_place");
-		reviewPlaceElements.each(function() {
-			var reviewPlaceElement = $(this);
-			reviewPlaceElement.text(joined[index].translation);
-			reviewPlaceElement.attr("data-translation",
-			joined[index].translation);
+	// 번역할 코드
+	//ReviewList타이틀
+	let text1 = document.getElementById("review1").getAttribute("data-original");
+	//리류장소들 한꺼번에
+	let reviewPlaces = [];
+	$("[id='review_place']").each(function() {
+		reviewPlaces.push($(this).attr("data-original"));
+	});
+	
+	let reviewTitle = [];
+	$("[id='title']").each(function() {
+		reviewTitle.push($(this).attr("data-original"));
+	});
+	console.log(text1);
+	
+	// ajax 호출 등의 코드 추가
+	$.ajax({
+		url : "/translate/reviewsList",
+		type : "post",
+		data : {
+			text1 : text1,
+			reviewPlaces : reviewPlaces,
+			reviewTitle:reviewTitle,
+			lang : lang,
+		},
+		success : function(joined) {
+			//성공
+			let index=0;
+			$("#review1").html("<h2>" + joined[index].translation + "</h2>");
 			index++;
+			
+			var reviewPlaceElements = $("td#review_place");
+			reviewPlaceElements.each(function() {
+				var reviewPlaceElement = $(this);
+				reviewPlaceElement.text(joined[index].translation);
+				reviewPlaceElement.attr("data-translation",
+				joined[index].translation);
+				index++;
+				});
+			var reviewTitleElements = $("a#title");
+			reviewTitleElements.each(function() {
+			    var reviewTitleElement = $(this);
+			    reviewTitleElement.text(joined[index].translation);
+			    reviewTitleElement.attr("data-translation", joined[index].translation);
+			    index++;
 			});
-		var reviewTitleElements = $("a#title");
-		reviewTitleElements.each(function() {
-		    var reviewTitleElement = $(this);
-		    reviewTitleElement.text(joined[index].translation);
-		    reviewTitleElement.attr("data-translation", joined[index].translation);
-		    index++;
-		});
-	},
-	error : function(xhr, status, error) {
-		console.error('AJAX error:', error);
+		},
+		error : function(xhr, status, error) {
+			console.error('AJAX error:', error);
+		}
+	});
 	}
-});
-}
+	
 $(document).ready(function() {
-const lang = window.localStorage.getItem("lang");
-console.log(lang);
-if(lang==="ja"){
-  translate('ja');
-} else if(lang==="en"){
-  translate('en');
-} else if(lang==="zh"){
-  translate('zh_CN');
-}
+	const lang = window.localStorage.getItem("lang");
+	console.log(lang);
+	if (lang === "ja") {
+		translate('ja');
+	} else if (lang === "en") {
+		translate('en');
+	} else if (lang === "zh") {
+		translate('zh_CN');
+	}
 });
 </script>
 </head>
@@ -99,21 +100,21 @@ if(lang==="ja"){
 				<div class="page-title" id="review1" data-original="Review List">
 					<h2>my reviewList</h2>
 				</div>
-					
+
 				<div class="review-container">
 					<!-- board seach area -->
 					<div id="review-search">
 						<div class="search-window">
-								<div class="search-wrap">
-									<input id="searchText" type="search" name="searchText"
-										placeholder="검색어를 입력해주세요.">
-									<button type="button" onclick="search()" class="btn search-btn">검색</button>
-								</div>
+							<div class="search-wrap">
+								<input id="searchText" type="search" name="searchText"
+									placeholder="검색어를 입력해주세요.">
+								<button type="button" onclick="search()" class="btn search-btn">검색</button>
+							</div>
 						</div>
 					</div>
-				
-				
-				
+
+
+
 					<p>
 					<table class="review-table">
 						<thead>
@@ -130,36 +131,37 @@ if(lang==="ja"){
 							<tr th:if="${reviews}" th:each="review, reviewsStat: ${reviews}">
 								<td class="color" th:text="${reviewsStat.count}"></td>
 								<td class="color" th:text="${review.review_place}"
-								id="review_place" th:data-original="${review.review_place}"></td>
-								<th><a th:text="${review.title}"  th:data-original="${review.title}" id="title"
+									id="review_place" th:data-original="${review.review_place}"></td>
+								<th><a th:text="${review.title}"
+									th:data-original="${review.title}" id="title"
 									th:href="@{/review/read(review_id=${review.review_id})}"></a></th>
 								<td th:text="${review.member_id}" class="center"></td>
-								<td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
+								<td
+									th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
 								<td th:text="${review.hit}"></td>
 							</tr>
 							<tr th:if="${reviews.empty}">
-							    <td class="color" colspan="6">리뷰가 없습니다.</td>
+								<td class="color" colspan="6">리뷰가 없습니다.</td>
 							</tr>
 
 						</tbody>
-					
-				</table>
-				<p>
-				<div class="center">
-					<input type="button" onclick="location.href='/review/list'"
-						value="목록으로" class="input-btn"> 
-					<input type="button" class="input-btn"
-						onclick="location.href='/review/write'" value="글쓰기"> 
-					<input class="input-btn"
-						type="button" onclick="location.href='/'" value="메인으로">
-				</div>
+
+					</table>
+					<p>
+					<div class="center">
+						<input type="button" onclick="location.href='/review/list'"
+							value="목록으로" class="input-btn"> <input type="button"
+							class="input-btn" onclick="location.href='/review/write'"
+							value="글쓰기"> <input class="input-btn" type="button"
+							onclick="location.href='/'" value="메인으로">
+					</div>
 				</div>
 			</section>
 
 		</div>
-			
-	
-			
+
+
+
 	</div>
 </body>
 </html>

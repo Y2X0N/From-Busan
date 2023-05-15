@@ -66,14 +66,14 @@
     
     <!-- /////////////////특정 리뷰찾기  기능//////////////////////////////////////////////////////////////// -->
    	<select id="findReviewsByMainTitle" resultType="review">
-        select * from review where review_place=#{review_place}
+        select * from review where review_place=#{review_place} order by created_time desc
     </select>
     
     
     
             <!-- /// 작성한 유저의 게시물//////////////////  -->
     <select id="findReviewsByMemberId" resultType="review">
-        select * from review where member_id = #{member_id}
+        select * from review where member_id = #{member_id} order by created_time desc
     </select>
     
     

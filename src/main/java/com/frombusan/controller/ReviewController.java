@@ -131,7 +131,10 @@ public class ReviewController {
 
         // 데이터베이스에 저장된 모든 Board 객체를 리스트 형태로 받는다.
         List<Review> reviews = reviewService.findReviews(searchText, navi.getStartRecord(), navi.getCountPerPage());
-
+        
+        List<String> findAllName = reviewService.findAllMainTitle();
+        model.addAttribute("findAllName", findAllName);
+        
         // Board 리스트를 model 에 저장한다.
         model.addAttribute("reviews", reviews);
         // PageNavigation 객체를 model 에 저장한다.
@@ -247,17 +250,18 @@ public class ReviewController {
                        Model model,@RequestParam("main_title") String review_place
                        ,@SessionAttribute(value = "loginMember", required = false) Member loginMember
     					) {
-        log.info("review_place: {}", review_place);
         //int total = reviewService.getTotal(searchText);
         //PageNavigator navi = new PageNavigator(countPerPage, pagePerGroup, page, total);
         // 데이터베이스에 저장된 모든 Board 객체를 리스트 형태로 받는다.
         //List<Review> reviews = reviewService.findReviews(searchText, navi.getStartRecord(), navi.getCountPerPage());
         
         List<Review> findReviewsByMainTitle = reviewService.findReviewsByMainTitle(review_place);
-        log.info("findReviewsByMainTitle: {}", findReviewsByMainTitle);
-        model.addAttribute("member_id",loginMember.getMember_id());
+        //model.addAttribute("member_id",loginMember.getMember_id());
         // Board 리스트를 model 에 저장한다.
         model.addAttribute("findReviewsByMainTitle", findReviewsByMainTitle);
+        
+        String reviewPlace = review_place.substring(1, review_place.length() - 1);
+        model.addAttribute("reviewPlace", reviewPlace);
         // PageNavigation 객체를 model 에 저장한다.
         //model.addAttribute("navi", navi);
         //model.addAttribute("searchText", searchText);

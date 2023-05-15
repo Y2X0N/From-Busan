@@ -12,48 +12,92 @@
 <link rel="stylesheet" href="/css/summernote/summernote-lite.css">
 <link rel="stylesheet" href="/css/reviewUpdateForm.css">
 <script th:inline="javascript">
-    $(document).ready(function() {
-    	//여기 아래 부분
-    	$('#summernote').summernote({
-    			height:800,
-    		  minHeight: null,             // 최소 높이
-    		  maxHeight: null,             // 최대 높이
-    		  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
-    		  lang: "ko-KR",					// 한글 설정
-    		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
-              
-    	});
-    });
-      
-     /*  function deleteImg(img_id) {
+	$(document).ready(function() {
+		//여기 아래 부분
+		$('#summernote').summernote({
+			height : 800,
+			minHeight : null, // 최소 높이
+			maxHeight : null, // 최대 높이
+			focus : true, // 에디터 로딩후 포커스를 맞출지 여부
+			lang : "ko-KR", // 한글 설정
+			placeholder : '최대 2048자까지 쓸 수 있습니다' //placeholder 설정
 
-   	    let review_id = [[${review.review_id}]];
-	   	let file = event.currentTarget.parentElement;
-	  	//let fileName = file.parentElement.querySelector("a").innerText;
-   	 	document.getElementById("fileRemoved").value = "true";
-   	 	
-	   	 //let attachedImg = document.getElementById("attachedImg-" + index);
-	     attachedImg.style.display = "none";
-  	 	
-   	    $.ajax({
-   	        url: `/review/deleteFile/${review_id}?img_id=${img_id}`,
-   	        method: 'DELETE',
-   	        success: function() {
-   	            console.log('File deleted successfully.');
-   	        },
-   	        error: function(xhr, status, error) {
-   	            console.log('Error occurred while deleting file:', error);
-   	        	}
-   	    	});
-    	} */
-      
-    /*   $(function() {
-          // 페이지가 완전히 로드된 후에 함수 호출
-          let a = [[${files}]];
-          console.log(a);
-        }); */
-      
-    </script>
+		});
+	});
+
+	/*  function deleteImg(img_id) {
+
+	    let review_id = [[${review.review_id}]];
+	  	let file = event.currentTarget.parentElement;
+	 	//let fileName = file.parentElement.querySelector("a").innerText;
+	 	document.getElementById("fileRemoved").value = "true";
+	 	
+	  	 //let attachedImg = document.getElementById("attachedImg-" + index);
+	    attachedImg.style.display = "none";
+	 	
+	    $.ajax({
+	        url: `/review/deleteFile/${review_id}?img_id=${img_id}`,
+	        method: 'DELETE',
+	        success: function() {
+	            console.log('File deleted successfully.');
+	        },
+	        error: function(xhr, status, error) {
+	            console.log('Error occurred while deleting file:', error);
+	        	}
+	    	});
+	} */
+
+	/*   $(function() {
+	      // 페이지가 완전히 로드된 후에 함수 호출
+	      let a = [[${files}]];
+	      console.log(a);
+	    }); */
+	    
+	    
+	    
+  ////////////////////////////////////////////번역////////////////////////
+	    
+	$(document).ready(function() {
+		const lang = window.localStorage.getItem("lang");
+		  console.log(lang);
+		  if(lang==="ja"){
+		    translate('ja');
+		  } else if(lang==="en"){
+		    translate('en');
+		  } else if(lang==="zh"){
+		    translate('zh_CN');
+		  }
+	});
+	    
+	function translate(lang) {
+
+		let review_place = document.getElementById("review_place")
+				.getAttribute("data-original");
+
+		$.ajax({
+			url : "/translate/replyList",
+			type : "post",
+			data : {
+				review_place : review_place,
+				lang : lang,
+			},
+			success : function(joined) {
+				var index = 0;
+
+				$("#review_place").text(joined[index].translation).attr(
+						"th:data-original", joined[index].translation);
+			},
+			error : function(xhr, status, error) {
+				console.error('AJAX error:', error);
+			}
+		});
+	}
+
+	if ($(".reply-input-btn").length > 0
+			&& $(".reply-input-btn").first().attr("data-translation") === "") {
+		checkLang();
+	}
+</script>
 </head>
 <body>
 	<div th:replace="fragments/header :: header"></div>
@@ -70,8 +114,7 @@
 			<table class="update-table">
 				<tr>
 					<th>리뷰 장소</th>
-					<td><span th:text="*{review_place}">
-							<div class="error" th:errors="*{title}"></div></td>
+					<td><span th:text="*{review_place}" id="review_place" th:data-original="*{review_place}"></span></td>
 				</tr>
 				<tr>
 					<th>제목</th>
