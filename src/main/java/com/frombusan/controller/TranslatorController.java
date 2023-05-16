@@ -42,7 +42,15 @@ public class TranslatorController {
 		joined.addAll(tourMainTitles);
         return ResponseEntity.ok(joined);
     }
-	
+	@PostMapping("maps")
+	public ResponseEntity<Translation> mainMaps(@RequestParam(value="contents") String content
+								,@RequestParam String lang) throws IOException {
+			Translation contents  = mmt.translate("ko",lang,content);
+			log.info("contents: {}",contents);
+			//Translation joined = new Translation();
+			//joined.add(contents);
+	        return ResponseEntity.ok(contents);
+	    }
 	
 	@PostMapping("reviewsList")
 
