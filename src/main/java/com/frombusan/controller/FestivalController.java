@@ -19,6 +19,7 @@ import com.frombusan.model.festival.FestivalLikes;
 import com.frombusan.model.festival.FestivalMyList;
 import com.frombusan.model.member.Member;
 import com.frombusan.repository.FestivalMapper;
+import com.frombusan.service.FestivalService;
 import com.frombusan.util.PageNavigator;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,8 @@ public class FestivalController {
 
 	@Autowired
 	private FestivalMapper festivalMapper;
+	@Autowired
+	private FestivalService festivalservice;
 
 	final int countPerPage = 9;
 	final int pagePerGroup = 5;
@@ -50,10 +53,12 @@ public class FestivalController {
 
 		int total = festivalMapper.getTotal(searchText);
 		PageNavigator navi = new PageNavigator(countPerPage, pagePerGroup, page, total);
-		RowBounds rowBounds = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
-		List<Festival> findAllFestival = festivalMapper.findAllFestival(searchText, rowBounds);
 		
-		log.info(":{}",findAllFestival.get(0));
+		List<Festival> findAllFestival = festivalservice.findFestivals(searchText,navi.getStartRecord(),navi.getCountPerPage());
+		
+		List<Festival> searchFes = festivalMapper.findAllFestival();
+		
+		model.addAttribute("searchFes", searchFes);
 		model.addAttribute("findAllFestival", findAllFestival);
 		model.addAttribute("navi", navi);
 
