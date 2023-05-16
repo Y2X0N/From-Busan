@@ -39,6 +39,9 @@
     
     <select id="getTotal" resultType="int">
         select count(*) from festival 
+        <if test="_parameter != null">
+            where main_title like '%' || #{searchText} || '%'
+        </if>
     </select>
     
     
