@@ -63,7 +63,7 @@ function getDb(){
                 (function(marker){
                     return function (){
                     	
-                        infowindow.setContent("<img src="+img_date+" class='asd'>"+"<h1>"+main_title+"</h1>"+"<p>"
+                        infowindow.setContent("<h3>"+main_title+"</h3>"+"<img src="+img_date+" class='asd'>"+"<p><br/>"
                         +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByRail(" +lat+","+lng + ")'>Rail로 도착</button> "
                         +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByBus(" +lat+","+lng + ")'>Bus로 도착</button> "+"<p>"
                         );
@@ -315,7 +315,7 @@ function getRestaurant(){
         "click",
         (function(marker2){
             return function (){
-         	   	infowindow.setContent("<img src="+img_date+" class='asd'>"+"<h1>"+main_title+"</h1>"+"<p>"+itemcntnts);
+         	   	infowindow.setContent("<h3>"+main_title+"</h3>"+"<img src="+img_date+" class='asd'>"+"<p><br/>"+itemcntnts);
                infowindow.open(map,marker2);
                 if (marker.getAnimation() !== null) {
                     marker.setAnimation(null);
