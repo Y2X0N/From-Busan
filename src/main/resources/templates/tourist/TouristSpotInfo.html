@@ -61,10 +61,10 @@ function getDb(){
 	                "click",
 	                (function(marker){
 	                    return function (){
-	                        infowindow.setContent("<h3>"+main_title+"</h3>"+
+	                        infowindow.setContent("<div class='resmark'><h3>"+main_title+"</h3>"+
 	                        		"<img src="+img_date+" class='asd' alt = 'tourist image'>"+"<br>"
 	                        +"<p>"+"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByRail(" +lat+","+lng + ")'>Rail로 도착</button> "
-	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByBus(" +lat+","+lng + ")'>Bus로 도착</button> "+"<p>"
+	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByBus(" +lat+","+lng + ")'>Bus로 도착</button> "+"<p></div>"
 	                        );
 	                        infowindow.open(map,marker);
 	                        if (marker.getAnimation() !== null) {
@@ -72,6 +72,14 @@ function getDb(){
 		                      } else {
 		                        marker.setAnimation(google.maps.Animation.BOUNCE);
 		                      }
+	                        
+	                        let index=0;
+	                        var lang = localStorage.getItem("lang");
+	                        if (lang !== "ko") {
+	                        trans(lang,main_title,index);
+	                        }
+	                        
+	                        
 	                    };
 	                    })(marker,i)
 	            	);
@@ -315,7 +323,7 @@ function findRestaurant(data1){
  
 	//maps api 객체생성
 	let map= new google.maps.Map(document.getElementById("map"),{
-		 zoom:14,
+		 zoom:12,
 		 center : new google.maps.LatLng(lat, lng),
 		 mapTypeId: google.maps.MapTypeId.ROADMAP,
 		});	
@@ -347,7 +355,6 @@ const pos = new google.maps.LatLng(lat,lng);
 	//레스토랑 마커뿌리기
   const lang = window.localStorage.getItem("lang");
   
-	let mainTitle = [];
 	
 	for(i=0; i<data1.length;i++){
  		res = data1.find((item,index)=>{
@@ -368,8 +375,6 @@ const pos = new google.maps.LatLng(lat,lng);
 	    	
     	    	
  	    	let main_title = item["main_title"];
- 	    	mainTitle.push(main_title); 
- 	    	//console.log(mainTitle);
 	    	//로케이션 별로 마크 생성
 				 	    	 
     	 
@@ -389,28 +394,31 @@ const pos = new google.maps.LatLng(lat,lng);
 	                    	 
 	                        infowindow.setContent("<div class='resmark'>"+"<h3>"+main_title+"</h3>"
 	                        +"<img src='"+mainImgNormal+"' alt='restaurant image' style='width: 300px; height: 200px;'><br>"
-	                        +"<p>"+"<h5> 대표메뉴 : "+rprsntv_menu+"</h5>"+"<p>"+"<h5> 대표 전화번호 : "+cntct_tel+"</h5>"+"<p>"+"<h5> 주소 : "+addr1+"</h5>"+"<p>"+"<p>"
+	                        +"<p>"+"<h5 id='menu'> 대표메뉴 : "+rprsntv_menu+"</h5>"+"<p>"+"<h5 id='tel'> 대표 전화번호 : "+cntct_tel+"</h5>"+"<p>"+"<h5 id='add'> 주소 : "+addr1+"</h5>"+"<p>"+"<p>"
 	                        /* +"<button type='button' class='btn btn-outline-primary' onclick=\"location.href='/restaurant/RestaurantInfo?restaurant_id=" + restaurant_id + "'\">레스토랑 정보</button>" */
 	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRoute(" +lat+","+lng + ")'>명소에서 최단 거리 찾기</button> "+"</div>"
 	                        );
 	                        infowindow.open(map,marker);
-	                        if (marker.getAnimation() !== null) {
-		                        marker.setAnimation(null);
-		                      } else {
-		                        marker.setAnimation(google.maps.Animation.BOUNCE);
-		                      }
+	                        
+	                        let menu="대표메뉴 : "+rprsntv_menu;
+	                        let add="주소 : "+addr1;
+	                        let tel="대표 전화번호 : "+cntct_tel;
+	                        var language = localStorage.getItem("lang");
+	                        if (language !== "ko") {
+	                        trans(lang,main_title,index,menu,add,tel);
+	                        }
 	                    };
 	                    })(marker,i)
 	            	);
+	            
  			return item
  		}
  		return false;
- 		//trans
  		
  	})
  	
 	}
-	trans(lang,mainTitle);
+
 }
 
 /////////////// 최단경로 길찾기/////////////////////////////////////////////////////////////////////////
@@ -657,38 +665,37 @@ function myList(touristSpotId) {
 		    translate('zh_CN');
 		  }
 	});
+
     
-    function trans(lang,mainTitle) {
-    	//let contents = $("#popup").attr("data-original");
-    	//let lang = testVari;
-    	//console.log(main_title);
-    	console.log(lang);
-    	console.log(mainTitle);
-    	// ajax 호출 등의 코드 추가
+    
+    ///////////////////////////////지도에서 맛집 클릭했을때에 번역 실행//////////////////////////////////
+    function trans(lang,main_title,index,menu,add,tel) {
+    	
+    	console.log(index);
     	 $.ajax({
-    		url : "/translate/tourMaps",
+    		url : "/translate/infoInMaps",
     		type : "post",
     		data : {
     			lang : lang,
-    			"mainTitle[]": mainTitle,
+    			main_title:main_title,
+    			menu:menu,
+    			add:add,
+    			tel:tel,
     		},
     		success : function(joined) {
-    				//console.log(joined);
-    				//let remark = $(".resmark h3").text;
-    				index=0;
-    			/* for(let i=0;i<joined.length;i++){
-    					$("'div.resmark h3'").text(joined[i].translation);
-    				}  */
-    				var reviewPlaceElements = $("div.resmark h3");
-    				reviewPlaceElements.each(function() {
-    					var reviewPlaceElement = $(this);
-    					reviewPlaceElement.text(joined[index].translation);
-    					reviewPlaceElement.attr("data-translation",
-    					joined[index].translation);
-    					index++;
-    					
-    				});
-    				//console.log(joined[index]);
+    				
+    				let i=0;
+    				$("div.resmark h3").text(joined[i].translation);
+    				i++;
+    				
+    				if(!joined[i].translation.isEmpty){
+    				$("h5#menu").text(joined[i].translation);
+    				i++;
+    				$("h5#add").text(joined[i].translation);
+    				i++;
+    				$("h5#tel").text(joined[i].translation);
+    				i++;
+    				}
     		},
     		error : function(xhr, status, error) {
     			console.error('AJAX error:', error);

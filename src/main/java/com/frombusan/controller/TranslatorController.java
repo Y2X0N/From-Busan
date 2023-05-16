@@ -107,16 +107,31 @@ public class TranslatorController {
 		
         return ResponseEntity.ok(joined);
     }
-	@PostMapping("tourMaps")
-	public ResponseEntity<List<Translation>> tourMaps(@RequestParam String lang,
-			@RequestParam(value="mainTitle[]", defaultValue="") List<String> mainTitle
-			)
-					throws IOException{
-		log.info("test{}",mainTitle);
-		List<Translation> joined = new ArrayList<>();
-		List<Translation> mainTitles = mmt.translate("ko",lang,mainTitle);
+	@PostMapping("infoInMaps")
+	public ResponseEntity<List<Translation>> infoInMaps(
+			@RequestParam String lang,
+			@RequestParam String main_title,
+			@RequestParam(defaultValue="") String menu,
+			@RequestParam(defaultValue="") String add,
+			@RequestParam(defaultValue="") String tel
+			) throws IOException{
 		
-		joined.addAll(mainTitles);
+		List<Translation> joined = new ArrayList<>();
+		List<Translation> main_titles = mmt.translate("ko",lang, Arrays.asList(main_title));
+		
+		joined.addAll(main_titles);
+		if(!menu.isEmpty()) {
+			List<Translation> rprsntv_menus = mmt.translate("ko",lang, Arrays.asList(menu));
+			joined.addAll(rprsntv_menus);
+		}
+		if(!add.isEmpty()) {
+			List<Translation> adds = mmt.translate("ko",lang, Arrays.asList(add));
+			joined.addAll(adds);
+		}
+		if(!tel.isEmpty()) {
+			List<Translation> tels = mmt.translate("ko",lang, Arrays.asList(tel));
+			joined.addAll(tels);
+		}
 		
 		return ResponseEntity.ok(joined);
 	}

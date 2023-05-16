@@ -52,7 +52,7 @@ public class TouristController {
 		List<Tourist_Spot> searchTour = touristMapper.findAllTourist();
 		
 		model.addAttribute("searchTour", searchTour);
-		model.addAttribute("tourist", findAllTourist);
+		model.addAttribute("findAllTourist", findAllTourist);
 		model.addAttribute("navi", navi);
         model.addAttribute("searchText", searchText);
 
