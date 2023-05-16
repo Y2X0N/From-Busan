@@ -9,9 +9,10 @@ import java.time.LocalDate;
 @Data
 public class MemberJoinForm {
     
+	@Size(min = 5, max = 10)
     private String member_id;
     
-    @Size(min = 4, max = 20)
+    @Size(min = 5, max = 10)
     private String password;
     
     @NotBlank
