@@ -50,15 +50,15 @@ function calcRoute() {
     	            	result1 = instruction1.slice(0, -1);
     	              //console.log(result1); 
     	            	$("#popup").append(result1);
-    	            	
     	            
     	        }        
     	    }
-    	            console.log(result1);
     	            let testVari = window.localStorage.getItem("lang");
     	            //console.log(testVari);
-    	            xx(testVari,result1);
-         
+                    var language = localStorage.getItem("lang");
+                    if (language !== "ko") {    	            
+          	            trans(testVari,result1);
+                    }
           
       }//
       
@@ -143,10 +143,9 @@ function translate(lang) {
 	});
 }
 
-function xx(lang,contents) {
+function trans(lang,contents) {
 	//let contents = $("#popup").attr("data-original");
 	//let lang = testVari;
-	console.log(contents);
 	// ajax 호출 등의 코드 추가
 	$.ajax({
 		url : "/translate/maps",
