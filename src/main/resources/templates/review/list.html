@@ -35,7 +35,6 @@
 		$("[id='main_title']").each(function() {
 			mainTitle.push($(this).attr("data-original"));
 		});
-		console.log(text1);
 
 		// ajax 호출 등의 코드 추가
 		$.ajax({
@@ -112,12 +111,57 @@
 	var map;
 
 	function search() {
-		var searchText = document.getElementById("searchText").value;
 
-		//한국어로 검색하면, 번역을 거친 map배열이 없으므로 이렇게 실행!
-		if (!map || map.size === 0) {
-			location.href = "/review/list?searchText=" + searchText;
-			return;
+		  var searchText = document.getElementById("searchText").value;
+		  
+		  //한국어로 검색하면, 번역을 거친 map배열이 없으므로 이렇게 실행!
+		  if (!map || map.size === 0) {
+			    location.href = "/review/list?searchText=" + searchText;
+			    return;
+			  }
+		  
+		  /* var matchedValues = [];   이 코드는 영어로 했을때 실패, 대소문자구분못함
+		  map.forEach(function(value, key) {
+		    if (key.includes(searchText)) {
+		        matchedValues.push(value);
+		    }
+		  }); */
+		  
+		// map에서 일치하는 값(value) 찾기
+			 var matchedValues = [];
+			  var regex = new RegExp(searchText, 'i'); // 대소문자 구분 없이 검색하기 위해 정규표현식 사용
+			  map.forEach(function(value, key) {
+			    if (regex.test(key)) {
+			      matchedValues.push(value);
+			    }
+			  });
+		  
+		  console.log(matchedValues);
+		  //검색한 외국어랑 일치하는 map값이 없엇을 경우! 리뷰가 없다는 페이지로 ㄱㄱ
+		  if (!matchedValues || matchedValues.length === 0) {
+			  location.href = "/review/list?searchText=" + searchText;
+			  return;
+			}
+		  
+		  //검색한 값을 가진 key값을 먼저 검색한 후에, 그 key값들의 value값들의 공통 글자를 찾아서 반환
+		  var commonCharacters = matchedValues.reduce(function(a, b) {
+			  var result = "";
+			  for (var i = 0; i < a.length; i++) {
+			    if (b.includes(a.charAt(i))) {
+			      result += a.charAt(i);
+			    }
+			  }
+			  return result;
+			});
+		  //value값들의 공통 글자
+			console.log("Common characters:", commonCharacters);
+
+		  if (commonCharacters) {
+		    // 일치하는 값이 있을 경우의 처리
+		    console.log("매칭된 값:", commonCharacters);
+	        location.href="/review/list?searchText=" + commonCharacters;
+		  } // 일치하는 값이 없을 경우의 처리
+		    location.href = "/review/list?searchText=" + commonCharacters;
 		}
 		// map에서 일치하는 값(value) 찾기
 		var matchedValues = [];
