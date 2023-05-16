@@ -277,6 +277,14 @@ public class MemberController {
         return "member/updateMember";
     }
     
+    @GetMapping("checkMember")
+    public String checkMember(Model model,@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+    	
+        model.addAttribute("findPasswordForm", new findIdForm());
+        model.addAttribute("loginMember", loginMember);
+        return "member/checkMember";
+    }
+    
     @PostMapping("updateMember")
     public ResponseEntity<String> updateMember2(Model model
     		,@RequestParam String name, @RequestParam String password, @RequestParam String phone_number
