@@ -13,8 +13,10 @@ import com.frombusan.model.AttachedImg;
 import com.frombusan.model.festival.Festival;
 import com.frombusan.model.review.Review;
 import com.frombusan.model.review.ReviewLikes;
+import com.frombusan.model.tourist.Tourist_Spot;
 import com.frombusan.repository.FestivalMapper;
 import com.frombusan.repository.ReviewMapper;
+import com.frombusan.repository.TouristSpotMapper;
 import com.frombusan.util.FileService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,18 +26,18 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
-public class FestivalService {
+public class TouristService {
 
-    private final FestivalMapper festivalMapper;
+    private final TouristSpotMapper touristSpotMapper;
 
 
-    
-    public List<Festival> findFestivals(String searchText, int startRecord, int countPerPage) {
+   
+    public List<Tourist_Spot> findAllTourist(String searchText, int startRecord, int countPerPage) {
         // 전체 검색 결과 중 시작 위치와 갯수
         RowBounds rowBounds = new RowBounds(startRecord, countPerPage);
-        return festivalMapper.findAllFestival(searchText, rowBounds);
+        return touristSpotMapper.findAllTourist(searchText, rowBounds);
     }
 
-    
+   
     
 }

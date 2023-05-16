@@ -19,6 +19,7 @@ import com.frombusan.model.tourist.TouristSpotLikes;
 import com.frombusan.model.tourist.TouristSpotMyList;
 import com.frombusan.model.tourist.Tourist_Spot;
 import com.frombusan.repository.TouristSpotMapper;
+import com.frombusan.service.TouristService;
 import com.frombusan.util.PageNavigator;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,8 @@ public class TouristController {
 	
 	@Autowired
 	private TouristSpotMapper touristMapper;
+	@Autowired
+	private TouristService touristService;
 
 	//페이징 처리
 	private final int countPerPage = 9;
@@ -44,9 +47,11 @@ public class TouristController {
     	//명소리스트
     	int total = touristMapper.getTotal(searchText);
     	PageNavigator navi = new PageNavigator(countPerPage, pagePerGroup, page, total);
-    	RowBounds rowBounds= new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
-		List<Tourist_Spot> findAllTourist = touristMapper.findAllTourist(searchText,rowBounds);
+		List<Tourist_Spot> findAllTourist = touristService.findAllTourist(searchText,navi.getStartRecord(),navi.getCountPerPage());
 		
+		List<Tourist_Spot> searchTour = touristMapper.findAllTourist();
+		
+		model.addAttribute("searchTour", searchTour);
 		model.addAttribute("tourist", findAllTourist);
 		model.addAttribute("navi", navi);
 		

@@ -136,12 +136,19 @@ public class TranslatorController {
 	@PostMapping("Lists")//명소*축제 리스트
     public ResponseEntity<List<Translation>> lists(
            @RequestParam(value="itemcntnts[]", defaultValue="") List<String> itemcntnts
-           , @RequestParam(value="main_title[]") List<String> main_title
+           , @RequestParam(value="main_title[]", defaultValue="") List<String> main_title
+           , @RequestParam(value="searchName[]", defaultValue="") List<String> searchName
     		,@RequestParam String lang) throws IOException {
-		
-		List<Translation> mainTitle = mmt.translate("ko",lang,main_title);
 		List<Translation> joined = new ArrayList<>();
+		
+		if(!searchName.isEmpty()) {
+			List<Translation> searchNames = mmt.translate("ko",lang,searchName);
+			joined.addAll(searchNames);
+		}
+		if(!main_title.isEmpty()) {
+		List<Translation> mainTitle = mmt.translate("ko",lang,main_title);
 		joined.addAll(mainTitle);
+		}
 		if(!itemcntnts.isEmpty()) {
 			List<Translation> itemcntnt = mmt.translate("ko",lang,itemcntnts);
 			joined.addAll(itemcntnt);
