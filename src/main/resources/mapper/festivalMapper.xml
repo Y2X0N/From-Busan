@@ -14,7 +14,11 @@
     
     <select id="findAllFestival" resultMap="festivalResultMap">
         select itemcntnts,festival_id,place_like,main_img_normal,main_title,hit 
-        from festival order by hit desc
+        from festival 
+       	<if test="_parameter != null">
+            where main_title like '%' || #{searchText} || '%'
+        </if>
+        order by hit desc
     </select>
    	<resultMap type="festival" id="festivalResultMap">
 		<id property="id" column="id" />
