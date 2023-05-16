@@ -26,7 +26,7 @@
     	 function formCheck() {
     		  //let form = $('#idForm');
     			let member_id = $("#member_id");
-        	let password = $("#password");
+        		let password = $("#password");
 					let passwordCheck=$("#passwordCheck");
 					let name = $('#name'); 
 					let birth = $("#birth");
@@ -42,12 +42,14 @@
        		if(isEmpty(member_id,"[[#{alert.alertid}]]")) return;
        		if(isEmpty(password,"[[#{alert.alertPassword}]]")) return;
        		if(isEmpty(name,"[[#{alert.alertName}]]")) return;
+       		
        		//비밀번호 일치확인
        		if(password.val() != passwordCheck.val()){
 					alert("[[#{alert.alertPassword2}]]");
 					password.focus();
-       		return;
+       		return false;
        		}
+       		
        		if(isEmpty(birth,"[[#{alert.alertbirth}]]")) return;
        		//생년월일 체크
        		if (now < birthDate) {
@@ -134,11 +136,13 @@
     	                     alert("아이디가 존재합니다. 다른 아이디를 입력해주세요.");
     	                     $("#member_id").focus();
     	                 } else {
-    	                     alert("사용가능한 아이디입니다.");
-    	                     $("#password").focus();
-    	                     //아이디가 중복하지 않으면  idck = 1 
-    	                     idck = 1;
-    	                 }
+    	                	 
+    	                		 alert("사용가능한 아이디입니다.");
+        	                     $("#password").focus();
+        	                     //아이디가 중복하지 않으면  idck = 1 
+        	                     idck = 1;
+    	                    
+    	                 } 
     	             },
     	             error : function(error) {
     	                 alert("다시입력해주세요");
@@ -175,9 +179,8 @@
 					<td class="leftTd">[[#{alert.Password}]]</td>
 					<td class="rightTd"><input type="password"
 						th:field="*{password}">
-						<p>
-							[[#{alert.password1}]] <span class="red">[[#{alert.password2}]]</span>[[#{alert.password3}]]
-						</p></td>
+						<span class="error" th:errors="*{password}"></span>
+						</td>
 				</tr>
 				<tr>
 					<td class="leftTd">[[#{alert.Check}]]</td>

@@ -126,5 +126,10 @@ object-fit: cover;
     .red{
         color: red;
         }
+        
+     .error{
+     	font-size: 11px;
+     	color: red;
+     }
 
 

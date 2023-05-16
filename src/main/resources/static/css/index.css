@@ -94,6 +94,7 @@ input[type=button]{
   height: 70px;
   display: flex;
   justify-content: space-between;
+  margin-top: 10%;
 
 }
 #tourist-spot-title>span{
@@ -121,7 +122,7 @@ input[type=button]{
 /*===================================*/
 .image-container{
 	width: 1700%; /*1200px*17*/
-	height: 500px;	
+	height: 350px;	
 }
 .festival-container{
 	width: 1700%; /*1200px*17*/
