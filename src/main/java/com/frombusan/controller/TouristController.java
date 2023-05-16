@@ -54,7 +54,8 @@ public class TouristController {
 		model.addAttribute("searchTour", searchTour);
 		model.addAttribute("tourist", findAllTourist);
 		model.addAttribute("navi", navi);
-		
+        model.addAttribute("searchText", searchText);
+
 		return "/tourist/Tourist";
 	}
     // 게시글 읽기

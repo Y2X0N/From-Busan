@@ -61,6 +61,7 @@ public class FestivalController {
 		model.addAttribute("searchFes", searchFes);
 		model.addAttribute("findAllFestival", findAllFestival);
 		model.addAttribute("navi", navi);
+        model.addAttribute("searchText", searchText);
 
 		return "festival/FestivalList";
 	}
