@@ -12,7 +12,11 @@
 
 	<select id="findAllTourist" resultMap="touristResultMap">
 		select itemcntnts,tourist_spot_id,place_like,main_img_normal,main_title, hit from
-		tourist_spot order by hit desc
+		tourist_spot
+       	<if test="_parameter != null">
+            where main_title like '%' || #{searchText} || '%'
+        </if>
+		 order by hit desc
 	</select>
     <resultMap type="tourist" id="touristResultMap">
 		<id property="id" column="id" />
@@ -33,6 +37,9 @@
 	
 	<select id="getTotal" resultType="int">
 		select count(*) from tourist_Spot
+		<if test="_parameter != null">
+            where main_title like '%' || #{searchText} || '%'
+        </if>
 	</select>
 	<!-- /////////////////좋아요 기능//////////////////////////////////////////////////////////////// -->
 

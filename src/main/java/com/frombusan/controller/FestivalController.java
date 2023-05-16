@@ -56,9 +56,6 @@ public class FestivalController {
 		
 		List<Festival> findAllFestival = festivalservice.findFestivals(searchText,navi.getStartRecord(),navi.getCountPerPage());
 		
-		log.info("1:{}",navi.getStartRecord());
-		log.info("2:{}",navi.getCountPerPage());
-		
 		List<Festival> searchFes = festivalMapper.findAllFestival();
 		
 		model.addAttribute("searchFes", searchFes);
