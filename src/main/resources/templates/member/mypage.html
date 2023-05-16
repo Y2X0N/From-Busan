@@ -9,10 +9,12 @@
 
     <script th:inline="javascript">
 
-function updateMember() {
+
+
+function checkMember() {
 	  
 	//var mainTitle = encodeURIComponent('${festival.main_title}');
-    var url = '/member/updateMember' //reviewList?main_title='' + mainTitle;
+    var url = '/member/checkMember' //reviewList?main_title='' + mainTitle;
   	var options = 'width=700,height=500,left=' + (screen.width / 2 - 350) + ',top=' + (screen.height / 2 - 350);
     window.open(url, 'Popup', options);
 
@@ -33,7 +35,7 @@ function updateMember() {
 		<div class="MY">
 			<input class="in1" type="button" value="My List" th:onclick="location.href='/review/myReviewList'"> 
 			<input class="in2" type="button" value="Wish List" th:onclick="location.href='/member/jjimList'"> 
-			<input class="in3" type="button" value="Update Info" onclick="updateMember()">
+			<input class="in3" type="button" value="Update Info" onclick="checkMember()">
 			
 			
 			

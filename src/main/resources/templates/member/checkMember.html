@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>수정전비밀번호확인</title>
+    <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/js/index.js"></script>
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/loginForm.css" />
+    
+<style>
+.popup-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+	
+	
+	
+.modal {
+  display: none; /* 모달 숨기기 */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* 배경 흐리게 */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+}
+
+.modal-content p {
+  font-size: 1.2em;
+}
+
+.modal-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+ </style> 
+ 
+<script th:inline="javascript">
+
+ function checkPassword() {
+ 	
+     let password = $("#password").val();
+     let password1 = password;
+     
+     console.log(password1);
+
+  
+   if (password === "") {
+     alert("비밀번호를 입력하세요");
+     return;
+   }
+   if (password1 === "") {
+     alert("비밀번호 확인");
+     return;
+   }
+   $.ajax({
+     url: "/member/" ,
+     type: "post",
+     
+     
+     success: function (data, success, xhr) {
+    	 
+     	  console.log(data);
+     	  
+     	  const data1 = data.filter((item)=>{
+      	    return item.password==password
+     	  });
+     	  
+     	  console.log(data1);
+     	  if(data1.length !== 0){
+			
+     	    // 모달 열기
+     	    const modal = document.querySelector(".modal");
+     	    modal.style.display = "block";
+
+     	    // 카운트다운 시작
+     	    let timeLeft = 3; // 5초 카운트다운
+     	    const countDownEl = document.getElementById("countdown"); // 카운트다운을 표시할 엘리먼트
+     	    countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
+
+     	    const timer = setInterval(() => {
+     	      if (timeLeft <= 0) {
+     	        clearInterval(timer);
+     	        modal.style.display = "none"; // 모달 닫기
+     	      
+     	      updateMember();
+     	     
+     	      } else {
+     	        countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
+     	        timeLeft--;
+     	      }
+     	    }, 1000);
+
+     	    // 모달 닫기 버튼 이벤트 핸들러 등록
+     	    const modalClose = document.querySelector(".modal-close");
+     	    modalClose.addEventListener("click", function() {
+     	      clearInterval(timer); // 타이머 중지
+     	     
+     	   		              
+     	    });
+     	  } else {
+     	    alert("일치하는 정보가 없습니다");
+     	  }
+     	}
+     ,error: function (xhr, status, error) {
+       console.log(status);
+     }
+   });
+ }
+ 
+ function updateMember() {
+	 	
+	  
+		//var mainTitle = encodeURIComponent('${festival.main_title}');
+	    var url = '/member/updateMember';
+	  	var options = 'width=700,height=500,left=' + (screen.width / 2 - 350) + ',top=' + (screen.height / 2 - 350);
+	    window.open(url, 'Popup', options);
+
+	}
+ 
+    </script>
+    
+    
+</head>
+<body>
+  <div class="popup-content">
+  	<div id="login-container">
+        <img class="img" src="/image/bugi.png" alt="bugi">
+		<form  th:object="${findPasswordForm}" >
+            <h1>비밀번호 확인</h1>
+            
+
+            <div class="login-input">
+                <input type="text" id="name" th:field="${findPasswordForm.password}" placeholder="  비밀번호를 입력해주세요.">
+                <input type="text" id="phone_number"th:field="${findPasswordForm.password}" placeholder=" 비밀번호 확인">
+            </div>
+
+  
+   			<div class="login-submit">
+				<input class="btn-login" type="button" value="확인" onclick="checkPassword()" >
+            </div>
+            
+           <div id="countdown"></div>
+            
+        </form>
+    </div>
+	</div>
+    
+     <div class="modal">
+	    <div class="modal-content">
+	      <h2>회원 수정 페이지로 이동합니다.</h2>
+	    </div>
+    </div>
+</body>
+</html>
