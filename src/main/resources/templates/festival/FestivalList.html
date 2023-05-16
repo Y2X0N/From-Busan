@@ -8,7 +8,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="/css/header.css" />
 <link rel="stylesheet" href="/css/list.css">
-<link rel="stylesheet" href="/css/reviewList.css">
+
 
 <script src="/js/index.js"></script>
 
@@ -98,11 +98,11 @@ $(document).ready(function() {
 	<br>
 	<br>
 	<br>
-		<div id="review-search">
+		<div id="festival-search">
 			<div class="search-window">
 				<div class="search-wrap">
 					<input id="searchText" list="searchOptions" type="search"
-						name="searchText" placeholder="검색어를 입력해주세요.">
+						name="searchText" placeholder="축제명을 입력해주세요.">
 					 <datalist id="searchOptions">
 						<option th:each="festival : ${searchFes}"><span
 								th:text="${festival.main_title}" id="main_title"
@@ -146,7 +146,7 @@ $(document).ready(function() {
 
 		</div>
 		
-					<div id="navigator" class="center">
+					<div id="navigator" class="pageNumber">
 				<th:block th:if="${navi.currentPage - navi.pagePerGroup > 0}">
 					<a
 						th:href="@{/festival/list(page=${navi.currentPage - navi.pagePerGroup}, searchText=${searchText})}"><<</a>&nbsp;&nbsp;
