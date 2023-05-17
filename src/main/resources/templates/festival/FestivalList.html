@@ -139,9 +139,15 @@ function search() {
 		}
 		return result;
 		});
-		
 		//value값들의 공통 글자
-		console.log("Common characters:", commonCharacters);
+		console.log("Common characters: }", commonCharacters);
+		
+		  //검색 정보가 너무 부족한경우(특히 외국어)
+		 if(commonCharacters==""){
+			    $(".color")
+				.html("검색어를 정확하게 입력해 주세요.");
+			    location.href = "/festival/list?searchText=" + searchText;
+		  }
 		
 		if (commonCharacters) {
 		// 일치하는 값이 있을 경우의 처리

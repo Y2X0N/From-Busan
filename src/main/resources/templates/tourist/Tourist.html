@@ -135,9 +135,12 @@ function search() {
 		  }
 		  return result;
 		});
-	
 	//value값들의 공통 글자
 		console.log("Common characters:", commonCharacters);
+	  //검색 정보가 너무 부족한경우(특히 외국어)
+	 if(commonCharacters==""){
+		    location.href = "/tourist/list?searchText=" + searchText;
+	  }
 	
 	if (commonCharacters) {
 	 // 일치하는 값이 있을 경우의 처리
