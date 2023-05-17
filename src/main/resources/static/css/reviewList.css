@@ -78,6 +78,8 @@ section.notice {
 	line-height: 1.4;
 	word-break: break-all;
 	vertical-align: middle;
+	height:100%;
+	width:100%;
 }
 
 .review-table a:hover {
@@ -149,7 +151,10 @@ section.notice {
 	color: white;
 	border: 2px solid black;
 }
-
+.hover:hover{
+	background-color: #545457;
+	color: white;
+}
 .pageNumber{
 	height: 100px;
 /* 	display: flex; */

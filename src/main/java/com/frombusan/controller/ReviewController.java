@@ -125,7 +125,7 @@ public class ReviewController {
     public String list(@RequestParam(value = "page", defaultValue = "1") int page,
                        @RequestParam(value = "searchText", defaultValue = "") String searchText,
                        Model model, @SessionAttribute(value = "loginMember", required = false) Member loginMember) {
-        log.info("searchText: {}", searchText);
+        //log.info("searchText: {}", searchText);
         int total = reviewService.getTotal(searchText);
 
         PageNavigator navi = new PageNavigator(countPerPage, pagePerGroup, page, total);
@@ -166,7 +166,7 @@ public class ReviewController {
         model.addAttribute("loginMember",loginMember);
         
         List<String> findReviewLikes = reviewService.findLikesMemberId(review_id);
-		log.info("findReviewLikes:{}",findReviewLikes);
+		//log.info("findReviewLikes:{}",findReviewLikes);
 		model.addAttribute("findReviewLikes", findReviewLikes);
 
         // board/read.html 를 찾아서 리턴한다.

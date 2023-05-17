@@ -30,7 +30,7 @@ function getDb(){
 	
 	   //지도 표시	
 	 	const  map= new google.maps.Map(document.getElementById("map"),{
-	           zoom:14,
+	           zoom:12,
 	           center : new google.maps.LatLng(35.11, 129.04),
 	           mapTypeId: google.maps.MapTypeId.ROADMAP,
 	       });
@@ -61,9 +61,10 @@ function getDb(){
 	                "click",
 	                (function(marker){
 	                    return function (){
-	                        infowindow.setContent("<img src="+img_date+" class='asd'>"+"<h1>"+main_title+"</h1>"+"<p>"
-	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByRail(" +lat+","+lng + ")'>Rail로 도착</button> "
-	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByBus(" +lat+","+lng + ")'>Bus로 도착</button> "+"<p>"
+	                        infowindow.setContent("<div class='resmark'><h3>"+main_title+"</h3>"+
+	                        		"<img src="+img_date+" class='asd' alt = 'tourist image'>"+"<br>"
+	                        +"<p>"+"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByRail(" +lat+","+lng + ")'>Rail로 도착</button> "
+	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByBus(" +lat+","+lng + ")'>Bus로 도착</button> "+"<p></div>"
 	                        );
 	                        infowindow.open(map,marker);
 	                        if (marker.getAnimation() !== null) {
@@ -71,6 +72,14 @@ function getDb(){
 		                      } else {
 		                        marker.setAnimation(google.maps.Animation.BOUNCE);
 		                      }
+	                        
+	                        let index=0;
+	                        var lang = localStorage.getItem("lang");
+	                        if (lang !== "ko") {
+	                        trans(lang,main_title,index);
+	                        }
+	                        
+	                        
 	                    };
 	                    })(marker,i)
 	            	);
@@ -86,6 +95,7 @@ function getDb(){
 	               marker = new google.maps.Marker({
 			                position: pos,
 			                map:map,
+			               
 			            });
 	               marker.setAnimation(google.maps.Animation.BOUNCE);
 	               infowindow.setPosition(pos);
@@ -258,28 +268,33 @@ function getRestaurant(){
       type: "post",
       success: function (data, success, xhr) {
        //지역 정하기 
-        const data1 = data.filter((item)=>{
+         const data1 = data.filter((item)=>{
        	 return item.gugun_nm==gugun_nm ;
-       	 })
+       	 });
        	if(data1.length !== 0){
+       		//여기서 trans해서 뿌려주면 될듯
+
+       		//맛집찾는함수에 ajax데이터 넣어줌
          	findRestaurant(data1);
-           	 }else{alert("주변 맛집이 없습니다")};
+       		//trans(lang,lists);
+         	}
+       		else{alert("주변 맛집이 없습니다")};
           },
       error: function (xhr, status, error) {
     	  console.log(status);
       }
     });
 	}	
-/////////////// 맛집 정보 지도에 표시하기/////////////////////////////////////////////////////////////////////////
 
+
+
+/////////////// 맛집 정보 지도에 표시하기/////////////////////////////////////////////////////////////////////////
 function findRestaurant(data1){
-	let lat = [[${tourist_Spot.lat}]];
+		let lat = [[${tourist_Spot.lat}]];
     let lng = [[${tourist_Spot.lng}]];
-	const main_title = [[${tourist_Spot.main_title}]];
-	const itemcntnts= [[${#strings.abbreviate(tourist_Spot.itemcntnts,80)}]];
+		const main_title = [[${tourist_Spot.main_title}]];
+		const itemcntnts= [[${#strings.abbreviate(tourist_Spot.itemcntnts,80)}]];
     const img_date = [[${tourist_Spot.main_img_normal}]]
- 	 
-    
     
     //로케이션 별로 마크 생성
   /* 	marker = new google.maps.Marker({
@@ -308,7 +323,7 @@ function findRestaurant(data1){
  
 	//maps api 객체생성
 	let map= new google.maps.Map(document.getElementById("map"),{
-		 zoom:14,
+		 zoom:12,
 		 center : new google.maps.LatLng(lat, lng),
 		 mapTypeId: google.maps.MapTypeId.ROADMAP,
 		});	
@@ -327,7 +342,7 @@ const pos = new google.maps.LatLng(lat,lng);
            "click",
            (function(marker2){
                return function (){
-            	   	infowindow.setContent("<img src="+img_date+" class='asd'>"+"<h1>"+main_title+"</h1>"+"<p>"+itemcntnts);
+            	   	infowindow.setContent("<h3>"+main_title+"</h3>"+"<img src="+img_date+" class='asd'>"+"<p><br>"+itemcntnts);
                   infowindow.open(map,marker2);
                    if (marker.getAnimation() !== null) {
                        marker.setAnimation(null);
@@ -337,26 +352,32 @@ const pos = new google.maps.LatLng(lat,lng);
                };
                })(marker2,pos)
        	);
-
+	//레스토랑 마커뿌리기
+  const lang = window.localStorage.getItem("lang");
+  
+	
 	for(i=0; i<data1.length;i++){
- 	res = data1.find((item,index)=>{
+ 		res = data1.find((item,index)=>{
+ 			
  		if(index==i){
- 			let lat=[];
- 		 	let lng=[];
- 	    	lat +=item["lat"]; 
+	 			let lat=[];
+	 		 	let lng=[];
+	 	    lat +=item["lat"]; 
  	    	lng +=item["lng"];	
  	    	let restaurant_id=[];
-    	    	restaurant_id +=item["restaurant_id"];
+				
+	    	restaurant_id +=item["restaurant_id"];
+	    	let mainImgNormal =item["main_img_normal"];
+	    	let rprsntv_menu =item["rprsntv_menu"];
+	    	let cntct_tel =item["cntct_tel"];
+	    	let addr1 =item["addr1"];
+	    	// icons 선언
+	    	
     	    	
-    	    	let mainImgNormal =item["main_img_normal"];
-    	    	let rprsntv_menu =item["rprsntv_menu"];
-    	    	let cntct_tel =item["cntct_tel"];
-    	    	let addr1 =item["addr1"];
-    	    	// icons 선언
-    	    	
-    	    	
-    	    	let main_title = item["main_title"];
-				 	    	 //로케이션 별로 마크 생성
+ 	    	let main_title = item["main_title"];
+	    	//로케이션 별로 마크 생성
+				 	    	 
+    	 
 	            marker = new google.maps.Marker({
 	                position: new google.maps.LatLng(lat,lng),
 	                map:map,
@@ -370,25 +391,34 @@ const pos = new google.maps.LatLng(lat,lng);
 	                "click",
 	                (function(marker){
 	                    return function (){
-	                        infowindow.setContent("<h3>"+main_title+"</h3>"
+	                    	 
+	                        infowindow.setContent("<div class='resmark'>"+"<h3>"+main_title+"</h3>"
 	                        +"<img src='"+mainImgNormal+"' alt='restaurant image' style='width: 300px; height: 200px;'><br>"
-	                        +"<p>"+"<h5> 대표메뉴 : "+rprsntv_menu+"</h5>"+"<p>"+"<h5> 대표 전화번호 : "+cntct_tel+"</h5>"+"<p>"+"<h5> 주소 : "+addr1+"</h5>"+"<p>"+"<p>"
+	                        +"<p>"+"<h5 id='menu'> 대표메뉴 : "+rprsntv_menu+"</h5>"+"<p>"+"<h5 id='tel'> 대표 전화번호 : "+cntct_tel+"</h5>"+"<p>"+"<h5 id='add'> 주소 : "+addr1+"</h5>"+"<p>"+"<p>"
 	                        /* +"<button type='button' class='btn btn-outline-primary' onclick=\"location.href='/restaurant/RestaurantInfo?restaurant_id=" + restaurant_id + "'\">레스토랑 정보</button>" */
-	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRoute(" +lat+","+lng + ")'>명소에서 최단 거리 찾기</button> "
+	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRoute(" +lat+","+lng + ")'>명소에서 최단 거리 찾기</button> "+"</div>"
 	                        );
 	                        infowindow.open(map,marker);
-	                        if (marker.getAnimation() !== null) {
-		                        marker.setAnimation(null);
-		                      } else {
-		                        marker.setAnimation(google.maps.Animation.BOUNCE);
-		                      }
+	                        
+	                        let menu="대표메뉴 : "+rprsntv_menu;
+	                        let add="주소 : "+addr1;
+	                        let tel="대표 전화번호 : "+cntct_tel;
+	                        var language = localStorage.getItem("lang");
+	                        if (language !== "ko") {
+	                        trans(lang,main_title,index,menu,add,tel);
+	                        }
 	                    };
 	                    })(marker,i)
 	            	);
+	            
  			return item
- 		}return false;
+ 		}
+ 		return false;
+ 		
  	})
+ 	
 	}
+
 }
 
 /////////////// 최단경로 길찾기/////////////////////////////////////////////////////////////////////////
@@ -556,28 +586,7 @@ function myList(touristSpotId) {
       })
     });
 
-    //찜하기 버튼
-    /* $(function wish(){
-      var $wishBtn = $('.icon.wish');
-
-      $wishBtn.click(function () {
-        $wishBtn.toggleClass('active');
-				
-        if ($wishBtn.hasClass('active')) {
-          $(this).find('img').attr({
-            'src': '/image/bookmark-solid%20(2).svg',
-            alt: '찜하기 완료'
-          });
-
-        } else {
-          $(this).find('i').removeClass('fas').addClass('far')
-          $(this).find('img').attr({
-            'src': '/image/bookmark-regular%20(1).svg',
-            alt: "찜하기"
-          })
-        }
-      })
-    }) */
+    
     
   //팝업창 띄우기 (예제)
     function findTourist(homepage_url) {
@@ -656,32 +665,67 @@ function myList(touristSpotId) {
 		    translate('zh_CN');
 		  }
 	});
+
     
     
+    ///////////////////////////////지도에서 맛집 클릭했을때에 번역 실행//////////////////////////////////
+    function trans(lang,main_title,index,menu,add,tel) {
+    	
+    	console.log(index);
+    	 $.ajax({
+    		url : "/translate/infoInMaps",
+    		type : "post",
+    		data : {
+    			lang : lang,
+    			main_title:main_title,
+    			menu:menu,
+    			add:add,
+    			tel:tel,
+    		},
+    		success : function(joined) {
+    				
+    				let i=0;
+    				$("div.resmark h3").text(joined[i].translation);
+    				i++;
+    				
+    				if(!joined[i].translation.isEmpty){
+    				$("h5#menu").text(joined[i].translation);
+    				i++;
+    				$("h5#add").text(joined[i].translation);
+    				i++;
+    				$("h5#tel").text(joined[i].translation);
+    				i++;
+    				}
+    		},
+    		error : function(xhr, status, error) {
+    			console.error('AJAX error:', error);
+    		}
+    	});
+    }
   </script>
 </head>
 
 
 <body>
-	
-	
-	
+
+
+
 	<div th:replace="fragments/header :: header"></div>
 	<div id="container" th:object="${tourist_Spot}">
-	
+
 		<p>
 			<br> <br> <br>
-	
-		<h1 th:text="*{main_title}" id="main_title" th:data-original="*{main_title}"></h1>
-	
+		<h1 th:text="*{main_title}" id="main_title"
+			th:data-original="*{main_title}"></h1>
+
 		<nav class="tabnav">
-		
+
 			<a class="item" href="#itemcntnts">상세 정보</a> <a class="item"
 				href="#information">이용 정보</a> <a class="item" href="#mapContainer"
 				onclick="getRestaurant()">주변 맛집 지도</a>
 		</nav>
 
-		
+
 		<div id="spot-header-container">
 			<div class="itemcntnts" id="itemcntnts">
 
@@ -721,15 +765,13 @@ function myList(touristSpotId) {
 						</a>
 					</div>
 				</div>
-			<br>
-
-				<input type="button" class="btn btn-success"
+				<br> <input type="button" class="btn btn-success"
 					th:onclick="location.href='/review/reviewList?main_title=[[${tourist_Spot.main_title}]]'"
 					value="관련 리뷰 찾기">
 
 
-				<div class="explain" >
-					<p th:text="*{itemcntnts}"  th:data-original="*{itemcntnts}"></p>
+				<div class="explain">
+					<p th:text="*{itemcntnts}" th:data-original="*{itemcntnts}"></p>
 				</div>
 			</div>
 
@@ -751,22 +793,24 @@ function myList(touristSpotId) {
 					</tr>
 					<tr>
 						<th>휴무일</th>
-						<td th:text="*{hldy_info}" id="hldy_info" th:data-original="*{hldy_info}"></td>
+						<td th:text="*{hldy_info}" id="hldy_info"
+							th:data-original="*{hldy_info}"></td>
 					</tr>
 					<tr>
 						<th>운영요일 및 시간</th>
-						<td th:text="*{usage_day_week_and_time}" 
-						id="usage_day_week_and_time" th:data-original="*{usage_day_week_and_time}"></td>
+						<td th:text="*{usage_day_week_and_time}"
+							id="usage_day_week_and_time"
+							th:data-original="*{usage_day_week_and_time}"></td>
 					</tr>
 					<tr>
 						<th>요금</th>
-						<td th:text="*{usage_amount}"
-						id="usage_amount" th:data-original="*{usage_amount}"></td>
+						<td th:text="*{usage_amount}" id="usage_amount"
+							th:data-original="*{usage_amount}"></td>
 					</tr>
 					<tr>
 						<th>교통정보</th>
-						<td th:text="*{trfc_info}"
-						id="trfc_info" th:data-original="*{trfc_info}"></td>
+						<td th:text="*{trfc_info}" id="trfc_info"
+							th:data-original="*{trfc_info}"></td>
 					</tr>
 				</table>
 
@@ -775,10 +819,11 @@ function myList(touristSpotId) {
 			<div id="mapContainer">
 
 				<div class="find">
-					<input class="findRT" type="button" onclick="getRestaurant()" value="맛집 찾기"> 
-						<input class="findRT" type="button" onclick="getDb()" value="명소 찾기">
+					<input class="findRT" type="button" onclick="getRestaurant()"
+						value="맛집 찾기"> <input class="findRT" type="button"
+						onclick="getDb()" value="명소 찾기">
 				</div>
-				
+
 				<div id="map"></div>
 				<div class="modal">
 					<span class="close">&times;</span>

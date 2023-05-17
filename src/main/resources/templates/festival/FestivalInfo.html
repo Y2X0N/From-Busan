@@ -63,9 +63,9 @@ function getDb(){
                 (function(marker){
                     return function (){
                     	
-                        infowindow.setContent("<img src="+img_date+" class='asd'>"+"<h1>"+main_title+"</h1>"+"<p>"
+                        infowindow.setContent("<div class='resmark'><h3>"+main_title+"</h3>"+"<img src="+img_date+" class='asd'>"+"<p><br/>"
                         +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByRail(" +lat+","+lng + ")'>Rail로 도착</button> "
-                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByBus(" +lat+","+lng + ")'>Bus로 도착</button> "+"<p>"
+                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByBus(" +lat+","+lng + ")'>Bus로 도착</button> "+"<p></div>"
                         );
                         infowindow.open(map,marker);
                         if (marker.getAnimation() !== null) {
@@ -73,6 +73,11 @@ function getDb(){
 	                      } else {
 	                        marker.setAnimation(google.maps.Animation.BOUNCE);
 	                      }
+                        let index=0;
+                        var lang = localStorage.getItem("lang");
+                        if (lang !== "ko") {
+                        trans(lang,main_title,index);
+                        }
                     };
                     })(marker,i)
             	);
@@ -297,7 +302,7 @@ function getRestaurant(){
   	}
    
 	let map= new google.maps.Map(document.getElementById("map"),{
-        zoom:14,
+        zoom:12,
         center : new google.maps.LatLng(lat, lng),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
    	});
@@ -315,7 +320,7 @@ function getRestaurant(){
         "click",
         (function(marker2){
             return function (){
-         	   	infowindow.setContent("<img src="+img_date+" class='asd'>"+"<h1>"+main_title+"</h1>"+"<p>"+itemcntnts);
+         	   	infowindow.setContent("<h3>"+main_title+"</h3>"+"<img src="+img_date+" class='asd'>"+"<p><br/>"+itemcntnts);
                infowindow.open(map,marker2);
                 if (marker.getAnimation() !== null) {
                     marker.setAnimation(null);
@@ -358,18 +363,22 @@ function getRestaurant(){
                 "click",
                 (function(marker){
                     return function (){
-                    	 infowindow.setContent("<h3>"+main_title+"</h3>"
+                    	 infowindow.setContent("<div class='resmark'>"+"<h3>"+main_title+"</h3>"
   	                        +"<img src='"+mainImgNormal+"' alt='restaurant image' style='width: 300px; height: 200px;'><br>"
-  	                        +"<p>"+"<h5> 대표메뉴 : "+rprsntv_menu+"</h5>"+"<p>"+"<h5> 대표 전화번호 : "+cntct_tel+"</h5>"+"<p>"+"<h5> 주소 : "+addr1+"</h5>"+"<p>"+"<p>"
+  	                        +"<p>"+"<h5 id='menu'> 대표메뉴 : "+rprsntv_menu+"</h5>"+"<p>"+"<h5 id='tel'> 대표 전화번호 : "+cntct_tel+"</h5>"+"<p>"+"<h5  id='add'> 주소 : "+addr1+"</h5>"+"<p>"+"<p>"
   	                        /*+"<button type='button' class='btn btn-outline-primary' onclick=\"location.href='/restaurant/RestaurantInfo?restaurant_id=" + restaurant_id + "'\">레스토랑 정보</button>"*/
-  	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRoute(" +lat+","+lng + ")'>명소에서 최단 거리 찾기</button> "
+  	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRoute(" +lat+","+lng + ")'>명소에서 최단 거리 찾기</button>"+"</div>" 
   	                        );
                         infowindow.open(map,marker);
-                        if (marker.getAnimation() !== null) {
-	                        marker.setAnimation(null);
-	                      } else {
-	                        marker.setAnimation(google.maps.Animation.BOUNCE);
-	                      }
+                        
+                        let menu="대표메뉴 : "+rprsntv_menu;
+                        let add="주소 : "+addr1;
+                        let tel="대표 전화번호 : "+cntct_tel;
+                        var lang = localStorage.getItem("lang");
+                        if (lang !== "ko") {
+                        trans(lang,main_title,index,menu,add,tel);
+                        }
+                        
                     };
                     })(marker,i)
             	);
@@ -610,7 +619,41 @@ function myList(festival_id) {
 		    translate('zh_CN');
 		  }
 	});
-	    
+	  
+///////////////////////////////지도에서 맛집 클릭했을때에 번역 실행//////////////////////////////////
+	    function trans(lang,main_title,index,menu,add,tel) {
+	    	
+	    	console.log(index);
+	    	 $.ajax({
+	    		url : "/translate/infoInMaps",
+	    		type : "post",
+	    		data : {
+	    			lang : lang,
+	    			main_title:main_title,
+	    			menu:menu,
+	    			add:add,
+	    			tel:tel,
+	    		},
+	    		success : function(joined) {
+	    				
+	    				let i=0;
+	    				$("div.resmark h3").text(joined[i].translation);
+	    				i++;
+	    				
+	    				if(!joined[i].translation.isEmpty){
+	    				$("h5#menu").text(joined[i].translation);
+	    				i++;
+	    				$("h5#add").text(joined[i].translation);
+	    				i++;
+	    				$("h5#tel").text(joined[i].translation);
+	    				i++;
+	    				}
+	    		},
+	    		error : function(xhr, status, error) {
+	    			console.error('AJAX error:', error);
+	    		}
+	    	});
+	    }	    
 	 
 	 
 	 

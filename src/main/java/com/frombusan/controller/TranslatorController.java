@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -106,6 +107,34 @@ public class TranslatorController {
 		
         return ResponseEntity.ok(joined);
     }
+	@PostMapping("infoInMaps")
+	public ResponseEntity<List<Translation>> infoInMaps(
+			@RequestParam String lang,
+			@RequestParam String main_title,
+			@RequestParam(defaultValue="") String menu,
+			@RequestParam(defaultValue="") String add,
+			@RequestParam(defaultValue="") String tel
+			) throws IOException{
+		
+		List<Translation> joined = new ArrayList<>();
+		List<Translation> main_titles = mmt.translate("ko",lang, Arrays.asList(main_title));
+		
+		joined.addAll(main_titles);
+		if(!menu.isEmpty()) {
+			List<Translation> rprsntv_menus = mmt.translate("ko",lang, Arrays.asList(menu));
+			joined.addAll(rprsntv_menus);
+		}
+		if(!add.isEmpty()) {
+			List<Translation> adds = mmt.translate("ko",lang, Arrays.asList(add));
+			joined.addAll(adds);
+		}
+		if(!tel.isEmpty()) {
+			List<Translation> tels = mmt.translate("ko",lang, Arrays.asList(tel));
+			joined.addAll(tels);
+		}
+		
+		return ResponseEntity.ok(joined);
+	}
 
 	
 	@PostMapping("fesInfo")
