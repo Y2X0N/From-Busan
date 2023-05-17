@@ -28,8 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class TranslatorController {
 
-	ModernMT mmt = new ModernMT("");
-	//9F982625-12CF-5F66-37B2-D8B9A4B56415
+	ModernMT mmt = new ModernMT("9F982625-12CF-5F66-37B2-D8B9A4B56415");
+	
 	@PostMapping("main")
     public ResponseEntity<List<Translation>> main(
            @RequestParam(value="fesMainTitle[]") List<String> fesMainTitle
