@@ -163,14 +163,14 @@ function search() {
 			<div class="search-window">
 				<div class="search-wrap">
 					<input id="searchText" list="searchOptions" type="search"
-						name="searchText" placeholder="명소명을 입력해주세요.">
+						name="searchText" th:attr="placeholder=#{${'alert.attractionplw'}}">
 					 <datalist id="searchOptions">
 						<option th:each="tourist : ${searchTour}"><span
 								th:text="${tourist.main_title}" id="searchName"
 								th:data-original="*{tourist.main_title}"></span>
 						</option>
 					</datalist> 
-					<button type="button" onclick="search()" class="btn search-btn">검색</button>
+					<button type="button" onclick="search()" class="btn search-btn">[[#{alert.View}]]</button>
 				</div>
 			</div>
 		</div>
@@ -199,12 +199,12 @@ function search() {
 						<span th:text="${tourist.hit}" style="font-size: 20px"></span>
 						<!-- <a  th:utext="'조회수 : '+${tourist.hit}"></a> -->
 					</div>
-					<a th:href="@{/tourist/TouristInfo(tourist_Spot_id=${tourist.tourist_Spot_id})}">상세 보기</a>
+					<a th:href="@{/tourist/TouristInfo(tourist_Spot_id=${tourist.tourist_Spot_id})}">[[#{alert.View}]]</a>
 				</div>
 			</div>
 			
 			<div th:if="${findAllTourist.empty}">
-				<a class="color" >검색한 명소가 없습니다.</a>
+				<a class="color" >[[#{alert.Noattraction}]]</a>
 			</div>
 			
 			

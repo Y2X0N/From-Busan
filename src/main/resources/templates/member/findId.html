@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>로그인</title>
+    <script th:inline="javascript">
+    //국제화
+                $(document).ready(function() {
+                      $('input[type="button"]').each(function() {
+                        $(this).val($(this).attr('value'));
+                      });
+                    });
+     </script>
     <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/js/index.js"></script>
@@ -199,16 +207,16 @@
   	<div id="login-container">
         <img class="img" src="/image/bugi.png" alt="bugi">
 		<form  th:object="${findIdForm}" >
-            <h1>Find ID</h1>
+            <h1>[[#{alert.Findid}]] </h1>
             
 
             <div class="login-input">
-                <input type="text" id="name" th:field="${findIdForm.name}" placeholder="  이름을 입력해주세요.">
-                <input type="text" id="phone_number"th:field="${findIdForm.phone_number}" placeholder="   전화번호를 '-'와 함께 입력해주세요.">
+                <input type="text" id="name" th:field="${findIdForm.name}" th:attr="placeholder=#{${'alert.plsName'}}">
+                <input type="text" id="phone_number"th:field="${findIdForm.phone_number}" th:attr="placeholder=#{${'alert.plsPhone'}}">
             </div>
 
             <div class="login-submit">
-							<input class="btn-login" type="button" value="ID찾기" onclick="findId()" >
+							<input class="btn-login" type="button" data-value="#{alert.Findid}" th:value="#{alert.Findid}" onclick="findId()" >
             </div>
             
             <div id="countdown"></div>
@@ -219,8 +227,8 @@
     
      <div class="modal">
 	    <div class="modal-content">
-	      <h2>아이디를 성공적으로 찾았습니다.</h2>
-	      <p>아이디는 <span id="member_id"></span>입니다.</p>
+	      <h2>[[#{alert.idsuccess}]]</h2>
+	      <p>[[#{alert.idis}]] <span id="member_id"></span>[[#{alert.des}]]</p>
 	    </div>
     </div>
 </body>

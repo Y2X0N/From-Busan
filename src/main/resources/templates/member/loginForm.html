@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>[[#{alert.Login}]]</title>
+<script th:inline="javascript">
+//국제화
+	$(document).ready(function() {
+		  $('input[type="submit"], input[type="text"], input[type="button"]').each(function() {
+		    $(this).val($(this).attr('value'));
+		  });
+		});
+</script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="/js/index.js"></script>
@@ -70,14 +78,6 @@
 					th:value="#{alert.FindPas}" onclick="findPassword()">
 
 			</div>
-
-			<script th:inline="javascript">
-				$(document).ready(function() {
-					  $('input[type="submit"], input[type="text"]').each(function() {
-					    $(this).val($(this).attr('value'));
-					  });
-					});
-			</script>
 		</form>
 	</div>
 </body>

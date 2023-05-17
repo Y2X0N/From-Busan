@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>수정전비밀번호확인</title>
+    <script th:inline="javascript">
+    //국제화
+                $(document).ready(function() {
+                      $('input[type="button"]').each(function() {
+                        $(this).val($(this).attr('value'));
+                      });
+                    });
+     </script>
     <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/js/index.js"></script>
@@ -157,17 +165,17 @@
   	<div id="login-container">
         <img class="img" src="/image/bugi.png" alt="bugi">
 		<form  th:object="${findPasswordForm}" >
-            <h1>비밀번호 확인</h1>
+            <h1>[[#{alert.Conpassword}]]</h1>
             
 
             <div class="login-input">
-                <input type="text" id="password" th:field="${findPasswordForm.password}" placeholder="  비밀번호를 입력해주세요.">
-                <input type="text" id="password1"th:field="${findPasswordForm.password}" placeholder=" 비밀번호 확인">
+                <input type="text" id="password" th:field="${findPasswordForm.password}" th:attr="placeholder=#{${'alert.plsPas'}}">
+                <input type="text" id="password1"th:field="${findPasswordForm.password}" th:attr="placeholder=#{${'alert.Conpassword1'}}">
             </div>
 
   
    			<div class="login-submit">
-				<input class="btn-login" type="button" value="확인" onclick="checkPassword()" >
+				<input class="btn-login" type="button" data-value="#{alert.confirm}" th:value="#{alert.confirm}" onclick="checkPassword()" >
             </div>
             
            <div id="countdown"></div>
@@ -178,7 +186,7 @@
     
      <div class="modal">
 	    <div class="modal-content">
-	      <h2>회원 수정 페이지로 이동합니다.</h2>
+	      <h2>[[#{alert.Memberspage}]]</h2>
 	    </div>
     </div>
 </body>

@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>게시글 읽기</title>
+<script th:inline="javascript">
+    //국제화
+                $(document).ready(function() {
+                      $('input[type="button"]').each(function() {
+                        $(this).val($(this).attr('value'));
+                      });
+                    });
+ </script>
 <link rel="stylesheet" href="/css/header.css">
 <link rel="stylesheet" href="/css/reviewRead.css">
 <script src="/js/index.js"></script>
@@ -399,10 +407,10 @@ function translate(lang) {
 				th:if="${session.loginMember.member_id == review.member_id}">
 				<input type="button"
 					th:onclick="|location.href='/review/update?review_id=${review.review_id}'|"
-					value="수정하기">
+					data-value="#{alert.modify}" th:value="#{alert.modify}">
 				<input type="button"
 					th:onclick="|location.href='/review/delete?review_id=${review.review_id}'|"
-					value="삭제하기">
+					data-value="#{alert.delete}" th:value="#{alert.delete}">
 			</th:block>
 			</div>
 		</div>
@@ -412,8 +420,8 @@ function translate(lang) {
 
 			<th:block th:if="${loginMember}">
 			<input class="reply-input" id="reply" name="reply" type="text"
-				placeholder=" 댓글을 작성해주세요." value="">
-			<button type="button" class="reply-btn" onclick="writeReply()">작성</button>
+				th:attr="placeholder=#{${'alert.commentpls'}}" value="">
+			<button type="button" class="reply-btn" onclick="writeReply()">[[#{alert.writing}]]</button>
 			</th:block>
 		</div>
 

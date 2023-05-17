@@ -97,7 +97,7 @@ $(document).ready(function() {
 						<span th:text="${course.hit}" style="font-size: 20px"></span>
 						<!-- <a  th:utext="'조회수 : '+${tourist.hit}"></a> -->
 					</div>
-				<a th:href="@{/course/CourseInfo(course_id=${course.course_id})}">상세 보기</a>
+				<a th:href="@{/course/CourseInfo(course_id=${course.course_id})}">[[#{alert.View}]]</a>
 				</div>
 					
 			</div>

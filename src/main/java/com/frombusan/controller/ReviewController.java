@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DuplicateKeyException;
@@ -52,6 +54,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("review")
 @Controller
 public class ReviewController {
+	
+	//국제화
+	@Autowired
+	private MessageSource messageSource;
+	
 	//의존성주입
     private final ReviewService reviewService;
     
@@ -94,7 +101,7 @@ public class ReviewController {
             return "review/write";}
 
         if (!findAllName.contains(reviewWriteForm.getReview_place())) {
-            model.addAttribute("placeError", "일치하는 장소가 없습니다.");
+            model.addAttribute("placeError", messageSource.getMessage("alert.Placecon", null, LocaleContextHolder.getLocale()));
             model.addAttribute("findAllName", findAllName);
             return "review/write";}
 
