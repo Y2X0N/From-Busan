@@ -68,10 +68,8 @@
  function checkPassword() {
  	
      let password = $("#password").val();
-     let password1 = $("#password1").val();
+     let password1 =$("#password1").val();
      
-     console.log(password1);
-
   
    if (password === "") {
      alert("비밀번호를 입력하세요");
@@ -81,14 +79,11 @@
      alert("비밀번호 확인");
      return;
    }
+   if (password !== password1) {
+     alert("비밀번호를 동일하게 입력하세요");
+     return;
+   }
    
- 	//비밀번호 일치확인
-	if(password.val() != password1.val()){
-		alert("[[#{alert.alertPassword2}]]");
-		password.focus();
-	return false;
-	}
- 
    $.ajax({
      url: "/member/" ,
      type: "post",
@@ -96,17 +91,10 @@
      
      success: function (data, success, xhr) {
     	 
-     	  console.log(data);
      	  
      	  const data1 = data.filter((item)=>{
-      	    return item.password==password1
+      	    return item.PASSWORD==password
      	  });
-     	  
-     	  console.log(data1);
-     	  
-     	  
-     	  
-     	  
      	  
      	  if(data1.length !== 0){
 			
@@ -115,7 +103,7 @@
      	    modal.style.display = "block";
 
      	    // 카운트다운 시작
-     	    let timeLeft = 3; // 3초 카운트다운
+     	    let timeLeft = 3; // 5초 카운트다운
      	    const countDownEl = document.getElementById("countdown"); // 카운트다운을 표시할 엘리먼트
      	    countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
 
@@ -124,7 +112,7 @@
      	        clearInterval(timer);
      	        modal.style.display = "none"; // 모달 닫기
      	      
-     	      updateMember(password);
+     	      updateMember();
      	     
      	      } else {
      	        countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
@@ -133,14 +121,15 @@
      	    }, 1000);
 
      	    // 모달 닫기 버튼 이벤트 핸들러 등록
-     	    const modalClose = document.querySelector(".modal-close");
-     	    modalClose.addEventListener("click", function() {
-     	      clearInterval(timer); // 타이머 중지
-     	     
-     	   		              
-     	    });
+			const modalClose = document.querySelector(".modal-close");
+			if (modalClose) {
+				  modalClose.addEventListener("click", function() {
+				    clearInterval(timer); // 타이머 중지
+				    modal.style.display = "none";
+				  });
+		  	}
      	  } else {
-     	    alert("일치하는 정보가 없습니다");
+     	    alert("비밀번호가 일치하지 않습니다.");
      	  }
      	}
      ,error: function (xhr, status, error) {
@@ -153,7 +142,7 @@
 	 	
 	  
 		//var mainTitle = encodeURIComponent('${festival.main_title}');
-	    var url = '/member/updateMember?password=' + encodeURIComponent(password);
+	    var url = '/member/updateMember';
 	  	var options = 'width=700,height=500,left=' + (screen.width / 2 - 350) + ',top=' + (screen.height / 2 - 350);
 	    window.open(url, 'Popup', options);
 
