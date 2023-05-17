@@ -68,7 +68,7 @@
  function checkPassword() {
  	
      let password = $("#password").val();
-     let password1 = password;
+     let password1 = $("#password1").val();
      
      console.log(password1);
 
@@ -81,6 +81,14 @@
      alert("비밀번호 확인");
      return;
    }
+   
+ 	//비밀번호 일치확인
+	if(password.val() != password1.val()){
+		alert("[[#{alert.alertPassword2}]]");
+		password.focus();
+	return false;
+	}
+ 
    $.ajax({
      url: "/member/" ,
      type: "post",
@@ -91,10 +99,15 @@
      	  console.log(data);
      	  
      	  const data1 = data.filter((item)=>{
-      	    return item.password==password
+      	    return item.password==password1
      	  });
      	  
      	  console.log(data1);
+     	  
+     	  
+     	  
+     	  
+     	  
      	  if(data1.length !== 0){
 			
      	    // 모달 열기
@@ -102,7 +115,7 @@
      	    modal.style.display = "block";
 
      	    // 카운트다운 시작
-     	    let timeLeft = 3; // 5초 카운트다운
+     	    let timeLeft = 3; // 3초 카운트다운
      	    const countDownEl = document.getElementById("countdown"); // 카운트다운을 표시할 엘리먼트
      	    countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
 
@@ -111,7 +124,7 @@
      	        clearInterval(timer);
      	        modal.style.display = "none"; // 모달 닫기
      	      
-     	      updateMember();
+     	      updateMember(password);
      	     
      	      } else {
      	        countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
@@ -140,7 +153,7 @@
 	 	
 	  
 		//var mainTitle = encodeURIComponent('${festival.main_title}');
-	    var url = '/member/updateMember';
+	    var url = '/member/updateMember?password=' + encodeURIComponent(password);
 	  	var options = 'width=700,height=500,left=' + (screen.width / 2 - 350) + ',top=' + (screen.height / 2 - 350);
 	    window.open(url, 'Popup', options);
 
@@ -159,8 +172,8 @@
             
 
             <div class="login-input">
-                <input type="text" id="name" th:field="${findPasswordForm.password}" placeholder="  비밀번호를 입력해주세요.">
-                <input type="text" id="phone_number"th:field="${findPasswordForm.password}" placeholder=" 비밀번호 확인">
+                <input type="text" id="password" th:field="${findPasswordForm.password}" placeholder="  비밀번호를 입력해주세요.">
+                <input type="text" id="password1"th:field="${findPasswordForm.password}" placeholder=" 비밀번호 확인">
             </div>
 
   

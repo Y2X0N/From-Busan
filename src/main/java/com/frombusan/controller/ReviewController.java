@@ -31,6 +31,7 @@ import org.springframework.web.util.UriUtils;
 import com.frombusan.model.AttachedImg;
 import com.frombusan.model.festival.Festival;
 import com.frombusan.model.festival.FestivalLikes;
+import com.frombusan.model.member.LoginForm;
 import com.frombusan.model.member.Member;
 import com.frombusan.model.review.Review;
 import com.frombusan.model.review.ReviewLikes;
@@ -280,6 +281,7 @@ public class ReviewController {
     	List<Review> reviews = reviewService.findReviewsByMemberId(loginMember.getMember_id());
     	if(loginMember!=null) {
     		model.addAttribute("reviews", reviews);
+    		model.addAttribute("loginMember",loginMember.getMember_id());
     	}
 
     	return "member/myReviewList";

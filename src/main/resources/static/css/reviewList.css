@@ -60,6 +60,8 @@ section.notice {
 
 .mainTitle {
 	color: rgb(161, 161, 161);
+	background-color: #e6f6ff;
+	border: none;
 }
 
 .review-table {
@@ -154,4 +156,9 @@ section.notice {
 	align-items: center;
 	margin-left: 50%;
 	font-size: 17px;
+}
+
+.write-btn{
+	align-items: center;
+	margin-left: 47.6%;
 }
