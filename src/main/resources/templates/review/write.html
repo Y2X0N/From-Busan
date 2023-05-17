@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>글쓰기</title>
+<script th:inline="javascript">
+//국제화
+			$(document).ready(function() {
+				  $('input[type="submit"], input[type="reset"],input[type="button"]').each(function() {
+				    $(this).val($(this).attr('value'));
+				  });
+				});
+</script>
 <link rel="stylesheet" href="/css/header.css">
 <link rel="stylesheet" href="/css/writeForm.css">
 <script
@@ -87,15 +95,15 @@ $(document).ready(function() {
 		<form action="write" method="post" enctype="multipart/form-data"
 			th:object="${writeForm}">
 				<div class="write-header">
-					Write Review
+					[[#{alert.wrre}]]
 					<span>
-					<input class="write-btn" type="button" onclick="location.href='/review/list'" value="목록으로"> 
-					<input class="write-btn" type="submit" value="등록하기"> 
-					<input class="write-btn" type="reset" value="취소">
+					<input class="write-btn" type="button" onclick="location.href='/review/list'" data-value="#{alert.onlist}" th:value="#{alert.onlist}"> 
+					<input class="write-btn" type="submit" data-value="#{alert.Registration}" th:value="#{alert.Registration}" > 
+					<input class="write-btn" type="reset" data-value="#{alert.cancel}" th:value="#{alert.cancel}">
 					</span>
 				</div>
 			<table class="write-table">
-				<th>리뷰 장소</th>
+				<th>[[#{alert.Reviewl}]]</th>
 				<td>
 					<input type="text" list="searchOptions" th:field="*{review_place}" style="width: 600px;" />
 					 <datalist id="searchOptions">
@@ -109,7 +117,7 @@ $(document).ready(function() {
 						th:text="${placeError}"></div></td>
 				<tr>
 				<tr>
-					<th>제목</th>
+					<th>[[#{alert.Title}]]</th>
 					<td><input type="text" th:field="*{title}" style="width: 600px;">
 						<div class="error" th:errors="*{title}"></div></td>
 				</tr>

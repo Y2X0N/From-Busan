@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>게시판 리스트</title>
+<script th:inline="javascript">
+    //국제화
+                $(document).ready(function() {
+                      $('input[type="button"]').each(function() {
+                        $(this).val($(this).attr('value'));
+                      });
+                    });
+     </script>
 <link rel="stylesheet" href="/css/header.css" />
 <link rel="stylesheet" href="/css/reviewList.css">
 <link rel="stylesheet"
@@ -179,7 +187,7 @@
 		<section class="notice">
 			<div class="page-title">
 				<div id="review1" data-original="Review List">
-					<h2>Review List</h2>
+					<h2>[[#{alert.reviewlist}]]</h2>
 				</div>
 			</div>
 
@@ -189,14 +197,14 @@
 					<div class="search-window">
 						<div class="search-wrap">
 							<input id="searchText" list="searchOptions" type="search"
-								name="searchText" placeholder="검색어를 입력해주세요.">
+								name="searchText" th:attr="placeholder=#{${'alert.Pleasesc'}}">
 							<datalist id="searchOptions">
 								<option th:each="main_title : ${findAllName}"><span
 										th:text="${main_title}" id="main_title"
 										th:data-original="${main_title}"></span>
 								</option>
 							</datalist>
-							<button type="button" onclick="search()" class="btn search-btn">검색</button>
+							<button type="button" onclick="search()" class="btn search-btn">[[#{alert.Search}]]</button>
 						</div>
 					</div>
 				</div>
@@ -206,12 +214,12 @@
 				<table class="review-table">
 					<thead>
 						<tr class="mainTitle">
-							<th scope="col" class="th-num">No</th>
-							<th scope="col" class="th-place">Place</th>
-							<th scope="col" class="th-title">Title</th>
-							<th scope="col" class="th-writer">Writer</th>
-							<th scope="col" class="th-date">Date</th>
-							<th scope="col" class="th-hit">HIT</th>
+							<th scope="col" class="th-num">[[#{alert.No1}]]</th>
+							<th scope="col" class="th-place">[[#{alert.Place}]]</th>
+							<th scope="col" class="th-title">[[#{alert.Title}]]</th>
+							<th scope="col" class="th-writer">[[#{alert.Writer}]]</th>
+							<th scope="col" class="th-date">[[#{alert.Date}]]</th>
+							<th scope="col" class="th-hit">[[#{alert.HIT}]]</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -232,7 +240,7 @@
 							</tr>
 						</th:block>
 						<tr th:if="${reviews.empty}">
-							<td class="color" colspan="6">리뷰가 없습니다.</td>
+							<td class="color" colspan="6">[[#{alert.noreviews}]]</td>
 						</tr>
 					</tbody>
 				</table>
@@ -241,7 +249,7 @@
 				<div class="write-btn">
 					<input
 						th:if="${session.loginMember}"class="input-btn" type="button"
-						onclick="location.href='/review/write'" value="글쓰기">
+						onclick="location.href='/review/write'" data-value="#{alert.Writing}" th:value="#{alert.Writing}" >
 
 				</div>
 			</div>

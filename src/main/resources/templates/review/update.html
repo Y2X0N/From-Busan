@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>게시글 수정</title>
+<script th:inline="javascript">
+//국제화
+			$(document).ready(function() {
+				  $('input[type="submit"], input[type="reset"],input[type="button"]').each(function() {
+				    $(this).val($(this).attr('value'));
+				  });
+				});
+</script>
 <link rel="stylesheet" href="/css/header.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -105,33 +113,33 @@
 		<form th:action="@{/review/update(review_id=${review.review_id})}"
 			th:object="${review}" method="post">
 			<div class="update-header">
-				Update Review <span> <input class="update-btn" type="submit"
-					value="수정하기"> <input class="update-btn" type="reset"
-					value="취소">
+				[[#{alert.Updatere}]] <span> <input class="update-btn" type="submit"
+					data-value="#{alert.modify}" th:value="#{alert.modify}"> <input class="update-btn" type="reset"
+					data-value="#{alert.cancel}" th:value="#{alert.cancel}">
 
 				</span>
 			</div>
 			<table class="update-table">
 				<tr>
-					<th>리뷰 장소</th>
+					<th>[[#{alert.Reviewl}]]</th>
 					<td><span th:text="*{review_place}" id="review_place" th:data-original="*{review_place}"></span></td>
 				</tr>
 				<tr>
-					<th>제목</th>
+					<th>[[#{alert.Title}]]</th>
 					<td><input type="text" th:field="*{title}">
 						<div class="error" th:errors="*{title}"></div></td>
 				</tr>
 				<tr>
-					<th>조회수</th>
+					<th>[[#{alert.HIT}]]</th>
 					<td><span th:text="*{hit}"></span></td>
 				</tr>
 				<tr>
-					<th>작성일</th>
+					<th>[[#{alert.Date}]]</th>
 					<td><span
 						th:text="*{#temporals.format(created_time, 'yyyy. MM. dd')}"></span></td>
 				</tr>
 				<tr>
-					<th>작성자</th>
+					<th>[[#{alert.Writer}]]</th>
 					<td th:text="*{member_id}"></td>
 				</tr>
 			</table>

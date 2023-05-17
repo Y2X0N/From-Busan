@@ -171,14 +171,14 @@ function search() {
 			<div class="search-window">
 				<div class="search-wrap">
 					<input id="searchText" list="searchOptions" type="search"
-						name="searchText" placeholder="축제명을 입력해주세요.">
+						name="searchText" th:attr="placeholder=#{${'alert.festivalple'}}">
 					 <datalist id="searchOptions">
 						<option th:each="festival : ${searchFes}"><span
 								th:text="${festival.main_title}" id="searchName"
 								th:data-original="*{festival.main_title}"></span>
 						</option>
 					</datalist> 
-					<button type="button" onclick="search()" class="btn search-btn">검색</button>
+					<button type="button" onclick="search()" class="btn search-btn">[[#{alert.Search}]]</button>
 				</div>
 			</div>
 		</div>
@@ -208,12 +208,12 @@ function search() {
 						<span th:text="${festival.hit}" style="font-size: 20px"></span>
 						<!-- <a  th:utext="'조회수 : '+${tourist.hit}"></a> -->
 					</div>
-					<a th:href="@{/festival/FestivalInfo(festival_id=${festival.festival_id})}">상세 보기</a>
+					<a th:href="@{/festival/FestivalInfo(festival_id=${festival.festival_id})}">[[#{alert.View}]]</a>
 				</div>
 			</div>
 			
 			<div th:if="${findAllFestival.empty}">
-				<a class="color" >검색한 축제가 없습니다.</a>
+				<a class="color" >[[#{alert.Nofestivals}]]</a>
 			</div>
 
 		</div>

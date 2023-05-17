@@ -189,26 +189,26 @@ $(document).ready(function() {
 			src="https://www.busan.go.kr/humanframe/theme/busan22/assets/video/main_v2.mp4"
 			type="video/mp4" />
 	</video>
-	
+
 	<div id="container">
 
 		<div id=panel-container>
 			<!-- 길찾기 -->
 			<div id="panel">
-				<h1>길찾기</h1>
+				<h1>[[#{alert.Findingway}]]</h1>
 				<div class="panel-input">
-					<label for="start"> 출발지:  </label><input type="text" id="start" placeholder="Enter location" />
+					<label for="start"> [[#{alert.starting}]]: </label><input
+						type="text" id="start" placeholder="Enter location" />
 				</div>
 				<div class="panel-input">
-					<label for="end"> 도착지:  </label><input type="text" id="end" placeholder="Enter location"	 />
+					<label for="end"> [[#{alert.Destination}]]: </label><input
+						type="text" id="end" placeholder="Enter location" />
 				</div>
 				<div class="panel-input">
-					<strong>Mode of Travel: </strong> 
-					<select id="mode">
-						<option value="TRANSIT">Transit</option>
-					</select> 
-					
-					<input type="button" value="길찾기" onclick="calcRoute()" />
+					<strong>[[#{alert.ModeTravel}]]: </strong> <select id="mode">
+						<option value="TRANSIT">[[#{alert.Transit}]]</option>
+					</select> <input type="button" data-value="#{alert.Findingway}"
+						th:value="#{alert.Findingway}" onclick="calcRoute()" />
 					<div id="popup"></div>
 				</div>
 			</div>
@@ -219,9 +219,10 @@ $(document).ready(function() {
 		<div id="tourist-spot-container">
 
 			<div id="tourist-spot-title">
-				<span style="color: rgb(98, 102, 105); font-size: 33px;">| 인기 명소 |</span>
+				<span style="color: rgb(98, 102, 105); font-size: 33px;">|
+					[[#{alert.populara}]] |</span>
 				<div class="tourist-spot-title-right">
-					<a href="/tourist/list" style="color: #da202c; font-size: 25px;">자세히&#8594;</a>
+					<a href="/tourist/list" style="color: #da202c; font-size: 25px;">[[#{alert.detail}]]&#8594;</a>
 					<div>
 						<i class="fa-sharp fa-solid fa-play fa-rotate-180 fa-xs imagel"
 							style="color: #2f4365;"> </i> <i
@@ -236,12 +237,13 @@ $(document).ready(function() {
 
 			<div class="inner" th:each="tour : ${tourist}">
 				<!-- card -->
-				<a th:href="@{/tourist/TouristInfo(tourist_Spot_id=${tour.tourist_Spot_id})}">
-				<img th:alt="${tour.main_title}" th:src="${tour.main_img_normal}">
+				<a
+					th:href="@{/tourist/TouristInfo(tourist_Spot_id=${tour.tourist_Spot_id})}">
+					<img th:alt="${tour.main_title}" th:src="${tour.main_img_normal}">
 				</a>
 				<div class="innerContent">
 					<a th:text="${tour.main_title}"
-					th:data-original="${tour.main_title}"id="tourMainTitle"></a> <i
+						th:data-original="${tour.main_title}" id="tourMainTitle"></a> <i
 						class="far fa-heart testHeart"
 						style="color: #da202c; margin-left: 10px" title="like"></i> <span
 						th:text="${tour.place_like}" style="font-size: 24px"></span>
@@ -258,9 +260,9 @@ $(document).ready(function() {
 		<div id="tourist-spot-container">
 
 			<div id="tourist-spot-title">
-				<span style="color: rgb(98, 102, 105); font-size: 33px;">| 인기 축제 |</span>
+				<span style="color: rgb(98, 102, 105); font-size: 33px;">| [[#{alert.popularf}]]  |</span>
 				<div class="tourist-spot-title-right">
-					<a href="/festival/list" style="color: #da202c; font-size: 25px;">자세히&#8594;</a>
+					<a href="/festival/list" style="color: #da202c; font-size: 25px;">[[#{alert.detail}]]&#8594;</a>
 					<div>
 						<i class="fa-sharp fa-solid fa-play fa-rotate-180 fa-xs imageL"
 							style="color: #2f4365;"> </i> <i
@@ -275,18 +277,19 @@ $(document).ready(function() {
 
 			<div class="inner" th:each="festival : ${festival}">
 				<!-- card -->
-				<a th:href = "@{/festival/FestivalInfo(festival_id=${festival.festival_id})}">
-				<img th:alt="${festival.main_title}"
+				<a
+					th:href="@{/festival/FestivalInfo(festival_id=${festival.festival_id})}">
+					<img th:alt="${festival.main_title}"
 					th:src="${festival.main_img_normal}">
 				</a>
 				<div class="innerContent">
 					<a th:text="${festival.main_title}"
-					th:data-original="${festival.main_title}"id="fesMainTitle"></a> <i
+						th:data-original="${festival.main_title}" id="fesMainTitle"></a> <i
 						class="far fa-heart testHeart"
 						style="color: #da202c; margin-left: 10px" title="like"></i> <span
 						th:text="${festival.place_like}" style="font-size: 24px"></span>
 				</div>
-				
+
 			</div>
 		</div>
 	</div>
@@ -335,6 +338,6 @@ $(document).ready(function() {
 	});
 	</script>
 
-	
+
 </body>
 </html>

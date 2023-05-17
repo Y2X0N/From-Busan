@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,6 +49,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("member")
 @Controller
 public class MemberController {
+	
+	@Autowired
+
+	private MessageSource messageSource;
 
     // 데이터베이스 접근을 위한 MemberMapper 필드 선언
     private final MemberMapper memberMapper;
@@ -84,13 +90,13 @@ public class MemberController {
         	model.addAttribute("member", member);
             //log.info("이미 가입된 아이디 입니다.");
             // BindingResult 객체에 GlobalError 를 추가한다.
-            result.reject("duplicate ID", "이미 가입된 아이디 입니다.");
+            result.reject("duplicate ID", messageSource.getMessage("alert.idcon", null, LocaleContextHolder.getLocale()));
             // member/joinForm.html 페이지를 리턴한다.
             return "member/joinForm";
         }
         // MemberJoinForm 객체를 Member 타입으로 변환하여 데이터베이스에 저장한다.
         memberMapper.saveMember(MemberJoinForm.toMember(joinForm));
-        redirectAttributes.addFlashAttribute("alertMessage", "회원가입이 완료되었습니다.");
+        redirectAttributes.addFlashAttribute("alertMessage", messageSource.getMessage("alert.kaicon", null, LocaleContextHolder.getLocale()));
         // 로그인 페이지로 리다이렉트한다.
         return "redirect:/member/login";
     }
@@ -121,7 +127,7 @@ public class MemberController {
         // Member 가 존재하지 않거나 패스워드가 다르면
         if (member == null || !member.getPassword().equals(loginForm.getPassword())) {
             // BindingResult 객체에 GlobalError 를 발생시킨다.
-            result.reject("loginError", "아이디가 없거나 패스워드가 다릅니다.");
+            result.reject("loginError", messageSource.getMessage("alert.notcon", null, LocaleContextHolder.getLocale()));
             // member/loginForm.html 페이지로 돌아간다.
             return "member/loginForm";
         }

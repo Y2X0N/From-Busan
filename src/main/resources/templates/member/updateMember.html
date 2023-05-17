@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>회원수정</title>
+    <script th:inline="javascript">
+    //국제화
+                $(document).ready(function() {
+                      $('input[type="button"]').each(function() {
+                        $(this).val($(this).attr('value'));
+                      });
+                    });
+     </script>
     <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/js/index.js"></script>
@@ -173,12 +181,12 @@
 	  <div id="login-container">
         <img class="img" src="/image/bugi.png" alt="bugi">
 			<form  th:object="${findIdForm}" >
-	            <h1>Update Information</h1>
+	            <h1>[[#{alert.UpdateIn}]]</h1>
 	            <div class="login-input">
-	                <input type="text" id="name" th:field="${loginMember.name}" placeholder="  이름을 입력해주세요.">
-	                <input type="text" id="phone_number" th:field="${loginMember.phone_number}" placeholder="   전화번호를 '-'와 함께 입력해주세요.">
-	                <input type="text" id="password" placeholder="   비밀번호를 입력해주세요.">
-	                <input type="text" id="password2" placeholder="   비밀번호를 재입력해주세요.">
+	                <input type="text" id="name" th:field="${loginMember.name}" th:attr="placeholder=#{${'alert.plsName'}}">
+	                <input type="text" id="phone_number" th:field="${loginMember.phone_number}" th:attr="placeholder=#{${'alert.plsPhone'}}">
+	                <input type="text" id="password" th:attr="placeholder=#{${'alert.plsPas'}}">
+	                <input type="text" id="password2" th:attr="placeholder=#{${'alert.plsPas2'}}">
 	            </div>
 				<br>
 				<br>
@@ -186,7 +194,7 @@
 	            <div id="countdown"></div>
        		 </form>
        		 <div class="login-submit">
-				<input class="btn-login" type="button" value="UPDATE" onclick="updateMember()" >
+				<input class="btn-login" data-value="#{alert.Password}" th:value="#{alert.update}" value="UPDATE" onclick="updateMember()" >
 	            </div>
          </div> 
     	</div>
@@ -194,8 +202,8 @@
     
     <div class="modal">
 	    <div class="modal-content">
-	      <h2>회원 정보가 변경되었습니다.</h2>
-	      <p>마이 페이지로 이동합니다.</p>
+	      <h2>[[#{alert.memberchan}]]</h2>
+	      <p>[[#{alert.mypage}]].</p>
 	    </div>
   </div>
   
