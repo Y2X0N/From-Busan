@@ -1,26 +1,33 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>게시판 리스트</title>
-<script th:inline="javascript">
-    //국제화
-                $(document).ready(function() {
-                      $('input[type="button"]').each(function() {
-                        $(this).val($(this).attr('value'));
-                      });
-                    });
-     </script>
+
 <link rel="stylesheet" href="/css/header.css" />
 <link rel="stylesheet" href="/css/reviewList.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="/js/index.js"></script>
-
+<script >
+    //국제화
+$(document).ready(function() {
+      $('input[type="button"]').each(function() {
+        $(this).val($(this).attr('value'));
+      });
+      
+    const lang = window.localStorage.getItem("lang");
+		console.log(lang);
+		if (lang === "ja") {
+			translate('ja');
+		} else if (lang === "en") {
+			translate('en');
+		} else if (lang === "zh") {
+			translate('zh_CN');
+		}
+    });
+</script>
 <script>
 	/////////////// 번역 /////////////////////////////////////////////////////////////////////////
 
@@ -102,18 +109,6 @@
 			}
 		});
 	}
-
-	$(document).ready(function() {
-		const lang = window.localStorage.getItem("lang");
-		console.log(lang);
-		if (lang === "ja") {
-			translate('ja');
-		} else if (lang === "en") {
-			translate('en');
-		} else if (lang === "zh") {
-			translate('zh_CN');
-		}
-	});
 
 	////////// 검색 기능 /////////////////////////////////////////////////////////////////////
 	var map;
