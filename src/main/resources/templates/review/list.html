@@ -237,9 +237,12 @@
 					</tbody>
 				</table>
 
-				<div class="center">
-					<input th:if="${session.loginMember}" class="input-btn"
-						type="button" onclick="location.href='/review/write'" value="글쓰기">
+
+				<div class="write-btn">
+					<input
+						th:if="${session.loginMember}"class="input-btn" type="button"
+						onclick="location.href='/review/write'" value="글쓰기">
+
 				</div>
 			</div>
 		</section>

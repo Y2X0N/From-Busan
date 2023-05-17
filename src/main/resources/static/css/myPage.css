@@ -17,11 +17,13 @@ h2 {
     text-align: center;
     font-size: 40px;
     margin-bottom: 10%;
-    color: rgb(47, 47, 47);
+    color: #6E6E6E;
+    border-bottom: 1px solid black;
 }
 
 .myPage{
     font-size: 27px;
+    color: #6E6E6E;
 }
 
 .MY{

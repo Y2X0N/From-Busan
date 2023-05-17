@@ -163,7 +163,7 @@ function search() {
 			<div class="search-window">
 				<div class="search-wrap">
 					<input id="searchText" list="searchOptions" type="search"
-						name="searchText" placeholder="검색어를 입력해주세요.">
+						name="searchText" placeholder="명소명을 입력해주세요.">
 					 <datalist id="searchOptions">
 						<option th:each="tourist : ${searchTour}"><span
 								th:text="${tourist.main_title}" id="searchName"
@@ -210,7 +210,7 @@ function search() {
 			
 		</div>
 		
-		<div id="navigator" class="center">
+		<div id="navigator" class="pageNumber">
 					<!-- 이전 그룹이 없을 경우 보여주지 않음 -->
 					<th:block th:if="${navi.currentPage - navi.pagePerGroup > 0}">
 					<a th:href="@{/tourist/list(page=${navi.currentPage - navi.pagePerGroup}, searchText=${searchText})}"><<</a>&nbsp;&nbsp;
