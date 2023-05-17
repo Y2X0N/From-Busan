@@ -25,10 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewService {
 
     private final ReviewMapper reviewMapper;
-    private final FileService fileService;
-
-    @Value("${file.upload.path}")
-    private String uploadPath;
 
     public void saveReview(Review review) {
     	reviewMapper.saveReview(review);
@@ -76,8 +72,8 @@ public class ReviewService {
     }
     
     public List<String> findAllMainTitle() {
-        return reviewMapper.findAllMainTitle();
-        }
+    return reviewMapper.findAllMainTitle();
+    }
     public List<Review> findReviewsByMemberId(String member_id) {
         return reviewMapper.findReviewsByMemberId(member_id);
     }
