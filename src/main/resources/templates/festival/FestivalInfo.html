@@ -11,27 +11,19 @@
 	rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous"> -->
 
-<script async
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_FL3IrY7I_w7Cerf1pK28nSvyxby86Xg&callback=getRestaurant&v=weekly">
-    </script>
+<script async	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_FL3IrY7I_w7Cerf1pK28nSvyxby86Xg&callback=getDb&v=weekly">
+</script>
 
 <link rel="stylesheet" href="/css/header.css" />
 <link rel="stylesheet" href="/css/Info.css" />
 <script src="/js/index.js"></script>
 
-<style type="text/css">
-
-
-</style>
 <script th:inline="javascript">
-                $(document).ready(function() {
-                      $('input[type="button"]').each(function() {
-                        $(this).val($(this).attr('value'));
-                      });
-                    });
-            </script>
-<script th:inline="javascript">
-	
+$(document).ready(function() {
+    $('input[type="button"]').each(function() {
+      $(this).val($(this).attr('value'));
+    });
+  });
 	
 ///////////////마커로 길찾기 기능 /////////////////////////////////////////////////////////////////////////
 function getDb(){
@@ -706,9 +698,9 @@ function myList(festival_id) {
        }).filter(':eq(0)').click();
      });
  //팝업창 띄우기 
-	function findFestival(homepage_url) {
+/* 	function findFestival(homepage_url) {
 	    window.open(homepage_url, 'Popup');
-	}
+	} */
 
   </script>
 
