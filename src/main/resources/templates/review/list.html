@@ -214,12 +214,46 @@ $(document).ready(function() {
 							<th scope="col" class="th-title">[[#{alert.Title}]]</th>
 							<th scope="col" class="th-writer">[[#{alert.Writer}]]</th>
 							<th scope="col" class="th-date">[[#{alert.Date}]]</th>
+							<th scope="col" class="th-like">[[#{alert.Like}]]</th>
 							<th scope="col" class="th-hit">[[#{alert.HIT}]]</th>
 						</tr>
 					</thead>
 					<tbody>
-						<th:block th:each="review, reviewsStat: ${reviews}">
-						
+						<th:block th:each="review, reviewsStat: ${findReviewRank5}" th:if="${navi.currentPage==1}">
+							<tr th:if="${reviews}" th:onclick="|location.href='@{/review/read(review_id=${review.review_id})}'|" style="cursor:pointer;" 
+										class="hover">
+								<td class="color" th:text="${reviewsStat.count}"style="color: red;" ></td>
+								<td id="review_place" class="color"
+									th:text="${review.review_place}"
+									th:data-original="${review.review_place}"></td>
+								<th th:text="${review.title}"
+									th:data-original="${review.title}" id="title"></th>
+								<td th:text="${review.member_id}" class="center"></td>
+								<td
+									th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
+								<td th:text="${review.review_like}" style="color: red;"></td>
+								<td th:text="${review.hit}"></td>
+							</tr>
+						</th:block>
+					
+						<th:block th:each="review, reviewsStat: ${reviews}" >
+							<th:block th:if="${navi.currentPage == 1 and reviewsStat.count <= 7}">
+							<tr th:if="${reviews}" th:onclick="|location.href='@{/review/read(review_id=${review.review_id})}'|" style="cursor:pointer;" 
+										class="hover">
+								<td class="color" th:text="${reviewsStat.count+3}"></td>
+								<td id="review_place" class="color"
+									th:text="${review.review_place}"
+									th:data-original="${review.review_place}"></td>
+								<th th:text="${review.title}"
+									th:data-original="${review.title}" id="title"></th>
+								<td th:text="${review.member_id}" class="center"></td>
+								<td
+									th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
+								<td th:text="${review.review_like}"></td>
+								<td th:text="${review.hit}"></td>
+							</tr>
+							</th:block>
+   							 <th:block th:if="${navi.currentPage > 1 and reviewsStat.count <= 10}">
 							<tr th:if="${reviews}" th:onclick="|location.href='@{/review/read(review_id=${review.review_id})}'|" style="cursor:pointer;" 
 										class="hover">
 								<td class="color" th:text="${reviewsStat.count}"></td>
@@ -231,8 +265,10 @@ $(document).ready(function() {
 								<td th:text="${review.member_id}" class="center"></td>
 								<td
 									th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
+								<td th:text="${review.review_like}"></td>
 								<td th:text="${review.hit}"></td>
 							</tr>
+							</th:block>
 						</th:block>
 						<tr th:if="${reviews.empty}">
 							<td class="color" colspan="6">[[#{alert.noreviews}]]</td>

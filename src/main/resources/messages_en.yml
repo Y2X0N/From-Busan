@@ -156,7 +156,6 @@ alert:
   Noattraction: "No attractions were searched."
   attractionplw: "Please enter the name of the attraction."
   steameddi: "'s list of steamed dishes"
-  shortattraction: "Finding a short attractions"	
   Addlike: "Added likes"
   deletlike: "The likes have been deleted"
   steamedlist: "You have been added to your preferred list"
@@ -171,3 +170,6 @@ alert:
   deletripple: "Are you sure you want to delete the ripple?"
   reki: "Please enter it again."
   coco: "Please enter the contents of the comment"
+  Like: "Like"
+  
+  

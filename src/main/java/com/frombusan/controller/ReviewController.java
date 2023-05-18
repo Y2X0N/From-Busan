@@ -27,6 +27,7 @@ import com.frombusan.model.review.Review;
 import com.frombusan.model.review.ReviewLikes;
 import com.frombusan.model.review.ReviewUpdateForm;
 import com.frombusan.model.review.ReviewWriteForm;
+import com.frombusan.repository.ReviewMapper;
 import com.frombusan.service.ReviewService;
 import com.frombusan.util.PageNavigator;
 
@@ -45,6 +46,7 @@ public class ReviewController {
 	
 	//의존성주입
     private final ReviewService reviewService;
+    private final ReviewMapper reviewMapper;
     
     // 게시판 관련 상수 값
     final int countPerPage = 10;    // 페이지 당 글 수
@@ -132,6 +134,9 @@ public class ReviewController {
         model.addAttribute("searchText", searchText);
         
         model.addAttribute("loginMember", loginMember);
+        
+        List<Review> findReviewRank5 = reviewMapper.findReviewRank5();
+        model.addAttribute("findReviewRank5", findReviewRank5);
 
         // board/list.html 를 찾아서 리턴한다.
         return "review/list";
@@ -155,7 +160,7 @@ public class ReviewController {
         model.addAttribute("loginMember",loginMember);
         
         List<String> findReviewLikes = reviewService.findLikesMemberId(review_id);
-		//log.info("findReviewLikes:{}",findReviewLikes);
+		log.info("findReviewLikes:{}",findReviewLikes);
 		model.addAttribute("findReviewLikes", findReviewLikes);
 
         // board/read.html 를 찾아서 리턴한다.
@@ -282,9 +287,9 @@ public class ReviewController {
 	public ResponseEntity<Review> likeReview(@RequestParam("review_id") Long review_id
 											,@SessionAttribute(value = "loginMember", required = false) Member loginMember
 											) {
-
  		List<String> findReviewLikes = reviewService.findLikesMemberId(review_id);
 		List<Map<String, Object>> findLikesById = reviewService.findLikesById(review_id);
+		
 		
 		Review review= reviewService.findReview(review_id);
 		ReviewLikes reviewLikes = new ReviewLikes();
@@ -298,7 +303,10 @@ public class ReviewController {
 		        break;
 		    }
 		}
-
+		if (review.getReview_like() == null) {
+		    review.setReview_like(0L);
+		}
+		log.info("aa:{}",review);
 		if (review != null) {
 			if(!findReviewLikes.contains(member_id)) {
 				review.addReview_like();
@@ -306,13 +314,14 @@ public class ReviewController {
 				reviewLikes.setReview_id(review_id);
 				reviewService.saveLikes(reviewLikes);
 				review.setLiked(true);
+				log.info("aa:{}",review);
+				
 			}
 			else {
 				review.removeReview_like();
 				reviewService.deleteLike(like_id);
 				review.setLiked(false);
 		    }
-			log.info("festival:{}",review);
 			reviewService.updateReview(review);
 	    return ResponseEntity.ok(review);
 	  } else {

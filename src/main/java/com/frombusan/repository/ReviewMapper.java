@@ -54,7 +54,7 @@ public interface ReviewMapper {
  	void deleteLike(Object like_id);
  //	
    
-   
+   List<Review>findReviewRank5();
    
    
 }

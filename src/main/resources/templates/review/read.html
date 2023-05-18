@@ -208,6 +208,8 @@
      //         $(".numb").toggleClass("heart-active")
      //     });
      // });
+      
+/////////////// 좋아요/////////////////////////////////////////////////////////////////////////
 
       function like(review_id) {
     		
@@ -217,13 +219,13 @@
     		data: { review_id: review_id },
     	 	success: function (result) {
     	 		        if (result.liked===true) {
-    	 		          alert([[#{alert.Addlike}]]);
+    	 		          alert("좋아요가 추가되었습니다.");
     		 		         $(".like_img").attr({
     		 		            'src': 'https://cdn-icons-png.flaticon.com/512/803/803087.png',
-    		 		            alt: '좋아요삭제'
+    		 		            alt: '좋아요'
     		 		          });	
     	 		        } else {	
-    	 		          alert([[#{alert.deletlike}]]);
+    	 		          alert("좋아요가 삭제되었습니다.");
     	 		         		$(".like_img").attr({
     		 		            'src': '/image/heart-regular.svg',
     		 		            alt: '좋아요삭제'
@@ -247,8 +249,6 @@
               'src': 'https://cdn-icons-png.flaticon.com/512/803/803087.png',
               alt: '좋아요하기 완료'
             });
-
-
           } 
           //active가 없는경우
           else {
@@ -260,9 +260,10 @@
           }
         })
       });
-    
-    
-/////////////////////////////////////번역////////////////////////
+
+
+        
+/////////////////////////////////////번역////////////////////////////////////////////////////
 
 
 function checkLang(){
@@ -372,20 +373,21 @@ function translate(lang) {
 				</div>
 				<div th:if="${loginMember}">
 					<div id="heart-container">
-						<div class="heartWish">
+						<div class="heartWish" >
 							<div class="left_area">
-								<a th:unless="${#lists.contains(findReviewLikes, member_id)}"
+								<a th:unless="${#lists.contains(findReviewLikes, loginMember.member_id)}"
 									href="javascript:;" class="icon heart"
 									th:onclick="|like(${review.review_id})|"> <img
 									class="like_img" src="/image/heart-regular.svg" alt="하트">
 								</a>
 								<!-- 좋아요를 햇으면 -->
-								<a th:if="${#lists.contains(findReviewLikes, member_id)}"
+								<a th:if="${#lists.contains(findReviewLikes, loginMember.member_id)}"
 									href="javascript:;" class="icon heart"
 									th:onclick="|like(${review.review_id})|"> <img
 									class="like_img"
 									src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
 									alt="하트">
+								</a>
 							</div>
 						</div>
 					</div>

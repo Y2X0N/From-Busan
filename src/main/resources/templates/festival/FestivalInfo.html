@@ -73,9 +73,11 @@ function getDb(){
 	                        marker.setAnimation(google.maps.Animation.BOUNCE);
 	                      }
                         let index=0;
+                        let rail = "by rail";
+                        let bus = "by bus";
                         var lang = localStorage.getItem("lang");
                         if (lang !== "ko") {
-                        	transInfoInMaps(lang,main_title,index);
+                        	transInfoInMaps(lang,main_title,index,null,null,null,null,rail,bus);
                         }
                     };
                     })(marker,i)
@@ -380,16 +382,17 @@ function getRestaurant(){
   	                        +"<img src='"+mainImgNormal+"' alt='restaurant image' style='width: 300px; height: 200px;'><br>"
   	                        +"<p>"+"<h5 id='menu'> 대표메뉴 : "+rprsntv_menu+"</h5>"+"<p>"+"<h5 id='tel'> 대표 전화번호 : "+cntct_tel+"</h5>"+"<p>"+"<h5  id='add'> 주소 : "+addr1+"</h5>"+"<p>"+"<p>"
   	                        /*+"<button type='button' class='btn btn-outline-primary' onclick=\"location.href='/restaurant/RestaurantInfo?restaurant_id=" + restaurant_id + "'\">레스토랑 정보</button>"*/
-  	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRoute(" +lat+","+lng + ")'>"+[[#{alert.shortattraction}]]+"</button>"+"</div>" 
+  	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRoute(" +lat+","+lng + ")'>명소에서 최단 거리 찾기</button>"+"</div>" 
   	                        );
                         infowindow.open(map,marker);
                         
                         let menu="대표메뉴 : "+rprsntv_menu;
                         let add="주소 : "+addr1;
                         let tel="대표 전화번호 : "+cntct_tel;
+                        let route="길찾기";
                         var lang = localStorage.getItem("lang");
                         if (lang !== "ko") {
-                        	transInfoInMaps(lang,main_title,index,menu,add,tel);
+                       		transInfoInMaps(lang,main_title,index,menu,add,tel,route,null,null);
                         }
                         
                     };
@@ -477,13 +480,13 @@ function like(festivalId) {
 	data: { festivalId: festivalId },
  	success: function (result) {
  		        if (result.liked===true) {
- 		          alert([[#{alert.Addlike}]]);
+ 		          alert("좋아요가 추가되었습니다.");
 	 		         $(".like_img").attr({
 	 		            'src': 'https://cdn-icons-png.flaticon.com/512/803/803087.png',
 	 		            alt: '좋아요삭제'
 	 		          });	
  		        } else {
- 		          alert([[#{alert.deletlike}]]);
+ 		          alert("좋아요가 삭제되었습니다.");
  		         		$(".like_img").a2ttr({
 	 		            'src': '/image/heart-regular.svg',
 	 		            alt: '좋아요삭제'
@@ -529,13 +532,13 @@ function myList(festival_id) {
 	data: { festival_id: festival_id },
 	success: function (result) {
 		        if (result.jjim===true) {
-		          alert([[#{alert.steamedlist}]]);
+		          alert("찜 목록에 추가되었습니다.");
 		          $(".wish_img").attr({
 	 		            'src': '/image/bookmark-solid%20(2).svg',
 	 		            alt: '찜하기'
 	 		          });	
 		        } else {
-		          alert([[#{alert.Deletlist}]]);
+		          alert("찜 목록에서 삭제되었습니다.");
 		          $(".wish_img").attr({
 	 		            'src': '/image/bookmark-regular (1).svg',
 	 		            alt: '찜삭제'
@@ -660,7 +663,7 @@ function myList(festival_id) {
 	    }
 
 ///////////////////////////////지도에서 맛집 클릭했을때에 번역 실행//////////////////////////////////
-	    function transInfoInMaps(lang,main_title,index,menu,add,tel) {
+	    function transInfoInMaps(lang,main_title,index,menu,add,tel,route,rail,bus) {
 	    	
 	    	 $.ajax({
 	    		url : "/translate/infoInMaps",
@@ -671,20 +674,29 @@ function myList(festival_id) {
 	    			menu:menu,
 	    			add:add,
 	    			tel:tel,
+	    			route:route,
+	    			bus:bus,
+	    			rail:rail,
 	    		},
 	    		success : function(joined) {
-	    				
 	    				let i=0;
 	    				$("div.resmark h3").text(joined[i].translation);
 	    				i++;
-	    				
-	    				if(!joined[i].translation.isEmpty){
-	    				$("h5#menu").text(joined[i].translation);
-	    				i++;
-	    				$("h5#add").text(joined[i].translation);
-	    				i++;
-	    				$("h5#tel").text(joined[i].translation);
-	    				i++;
+	    				if(add===null){
+		    				$("div.resmark button:eq(0)").text(joined[i].translation);
+		    				i++;
+		    				$("div.resmark button:eq(1)").text(joined[i].translation);
+		    				i++;
+	    				}
+	    				else{
+		    				$("div.resmark button").text(joined[i].translation);
+		    				i++;
+		    				$("h5#menu").text(joined[i].translation);
+		    				i++;
+		    				$("h5#add").text(joined[i].translation);
+		    				i++;
+		    				$("h5#tel").text(joined[i].translation);
+		    				i++;
 	    				}
 	    		},
 	    		error : function(xhr, status, error) {
