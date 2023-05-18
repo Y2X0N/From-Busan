@@ -27,7 +27,7 @@ $(document).ready(function() {
 
 ///////////////////////////////////////기본 장소 지도 //////////////////////////////////////
 function getDb(){
-	
+		modalClose();
 	   //지도 표시	
 	 	const  map= new google.maps.Map(document.getElementById("map"),{
 	           zoom:12,
@@ -104,6 +104,8 @@ function getDb(){
 	               map.setCenter(pos);
 	             },
 	             () => {
+	            	 alert("내위치를 켜주세요");
+	                 return;
 	               handleLocationError(true, infowindow, map.getCenter());
 	             }
 	           );
@@ -181,7 +183,8 @@ function calcRouteByRail(lat,lng) {
           	    let result1 = instruction1.slice(0, -1);
           	    const modal = document.querySelector('.modal');
           	    modal.style.visibility = 'visible';
-          	    modalContent.innerHTML = result1;
+	          	  let FindText=result1.replaceAll(","," ");
+	        	    modalContent.innerHTML = FindText;
           	    modal.style.display = "block"; // 모달을 표시합니다.
           	  var language = localStorage.getItem("lang");
               if (language !== "ko") {    	            
@@ -249,7 +252,8 @@ function calcRouteByBus(lat,lng) {
           	    let result1 = instruction1.slice(0, -1);
          	    const modal = document.querySelector('.modal');
          	    modal.style.visibility = 'visible';
-          	    modalContent.innerHTML = result1;
+	         	   	let FindText=result1.replaceAll(","," ");
+	         	    modalContent.innerHTML = FindText;
           	    modal.style.display = "block"; // 모달을 표시합니다.
           	  var language = localStorage.getItem("lang");
               if (language !== "ko") {    	            
@@ -299,6 +303,7 @@ function getRestaurant(){
 
 /////////////// 맛집 정보 지도에 표시하기/////////////////////////////////////////////////////////////////////////
 function findRestaurant(data1){
+		modalClose();
 		let lat = [[${tourist_Spot.lat}]];
     let lng = [[${tourist_Spot.lng}]];
 		const main_title = [[${tourist_Spot.main_title}]];
@@ -481,8 +486,9 @@ function calcRoute(lat,lng) {
           	    }
           	    let result1 = instruction1.slice(0, -1);
          	    const modal = document.querySelector('.modal');
-         	    modal.style.visibility = 'visible';
-          	    modalContent.innerHTML = result1;
+         	   		 modal.style.visibility = 'visible';
+         	   		let FindText=result1.replaceAll(","," ");
+          	    modalContent.innerHTML = FindText;
           	    modal.style.display = "block"; // 모달을 표시합니다.
           	   var language = localStorage.getItem("lang");
                if (language !== "ko") {    	            
@@ -496,7 +502,6 @@ function calcRoute(lat,lng) {
    }
   )
  })}	
-
 
 /////////////// 좋아요/////////////////////////////////////////////////////////////////////////
 function like(touristSpotId) {
@@ -732,6 +737,11 @@ function myList(touristSpotId) {
     			console.error('AJAX error:', error);
     		}
     	});
+    }
+    //모달 닫는 함수
+    const modalClose = ()=>{
+    	let modal = document.querySelector(".modal");
+    	modal.style.display = "none";
     }
     
     
