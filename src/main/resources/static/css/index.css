@@ -7,7 +7,15 @@
   box-sizing: border-box;
   font-family: "Roboto";
 }
-
+/*인덱스 페이지 헤더 픽스*/
+#header-fixed{
+	width:100%;
+	height:100px;
+	position: sticky;
+	z-index:300;
+  top: 0;
+  background-color:#fff;
+}
 
 #container {
   margin: 0 auto;

@@ -1,8 +1,5 @@
 package com.frombusan.controller;
 
-import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,40 +7,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.HttpHeaders;
+
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.UriUtils;
 
-import com.frombusan.model.AttachedImg;
-import com.frombusan.model.festival.Festival;
-import com.frombusan.model.festival.FestivalLikes;
-import com.frombusan.model.member.LoginForm;
 import com.frombusan.model.member.Member;
 import com.frombusan.model.review.Review;
 import com.frombusan.model.review.ReviewLikes;
 import com.frombusan.model.review.ReviewUpdateForm;
 import com.frombusan.model.review.ReviewWriteForm;
-import com.frombusan.repository.FestivalMapper;
-import com.frombusan.repository.MemberMapper;
-import com.frombusan.repository.ReviewMapper;
-import com.frombusan.repository.TouristSpotMapper;
 import com.frombusan.service.ReviewService;
 import com.frombusan.util.PageNavigator;
 
@@ -67,9 +50,6 @@ public class ReviewController {
     final int countPerPage = 10;    // 페이지 당 글 수
     final int pagePerGroup = 5;     // 페이지 이동 그룹 당 표시할 페이지 수
     
-    @Value("${file.upload.path}")
-    private String uploadPath;
-
     // 후기 글쓰기 페이지 이동
     @GetMapping("write")
     public String writeForm(Model model,RedirectAttributes redirectAttributes) {
@@ -139,7 +119,8 @@ public class ReviewController {
         PageNavigator navi = new PageNavigator(countPerPage, pagePerGroup, page, total);
 
         // 데이터베이스에 저장된 모든 Board 객체를 리스트 형태로 받는다.
-        List<Review> reviews = reviewService.findReviews(searchText, navi.getStartRecord(), navi.getCountPerPage());
+        List<Review> reviews = reviewService.findReviews(searchText,
+        		navi.getStartRecord(), navi.getCountPerPage());
         
         List<String> findAllName = reviewService.findAllMainTitle();
         model.addAttribute("findAllName", findAllName);

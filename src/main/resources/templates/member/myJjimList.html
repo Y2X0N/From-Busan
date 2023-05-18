@@ -148,11 +148,12 @@
 	</div>
 	<div id="card-container">
 		<div class="container">
-			<div th:else="${findMyListSpots.size()<1}">
-			<h1>[[#{alert.preferreda}]]</h1>
+			<div id="findTourist" th:if="${findMyListSpots.empty}">
+					<h1>[[#{alert.preferreda}]]</h1>
 			</div>
 			<div id="findTourist" class="card" style="--clr: #009688;"
-				th:each="tourist : ${findMyListSpots}" th:if="${findMyListSpots.size()>0}">
+				th:each="tourist : ${findMyListSpots}" th:unless="${findMyListSpots.empty}">
+				
 				<div class="imgBx">
 					<img th:src="@{${tourist.main_img_normal}}">
 				</div>
@@ -173,8 +174,11 @@
 					<a th:href="@{/tourist/TouristInfo(tourist_Spot_id=${tourist.tourist_Spot_id})}">[[#{alert.View}]]</a>
 				</div>
 			</div>
+			<div id="findFestival" th:if="${findMyListFes.empty}">
+					<h1>[[#{alert.preferreda}]]</h1>
+			</div>
 			<div id="findFestival" class="card" style="--clr: #009688;"
-				th:each="festival : ${findMyListFes}" th:if="${findMyListFes.size()>0}">
+				th:each="festival : ${findMyListFes}" th:unless="${findMyListFes.empty}">
 				<div class="imgBx">
 					<img th:src="@{${festival.main_img_normal}}">
 				</div>
@@ -197,9 +201,11 @@
 				</div>
 			</div>
 
-
+			<div id="findCourse" th:if="${findMyListCos.empty}">
+					<h1>[[#{alert.preferreda}]]</h1>
+			</div>
 			<div id="findCourse" class="card" style="--clr: #009688;"
-				th:each="course : ${findMyListCos}" th:if="${findMyListCos.size()>0}">
+				th:each="course : ${findMyListCos}" th:unless="${findMyListCos.empty}">
 				<div class="imgBx">
 					<img th:src="@{${course.main_img}}">
 				</div>

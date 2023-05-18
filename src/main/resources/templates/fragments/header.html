@@ -1,42 +1,44 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
-	<th:block th:fragment="headFragment">
-		<head>
-		<meta charset="UTF-8">
-		<title>Insert title here</title>
-		</head>
-		
-		<body th:fragment="header">
+<th:block th:fragment="headFragment">
+	<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	</head>
+
+	<body th:fragment="header">
+		<div id="header-fixed">
 			<div id="header-container">
-      <header>
-        <!-- 로고 -->
-        <a class="logo" href="/">
-          <img class="logoImage" src="/image/logo.png" alt="logo" />
-        </a>
-        <nav>
-         	<div class="top-nav">
-          	<div th:unless="${session.loginMember}">
-	            <a href="/member/login">[[#{alert.Login}]]</a>
-	            <a href="/member/join">[[#{alert.join}]]</a>
-            </div>
-           	<div class="top-nav" th:if="${session.loginMember}">
-	          	<a href="/member/myPage">[[#{alert.myPage}]]</a>
-	          	<a href="/member/logout">[[#{alert.logout}]]</a>
-      			</div>
-						<div class="language-select">
-						  <div class="dropdown">
-						    <i class="fa-solid fa-globe">&nbsp;</i><select id="languageDropdown">
-						    <option value="/">[[#{alert.Language}]]</option>
-						      <option value="?lang=ko">한국어</option>
-						      <option value="?lang=ja">日本語</option>
-						      <option value="?lang=zh">中文</option>
-						      <option value="?lang=en">English</option>
-						    </select>
-						  </div>
+				<header>
+					<!-- 로고 -->
+					<a class="logo" href="/"> <img class="logoImage"
+						src="/image/logo.png" alt="logo" />
+					</a>
+					<nav>
+						<div class="top-nav">
+							<div th:unless="${session.loginMember}">
+								<a href="/member/login">[[#{alert.Login}]]</a> <a
+									href="/member/join">[[#{alert.join}]]</a>
+							</div>
+							<div class="top-nav" th:if="${session.loginMember}">
+								<a href="/member/myPage">[[#{alert.myPage}]]</a> <a
+									href="/member/logout">[[#{alert.logout}]]</a>
+							</div>
+							<div class="language-select">
+								<div class="dropdown">
+									<i class="fa-solid fa-globe">&nbsp;</i><select
+										id="languageDropdown">
+										<option value="/">-[[#{alert.Language}]]-</option>
+										<option value="?lang=ko">한국어</option>
+										<option value="?lang=ja">日本語</option>
+										<option value="?lang=zh">中文</option>
+										<option value="?lang=en">English</option>
+									</select>
+								</div>
+							</div>
 						</div>
-          </div>
- 						<script th:inline="javascript">
+						<script th:inline="javascript">
  						$(document).ready(function() {
   						$('#languageDropdown').change(function() {
   						    const newLang = $(this).val().substr(6);
@@ -48,42 +50,22 @@
  						 });
  						});
 						</script>
-          
-          <!-- nav -->
-          <nav class="main-nav">
-            <ul>
-              <li>
-                <a href="#">[[#{alert.look}]]</a>
-                <nav class="subMenu">
-                  <ul class="dropdown-menu">
-                    <li><a href="/tourist/list">[[#{alert.Attraction}]]</a></li>
-                    <li><a href="/festival/list">[[#{alert.Festival}]]</a></li>
-                  </ul>
-                </nav>
-              </li>
-              <li>
-                <a href='/course/list'>[[#{alert.Recommendation}]]</a>
-                <nav class="subMenu">
-                  <ul class="dropdown-menu">
-                    <li><a href="#"></a></li>
-                    <li><a href="#"></a></li>
-                  </ul>
-                </nav>
-              </li>
-              <li>
-                  <a href="/review/list">[[#{alert.review}]]</a>
-                  <nav class="subMenu">
-                    <ul class="dropdown-menu">
-                      <li><a href="#"></a></li>
-                      <li><a href="#"></a></li>
-                    </ul>
-                  </nav>
-                </li>
-            </ul>
-          </nav>
-        </nav>
-      </header>
-    </div>
-		</body>
-	</th:block>
+
+						<!-- nav -->
+						<nav class="main-nav">
+							<ul>
+								<li><a href="/tourist/list">[[#{alert.Attraction}]]</a></li>
+								<li><a href="/festival/list">[[#{alert.Festival}]]</a></li>
+								<li><a href='/course/list'>[[#{alert.Recommendation}]]</a>
+								</li>
+								<li><a href="/review/list">[[#{alert.review}]]</a></li>
+							</ul>
+						</nav>
+					</nav>
+				</header>
+			</div>
+		</div>
+		<hr />
+	</body>
+</th:block>
 </html>
