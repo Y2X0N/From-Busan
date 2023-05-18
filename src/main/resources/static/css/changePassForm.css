@@ -1,0 +1,124 @@
+@charset "UTF-8";
+.popup-content {
+	  position: absolute;
+	  width:100%;
+	height:100%;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	}
+	
+	
+	
+.modal {
+  display: none; /* 모달 숨기기 */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* 배경 흐리게 */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+}
+
+.modal-content p {
+  font-size: 1.2em;
+}
+
+.modal-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#login-container{
+    width: 1200px;
+    height: 600px;
+    margin: 0 auto;
+    display: flex;                  /*유연하게*/
+    flex-direction: column;         /*세로 방향 정렬*/
+    justify-content: center;        /*가로 정렬*/
+    align-items: center;            /*세로 정렬*/
+}
+
+h1 {
+    font-size: 30px;
+    margin-top: 20px;
+    color: rgb(47, 47, 47);
+}
+
+form {
+    width: 50%;         /*600px*/
+    height: 50%;        /*300px*/
+    border: 1px solid black;
+    text-align: center;
+}
+
+.login-input {
+    width: 100%;
+    height: 35%;
+    margin-top: 15px ;
+}
+
+.login-input>input {
+    background-color: #eaeaea;
+    border: 0px;
+    margin-top: 20px;
+}
+
+.img {
+    margin-left: 40%;
+    width: 10%;
+    height: 100px;
+    margin-top: 20px;
+    object-fit: cover;
+    
+}
+
+.login-input>input {
+    width: 50%;
+    height: 25%;
+}
+
+.login-submit{
+    margin-top: 20px;
+    width: 100%;
+    height: 20%;
+}
+
+.btn-login{
+    height: 33px;
+    width: 95px;
+    background-color: white;
+    border: 2px solid black;
+    text-align: center;
+    
+}
+
+.btn-login:hover{
+    background-color: black;
+    color: white;
+    border: 2px solid black;
+}
