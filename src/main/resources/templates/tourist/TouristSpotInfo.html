@@ -160,7 +160,6 @@ function calcRouteByRail(lat,lng) {
    directionsDisplay.setMap(maps);
    
    directionsService.route(request, function(response, status) {
-     alert(status+"  (전철이 없을경우 버스 경로가 나옵니다)");  // 확인용 Alert..미사용시 삭제
       if (status === google.maps.DirectionsStatus.OK) {
     	  directionsDisplay.setDirections(response);
     	  
@@ -228,7 +227,6 @@ function calcRouteByBus(lat,lng) {
     maps = new google.maps.Map(document.getElementById('map'), map);
     directionsDisplay.setMap(maps);
     directionsService.route(request, function(response, status) {
-      alert(status+"  (버스가 없을경우 전철 경로가 나옵니다)");  // 확인용 Alert..미사용시 삭제
        if (status === google.maps.DirectionsStatus.OK) {
      	  directionsDisplay.setDirections(response);
      	  
