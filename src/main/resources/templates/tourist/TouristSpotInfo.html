@@ -84,7 +84,7 @@ function getDb(){
 	                        let index=0;
 	                        var lang = localStorage.getItem("lang");
 	                        if (lang !== "ko") {
-	                        trans(lang,main_title,index);
+	                        	transInfoInMaps(lang,main_title,index);
 	                        }
 	                        
 	                        
@@ -192,6 +192,10 @@ function calcRouteByRail(lat,lng) {
           	    modal.style.visibility = 'visible';
           	    modalContent.innerHTML = result1;
           	    modal.style.display = "block"; // 모달을 표시합니다.
+          	  var language = localStorage.getItem("lang");
+              if (language !== "ko") {    	            
+    	            trans(language,result1);
+              }
           	  }
           	}
    	  }else{
@@ -257,6 +261,10 @@ function calcRouteByBus(lat,lng) {
          	    modal.style.visibility = 'visible';
           	    modalContent.innerHTML = result1;
           	    modal.style.display = "block"; // 모달을 표시합니다.
+          	  var language = localStorage.getItem("lang");
+              if (language !== "ko") {    	            
+    	            trans(language,result1);
+              }
           	  }
           	}
     	  }else{
@@ -286,7 +294,10 @@ function getRestaurant(){
          	findRestaurant(data1);
        		//trans(lang,lists);
          	}
-       		else{alert("주변 맛집이 없습니다")};
+       		else{
+       			alert("주변 맛집이 없습니다");
+       			getDb();
+       			};
           },
       error: function (xhr, status, error) {
     	  console.log(status);
@@ -331,7 +342,7 @@ function findRestaurant(data1){
  
 	//maps api 객체생성
 	let map= new google.maps.Map(document.getElementById("map"),{
-		 zoom:12,
+		 zoom:13,
 		 center : new google.maps.LatLng(lat, lng),
 		 mapTypeId: google.maps.MapTypeId.ROADMAP,
 		});	
@@ -413,7 +424,7 @@ const pos = new google.maps.LatLng(lat,lng);
 	                        let tel="대표 전화번호 : "+cntct_tel;
 	                        var language = localStorage.getItem("lang");
 	                        if (language !== "ko") {
-	                        trans(lang,main_title,index,menu,add,tel);
+	                        	transInfoInMaps(lang,main_title,index,menu,add,tel);
 	                        }
 	                    };
 	                    })(marker,i)
@@ -483,6 +494,10 @@ function calcRoute(lat,lng) {
          	    modal.style.visibility = 'visible';
           	    modalContent.innerHTML = result1;
           	    modal.style.display = "block"; // 모달을 표시합니다.
+          	   var language = localStorage.getItem("lang");
+               if (language !== "ko") {    	            
+    	            trans(language,result1);
+              }
           	  }
           	}
       	  }else{
@@ -497,7 +512,6 @@ function calcRoute(lat,lng) {
 function like(touristSpotId) {
 
 	
-	console.log(touristSpotId);
  	$.ajax({
  	url: "like",
  	type: "POST",
@@ -673,13 +687,31 @@ function myList(touristSpotId) {
 		    translate('zh_CN');
 		  }
 	});
+    
+/////////////// 길찾기 내용 번역 /////////////////////////////////////////////////////////////////////////
+
+    function trans(lang,contents) {
+    	$.ajax({
+    		url : "/translate/maps",
+    		type : "post",
+    		data : {
+    			contents : contents,
+    			lang : lang,
+    		},
+    		success : function(joined) {
+    				$("#modalText").text(joined.translation);
+    		},
+    		error : function(xhr, status, error) {
+    			console.error('AJAX error:', error);
+    		}
+    	}); 
+    }
 
     
     
-    ///////////////////////////////지도에서 맛집 클릭했을때에 번역 실행//////////////////////////////////
-    function trans(lang,main_title,index,menu,add,tel) {
+///////////////////////////////지도에서 맛집 클릭했을때에 번역 실행//////////////////////////////////
+    function transInfoInMaps(lang,main_title,index,menu,add,tel) {
     	
-    	console.log(index);
     	 $.ajax({
     		url : "/translate/infoInMaps",
     		type : "post",
@@ -710,6 +742,8 @@ function myList(touristSpotId) {
     		}
     	});
     }
+    
+    
   </script>
 </head>
 

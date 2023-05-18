@@ -83,7 +83,7 @@ function getDb(){
                         let index=0;
                         var lang = localStorage.getItem("lang");
                         if (lang !== "ko") {
-                        trans(lang,main_title,index);
+                        	transInfoInMaps(lang,main_title,index);
                         }
                     };
                     })(marker,i)
@@ -186,6 +186,10 @@ function getDb(){
 		                    	    modal.style.visibility = 'visible';
 		                    	    modalContent.innerHTML = result1;
 		                    	    modal.style.display = "block"; // 모달을 표시합니다.
+		                    	    var language = localStorage.getItem("lang");
+		                            if (language !== "ko") {    	            
+		                  	            trans(language,result1);
+		                            }
 		                    	  }
 		                    	}
 	        	  }else{
@@ -247,10 +251,15 @@ function calcRouteByBus(lat,lng) {
              	      let mode = step.travel_mode;
              	    }
              	    let result1 = instruction1.slice(0, -1);
+             	    
             	    const modal = document.querySelector('.modal');
             	    modal.style.visibility = 'visible';
              	    modalContent.innerHTML = result1;
              	    modal.style.display = "block"; // 모달을 표시합니다.
+             	   var language = localStorage.getItem("lang");
+                   if (language !== "ko") {    	            
+         	            trans(language,result1);
+                   }
              	  }
              	}
       	  }else{
@@ -277,7 +286,9 @@ function getRestaurant(){
        	 })
        	 if(data1.length !== 0){
      	findRestaurant(data1);
-       	 }else{alert("주변 맛집이 없습니다")};
+       	 }else{alert("주변 맛집이 없습니다");
+			getDb();
+       	 };
       },
       error: function (xhr, status, error) {
         console.log(status);
@@ -383,7 +394,7 @@ function getRestaurant(){
                         let tel="대표 전화번호 : "+cntct_tel;
                         var lang = localStorage.getItem("lang");
                         if (lang !== "ko") {
-                        trans(lang,main_title,index,menu,add,tel);
+                        	transInfoInMaps(lang,main_title,index,menu,add,tel);
                         }
                         
                     };
@@ -448,6 +459,10 @@ function getRestaurant(){
                     	    modal.style.visibility = 'visible';
                     	    modalContent.innerHTML = result1;
                     	    modal.style.display = "block"; // 모달을 표시합니다.
+                    	    var language = localStorage.getItem("lang");
+                            if (language !== "ko") {    
+                  	            trans(language,result1);
+                            }
                     	  }
                     	}
                 } else {
@@ -459,7 +474,6 @@ function getRestaurant(){
 /////////////// 좋아요/////////////////////////////////////////////////////////////////////////
 
 function like(festivalId) {
-	console.log(festivalId);
 	
  	$.ajax({
  	url: "like",
@@ -512,7 +526,6 @@ $(function like() {
 });     
 /////////////// 찜 기능 /////////////////////////////////////////////////////////////////////////
 function myList(festival_id) {
-	console.log(festival_id);
 	
 	$.ajax({
 	url: "myList",
@@ -626,11 +639,33 @@ function myList(festival_id) {
 		    translate('zh_CN');
 		  }
 	});
-	  
+
+	 
+/////////////// 길찾기 내용 번역 /////////////////////////////////////////////////////////////////////////
+
+	    function trans(lang,contents) {
+	    	//let contents = $("#popup").attr("data-original");
+	    	//let lang = testVari;
+	    	// ajax 호출 등의 코드 추가
+	    	$.ajax({
+	    		url : "/translate/maps",
+	    		type : "post",
+	    		data : {
+	    			contents : contents,
+	    			lang : lang,
+	    		},
+	    		success : function(joined) {
+	    				$("#modalText").text(joined.translation);
+	    		},
+	    		error : function(xhr, status, error) {
+	    			console.error('AJAX error:', error);
+	    		}
+	    	}); 
+	    }
+
 ///////////////////////////////지도에서 맛집 클릭했을때에 번역 실행//////////////////////////////////
-	    function trans(lang,main_title,index,menu,add,tel) {
+	    function transInfoInMaps(lang,main_title,index,menu,add,tel) {
 	    	
-	    	console.log(index);
 	    	 $.ajax({
 	    		url : "/translate/infoInMaps",
 	    		type : "post",
@@ -660,10 +695,7 @@ function myList(festival_id) {
 	    			console.error('AJAX error:', error);
 	    		}
 	    	});
-	    }	    
-	 
-	 
-	 
+	    }
 /////////////// 기타등등 /////////////////////////////////////////////////////////////////////////
 
    $(function () {
