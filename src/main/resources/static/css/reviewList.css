@@ -60,6 +60,12 @@ section.notice {
 
 .mainTitle {
 	color: rgb(161, 161, 161);
+	/* background-color: #e6f6ff; */
+	border: none;
+}
+
+.mainTitle2 {
+	color: rgb(161, 161, 161);
 	background-color: #e6f6ff;
 	border: none;
 }
