@@ -129,7 +129,7 @@ img {
 
 
 .find{
-	width: 20%;
+	width: 30%;
 	height: 50px;
 	
 	margin-right: 10%;
@@ -301,7 +301,7 @@ a {
 
 .btn-success{
 	height: 30px;
-    width: 103px;
+    width: 150px;
     background-color: white;
     border: 2px solid #545457;
 
@@ -317,7 +317,7 @@ a {
 	margin-top: 3%;
 	margin-bottom: 10%;
 	height: 30px;
-    width: 70px;
+    width: 157px;
     background-color: white;
     border: 2px solid #545457;
 }
