@@ -33,7 +33,8 @@
 
     <!--  전체 게시글 검색  -->
     <select id="findReviews" resultType="review">
-        select * from review
+        select review_id,review_place,member_id,title,created_time,hit,review_like 
+        from review
         <if test="_parameter != null">
             where review_place like '%' || #{searchText} || '%'
         </if>
@@ -42,7 +43,8 @@
 
     <!--  게시글 아이디로 검색  -->
     <select id="findReview" resultType="review">
-        select * from review where review_id = #{review_id}
+        select review_id,review_place,member_id,title,created_time,hit,contents
+        from review where review_id = #{review_id}
     </select>
 
     <!--  게시글 수정  -->
@@ -66,14 +68,16 @@
     
     <!-- /////////////////특정 리뷰찾기  기능//////////////////////////////////////////////////////////////// -->
    	<select id="findReviewsByMainTitle" resultType="review">
-        select * from review where review_place=#{review_place} order by created_time desc
+        select review_id,review_place,member_id,title,created_time,hit
+         from review where review_place=#{review_place} order by created_time desc
     </select>
     
     
     
             <!-- /// 작성한 유저의 게시물//////////////////  -->
     <select id="findReviewsByMemberId" resultType="review">
-        select * from review where member_id = #{member_id} order by created_time desc
+        select review_id,review_place,member_id,title,created_time,hit
+         from review where member_id = #{member_id} order by created_time desc
     </select>
     
     
@@ -99,7 +103,7 @@
         </selectKey>
         insert into review_like (
         	like_id,
-            member_id,
+            member_id,	
             review_id
         ) values (
             #{like_id},
@@ -111,5 +115,24 @@
      <delete id="deleteLike">
         delete from review_like where like_id = #{like_id} 
     </delete>
+       
+       
+      <!--  게시글 아이디로 검색  -->
+<select id="findReviewRank5" resultType="review">
+
+SELECT review_id, review_place, member_id, title, created_time, hit,review_like
+FROM (
+    SELECT review_id, review_place, member_id, title, created_time, hit,review_like,
+        ROW_NUMBER() OVER (ORDER BY review_like DESC) AS rnum
+    FROM review
+) 
+WHERE rnum BETWEEN 1 AND 3
+
+ 
+</select>
+
+
+
+       
        
 </mapper>

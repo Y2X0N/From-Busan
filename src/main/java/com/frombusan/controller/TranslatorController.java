@@ -28,8 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class TranslatorController {
 
-	ModernMT mmt = new ModernMT("");
-	//9F982625-12CF-5F66-37B2-D8B9A4B56415
+	ModernMT mmt = new ModernMT("9F982625-12CF-5F66-37B2-D8B9A4B56415");
 	@PostMapping("main")
     public ResponseEntity<List<Translation>> main(
            @RequestParam(value="fesMainTitle[]") List<String> fesMainTitle
@@ -112,13 +111,28 @@ public class TranslatorController {
 			@RequestParam String main_title,
 			@RequestParam(defaultValue="") String menu,
 			@RequestParam(defaultValue="") String add,
-			@RequestParam(defaultValue="") String tel
+			@RequestParam(defaultValue="") String tel,
+			@RequestParam(defaultValue="") String route,
+			@RequestParam(defaultValue="") String rail,
+			@RequestParam(defaultValue="") String bus
 			) throws IOException{
 		
 		List<Translation> joined = new ArrayList<>();
 		List<Translation> main_titles = mmt.translate("ko",lang, Arrays.asList(main_title));
 		
 		joined.addAll(main_titles);
+		if(!route.isEmpty()) {
+			List<Translation> routes = mmt.translate("ko",lang, Arrays.asList(route));
+			joined.addAll(routes);
+		}
+		if(!rail.isEmpty()) {
+			List<Translation> rails = mmt.translate("ko",lang, Arrays.asList(rail));
+			joined.addAll(rails);
+		}
+		if(!bus.isEmpty()) {
+			List<Translation> buss = mmt.translate("ko",lang, Arrays.asList(bus));
+			joined.addAll(buss);
+		}
 		if(!menu.isEmpty()) {
 			List<Translation> rprsntv_menus = mmt.translate("ko",lang, Arrays.asList(menu));
 			joined.addAll(rprsntv_menus);
@@ -131,6 +145,7 @@ public class TranslatorController {
 			List<Translation> tels = mmt.translate("ko",lang, Arrays.asList(tel));
 			joined.addAll(tels);
 		}
+
 		
 		return ResponseEntity.ok(joined);
 	}
