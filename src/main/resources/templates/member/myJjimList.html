@@ -175,7 +175,7 @@
 				</div>
 			</div>
 			<div id="findFestival" th:if="${findMyListFes.empty}">
-					<h1>[[#{alert.preferreda}]]</h1>
+					<h1>[[#{alert.preferreda2}]]</h1>
 			</div>
 			<div id="findFestival" class="card" style="--clr: #009688;"
 				th:each="festival : ${findMyListFes}" th:unless="${findMyListFes.empty}">
@@ -202,7 +202,7 @@
 			</div>
 
 			<div id="findCourse" th:if="${findMyListCos.empty}">
-					<h1>[[#{alert.preferreda}]]</h1>
+					<h1>[[#{alert.preferreda3}]]</h1>
 			</div>
 			<div id="findCourse" class="card" style="--clr: #009688;"
 				th:each="course : ${findMyListCos}" th:unless="${findMyListCos.empty}">

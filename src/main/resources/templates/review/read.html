@@ -69,7 +69,7 @@
         let content = $("#reply").val();
         // 리플 내용이 없으면 등록하지 않는다.
         if (content === "") {
-          alert("리플 내용을 입력하세요");
+          alert([[#{alert.coco}]]);
           $("#reply").focus();
           return;
         }
@@ -100,7 +100,7 @@
           }
         });
       }
-
+	
       function showReplies(data) {
         $("#replies").html("");
         let str = "";
@@ -140,7 +140,7 @@
           });
         } else {
           str += "<tr>"
-          str += "<td colspan='4'>등록된 리플이 없습니다.</td>"
+          str += "<td colspan='4'>"+[[#{alert.ripple}]]+"</td>"
           str += "<tr>"
         }
         str += "</table>";
@@ -150,7 +150,7 @@
       }
 
       function updateReply(reply_id) {
-        let check = confirm("리플을 수정 하시겠습니까?");
+        let check = confirm([[#{alert.modifyrip}]]);
         if (check) {
           let review_id = [[${review.review_id}]];
           let content = $("#reply_" + reply_id).val();
@@ -171,7 +171,7 @@
       }
 
       function removeReply(reply_id) {
-        let check = confirm("리플을 삭제 하시겠습니까?");
+        let check = confirm([[#{alert.deletripple}]]);
         if (check) {
           let review_id = [[${review.review_id}]];
           $.ajax({
@@ -217,13 +217,13 @@
     		data: { review_id: review_id },
     	 	success: function (result) {
     	 		        if (result.liked===true) {
-    	 		          alert("좋아요가 추가되었습니다.");
+    	 		          alert([[#{alert.Addlike}]]);
     		 		         $(".like_img").attr({
     		 		            'src': 'https://cdn-icons-png.flaticon.com/512/803/803087.png',
     		 		            alt: '좋아요삭제'
     		 		          });	
     	 		        } else {	
-    	 		          alert("좋아요가 삭제되었습니다.");
+    	 		          alert([[#{alert.deletlike}]]);
     	 		         		$(".like_img").attr({
     		 		            'src': '/image/heart-regular.svg',
     		 		            alt: '좋아요삭제'
