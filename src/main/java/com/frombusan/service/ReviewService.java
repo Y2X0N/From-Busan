@@ -95,6 +95,10 @@ public class ReviewService {
  	public void deleteLike(Object like_id) {
  		reviewMapper.deleteLike(like_id);
  	}
+
+	public List<Review> findLikeReviews() {
+		return reviewMapper.findLikeReviews();
+	}
     
     
     

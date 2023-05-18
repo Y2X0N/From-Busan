@@ -27,7 +27,7 @@ $(document).ready(function() {
 	
 ///////////////마커로 길찾기 기능 /////////////////////////////////////////////////////////////////////////
 function getDb(){
-	   
+	modalClose();
   //지도 표시
   const map= new google.maps.Map(document.getElementById("map"),{
       zoom:12, 
@@ -100,6 +100,8 @@ function getDb(){
              map.setCenter(pos);
            },
            () => {
+        	   alert("내위치를 켜주세요");
+             return;
              handleLocationError(true, infowindow, map.getCenter());
            }
          );
@@ -175,7 +177,8 @@ function getDb(){
 		                    	    let result1 = instruction1.slice(0, -1);
 		                    	    const modal = document.querySelector('.modal');
 		                    	    modal.style.visibility = 'visible';
-		                    	    modalContent.innerHTML = result1;
+		                    	    let FindText=result1.replaceAll(","," ");
+	                      	    modalContent.innerHTML = FindText;
 		                    	    modal.style.display = "block"; // 모달을 표시합니다.
 		                    	    var language = localStorage.getItem("lang");
 		                            if (language !== "ko") {    	            
@@ -244,7 +247,8 @@ function calcRouteByBus(lat,lng) {
              	    
             	    const modal = document.querySelector('.modal');
             	    modal.style.visibility = 'visible';
-             	    modalContent.innerHTML = result1;
+            	    let FindText=result1.replaceAll(","," ");
+             	    modalContent.innerHTML = FindText;
              	    modal.style.display = "block"; // 모달을 표시합니다.
              	   var language = localStorage.getItem("lang");
                    if (language !== "ko") {    	            
@@ -290,6 +294,7 @@ function getRestaurant(){
 /////////////// 맛집 정보 지도에 표시하기/////////////////////////////////////////////////////////////////////////
 
   function findRestaurant(data1){
+	  modalClose();
 	let lat = [[${festival.lat}]];
     let lng = [[${festival.lng}]];
 	const main_title = [[${festival.main_title}]];
@@ -447,7 +452,8 @@ function getRestaurant(){
                     	    let result1 = instruction1.slice(0, -1);
                     	    const modal = document.querySelector('.modal');
                     	    modal.style.visibility = 'visible';
-                    	    modalContent.innerHTML = result1;
+                    	    let FindText=result1.replaceAll(","," ");
+                     	    modalContent.innerHTML = FindText;
                     	    modal.style.display = "block"; // 모달을 표시합니다.
                     	    var language = localStorage.getItem("lang");
                             if (language !== "ko") {    
@@ -701,6 +707,12 @@ function myList(festival_id) {
 /* 	function findFestival(homepage_url) {
 	    window.open(homepage_url, 'Popup');
 	} */
+		//모달 닫는 함수
+    const modalClose = ()=>{
+    	let modal = document.querySelector(".modal");
+    	modal.style.display = "none";
+    }
+    
 
   </script>
 
