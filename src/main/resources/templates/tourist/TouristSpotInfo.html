@@ -63,8 +63,8 @@ function getDb(){
 	                    return function (){
 	                        infowindow.setContent("<div class='resmark'><h3>"+main_title+"</h3>"+
 	                        		"<img src="+img_date+" class='asd' alt = 'tourist image'>"+"<br>"
-	                        +"<p>"+"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByRail(" +lat+","+lng + ")'>Rail로 도착</button> "
-	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByBus(" +lat+","+lng + ")'>Bus로 도착</button> "+"<p></div>"
+	                        +"<p>"+"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByRail(" +lat+","+lng + ")'>"+[[#{alert.Rail}]]+"</button> "
+	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRouteByBus(" +lat+","+lng + ")'>"+[[#{alert.Bus}]]+"</button> "+"<p></div>"
 	                        );
 	                        infowindow.open(map,marker);
 	                        if (marker.getAnimation() !== null) {
@@ -400,12 +400,11 @@ const pos = new google.maps.LatLng(lat,lng);
 	                "click",
 	                (function(marker){
 	                    return function (){
-	                    	 
 	                        infowindow.setContent("<div class='resmark'>"+"<h3>"+main_title+"</h3>"
 	                        +"<img src='"+mainImgNormal+"' alt='restaurant image' style='width: 300px; height: 200px;'><br>"
 	                        +"<p>"+"<h5 id='menu'> 대표메뉴 : "+rprsntv_menu+"</h5>"+"<p>"+"<h5 id='tel'> 대표 전화번호 : "+cntct_tel+"</h5>"+"<p>"+"<h5 id='add'> 주소 : "+addr1+"</h5>"+"<p>"+"<p>"
 	                        /* +"<button type='button' class='btn btn-outline-primary' onclick=\"location.href='/restaurant/RestaurantInfo?restaurant_id=" + restaurant_id + "'\">레스토랑 정보</button>" */
-	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRoute(" +lat+","+lng + ")'>명소에서 최단 거리 찾기</button> "+"</div>"
+	                        +"<button type='button' class='btn btn-outline-primary' onclick='calcRoute(" +lat+","+lng + ")'>"+[[#{alert.shortattraction}]]+"</button> "+"</div>"
 	                        );
 	                        infowindow.open(map,marker);
 	                        
@@ -508,13 +507,13 @@ function like(touristSpotId) {
  	data: { touristSpotId: touristSpotId },
  	success: function (result) {
  		        if (result.liked===true) {
- 		          alert("좋아요가 추가되었습니다.");
+ 		          alert([[#{alert.Addlike}]]);
 	 		         $(".like_img").attr({
 	 		            'src': 'https://cdn-icons-png.flaticon.com/512/803/803087.png',
 	 		            alt: '좋아요'
 	 		          });	
  		        } else {
- 		          alert("좋아요가 삭제되었습니다.");
+ 		          alert([[#{alert.deletlike}]]);
  		         		$(".like_img").attr({
 	 		            'src': '/image/heart-regular.svg',
 	 		            alt: '좋아요삭제'
@@ -538,13 +537,13 @@ function myList(touristSpotId) {
 	data: { touristSpotId: touristSpotId },
 	success: function (result) {
 		        if (result.jjim===true) {
-		          alert("찜 목록에 추가되었습니다.");
+		          alert([[#{alert.steamedlist}]]);
 		          $(".wish_img").attr({
 	 		            'src': '/image/bookmark-solid%20(2).svg',
 	 		            alt: '찜하기'
 	 		          });	
 		        } else {
-		          alert("찜 목록에서 삭제되었습니다.");
+		          alert([[#{alert.Deletlist}]]);
 		          $(".wish_img").attr({
 	 		            'src': '/image/bookmark-regular (1).svg',
 	 		            alt: '찜삭제'

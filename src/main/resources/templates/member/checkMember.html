@@ -28,15 +28,15 @@
      
   
    if (password === "") {
-     alert("비밀번호를 입력하세요");
+     alert([[#{alert.plsPas}]]);
      return;
    }
    if (password1 === "") {
-     alert("비밀번호 확인");
+     alert([[#{alert.plsPas2}]]);
      return;
    }
    if (password !== password1) {
-     alert("비밀번호를 동일하게 입력하세요");
+     alert([[#{alert.plsPas3}]]);
      return;
    }
    
@@ -85,7 +85,7 @@
 				  });
 		  	}
      	  } else {
-     	    alert("비밀번호가 일치하지 않습니다.");
+     	    alert([[#{alert.Passwordnot}]]);
      	  }
      	}
      ,error: function (xhr, status, error) {
@@ -121,7 +121,7 @@
 						th:field="${findPasswordForm.password}"
 						th:attr="placeholder=#{${'alert.plsPas'}}"> 
 						<input type="password" id="password1" th:field="${findPasswordForm.password}"
-						th:attr="placeholder=#{${'alert.Conpassword1'}}">
+						th:attr="placeholder=#{${'alert.plsPas2'}}">
 				</div>
 
 

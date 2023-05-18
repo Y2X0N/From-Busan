@@ -95,6 +95,7 @@ public class WebConfig implements WebMvcConfigurer {
 				.excludePathPatterns("/resources/**", "/resources/", "/css/**", "/vendor/**", "/js/**", "/script/**", "/images/**", "/fonts/**", "/lib/**");
 
   }
+
   
   /**
 	 * 변경된 언어 정보를 기억할 로케일 리졸버를 생성한다.
@@ -113,7 +114,7 @@ public class WebConfig implements WebMvcConfigurer {
 	            return super.determineDefaultLocale(request);
 	        }
 	    };
-	    localeResolver.setDefaultLocale(Locale.KOREAN);
+	    localeResolver.setDefaultLocale(Locale.ENGLISH);
 	    localeResolver.setCookieName("localeCookie");
 	    localeResolver.setCookieMaxAge(60 * 60 * 24 * 365); // 1 year
 	    return localeResolver;
