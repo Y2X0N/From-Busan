@@ -26,7 +26,7 @@
 	
 	<select id="findAllTouristForMain" resultMap="touristForMain">
 		select tourist_spot_id,place_like,main_img_normal,main_title from
-		tourist_spot order by hit desc
+		tourist_spot order by place_like desc
 	</select>
     <resultMap type="tourist" id="touristForMain">
 		<id property="id" column="id" />
