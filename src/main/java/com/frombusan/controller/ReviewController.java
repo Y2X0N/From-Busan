@@ -101,7 +101,6 @@ public class ReviewController {
         Review review = ReviewWriteForm.toReview(reviewWriteForm);
         // board 객체에 로그인한 사용자의 아이디를 추가한다.
         review.setMember_id(loginMember.getMember_id());
-        // board 객체를 저장한다.
         
         // board 객체를 저장한다.
         reviewService.saveReview(review);
@@ -153,7 +152,8 @@ public class ReviewController {
         if (review == null) {
             log.info("게시글 없음");
             return "redirect:/review/list";
-        }
+        }        
+        
 
         // 모델에 Board 객체를 저장한다.
         model.addAttribute("review", review);
