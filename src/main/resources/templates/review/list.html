@@ -219,9 +219,9 @@ $(document).ready(function() {
 						</tr>
 					</thead>
 					<tbody>
-						<th:block th:each="review, reviewsStat: ${findReviewRank5}" th:if="${navi.currentPage==1}">
+						<th:block  th:each="review, reviewsStat: ${findReviewRank5}" th:if="${navi.currentPage==1}">
 							<tr th:if="${reviews}" th:onclick="|location.href='@{/review/read(review_id=${review.review_id})}'|" style="cursor:pointer;" 
-										class="hover">
+										class="hover likeRanking">
 								<td class="color" th:text="${reviewsStat.count}"style="color: red;" ></td>
 								<td id="review_place" class="color"
 									th:text="${review.review_place}"
