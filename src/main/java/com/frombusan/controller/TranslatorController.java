@@ -53,7 +53,7 @@ public class TranslatorController {
 	
 	@PostMapping("reviewsList")
 
-    public ResponseEntity<List<Translation>> list(@RequestParam String text1
+    public ResponseEntity<List<Translation>> list(@RequestParam(defaultValue="") String text1
            , @RequestParam(value="reviewPlaces[]",defaultValue="") List<String> reviewPlace
            , @RequestParam(value="reviewTitle[]",defaultValue="") List<String> reviewTitle
            , @RequestParam(value="mainTitle[]",defaultValue="") List<String> mainTitle
@@ -65,9 +65,10 @@ public class TranslatorController {
 		List<Translation> mainTitles = mmt.translate("ko",lang,mainTitle);
 		joined.addAll(mainTitles);
 		}
+		if(!text1.isEmpty()) {
 		List<Translation> reviewList = mmt.translate("ko", lang, Arrays.asList(text1));
 		joined.addAll(reviewList);
-
+		}
 		if(!reviewPlace.isEmpty()) {
 		List<Translation> reviewPlaces = mmt.translate("ko",lang,reviewPlace);
 		joined.addAll(reviewPlaces);

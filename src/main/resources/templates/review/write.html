@@ -35,6 +35,7 @@ $(document).ready(function() {
 	});
 });
 
+
 	/* function previewImage(event) {
 		var input = event.target;
 		var reader = new FileReader();
@@ -68,7 +69,58 @@ $(document).ready(function() {
 		reader.readAsDataURL(input.files[0]);
 	}
  */
- 
+/////////////// 번역 /////////////////////////////////////////////////////////////////////////
+
+	function translate(lang) {
+		// 번역할 코드
+		//리류장소들 한꺼번에
+		let mainTitle = [];
+		$("[id='main_title']").each(function() {
+			mainTitle.push($(this).attr("data-original"));
+		});
+
+		// ajax 호출 등의 코드 추가
+		$.ajax({
+			url : "/translate/reviewsList",
+			type : "post",
+			data : {
+				mainTitle : mainTitle,
+				lang : lang,
+			},
+			success : function(joined) {
+				//성공
+				let index = 0;
+				var mainTitleElements = $("span#main_title");
+				map = new Map();
+				mainTitleElements.each(function() {
+					var mainTitleElement = $(this);
+					mainTitleElement.text(joined[index].translation);
+					mainTitleElement.attr("data-translation",
+					joined[index].translation);
+					index++;
+				});
+
+			},
+			error : function(xhr, status, error) {
+				console.error('AJAX error:', error);
+			}
+		});
+	}
+ $(document).ready(function() {
+     $('input[type="button"]').each(function() {
+       $(this).val($(this).attr('value'));
+     });
+     
+   const lang = window.localStorage.getItem("lang");
+		console.log(lang);
+		if (lang === "ja") {
+			translate('ja');
+		} else if (lang === "en") {
+			translate('en');
+		} else if (lang === "zh") {
+			translate('zh_CN');
+		}
+   });
  </script>
 
 <style>
@@ -105,10 +157,13 @@ $(document).ready(function() {
 			<table class="write-table">
 				<th>[[#{alert.Reviewl}]]</th>
 				<td>
-					<input type="text" list="searchOptions" th:field="*{review_place}" style="width: 600px;" />
+					<input type="text" list="searchOptions"
+					
+					 th:field="*{review_place}" style="width: 600px;" />
 					 <datalist id="searchOptions">
 						<option th:each="main_title : ${findAllName}">
-								<span th:text="${main_title}"></span>
+								<span th:text="${main_title}"
+								id="main_title" th:data-original="${main_title}"></span>
 						</option>
 					</datalist>
 					<div class="error" th:if="${#fields.hasErrors('review_place')}"
