@@ -13,8 +13,8 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-application.properties
-application.yml
+#application.properties
+#application.yml
 
 # External tool builders
 .externalToolBuilders/

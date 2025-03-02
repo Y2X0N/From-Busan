@@ -1,0 +1,38 @@
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
+  port: 9000
+
+spring:
+  datasource:
+#    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=frombusan
+    username: system
+    password: 4604
+    driver-class-name: org.postgresql.Driver
+  servlet:
+    multipart:
+      max-file-size:
+        2000MB
+
+      max-request-size:
+        5000MB
+  messages:
+    encoding: utf-8
+    cache-duration: 30
+    always-use-message-format: true
+    use-code-as-default-message: true
+    fallback-to-system-locale: true
+  config:
+    messages:
+      basename: i18n/messages
+      encoding: UTF-8
+
+mybatis:
+#  type-aliases-package: com.example.board.model
+  mapper-locations: classpath:mapper/**/*.xml
+  config-location: classpath:config/mybatis-config.xml
+  
+    
+  

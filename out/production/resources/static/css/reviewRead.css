@@ -1,0 +1,223 @@
+@charset "UTF-8";
+.read-container {
+    width: 1200px;
+    
+	  margin: 0 auto;
+ 		margin-top : 30px;
+ 		text-align: center;
+ 		margin-bottom : 150px;
+}
+/* body{
+	height: 200vh;
+} */
+review_place{
+	margin: 20px 0;
+	font-size: 30px;
+}
+h1{
+	margin: 20px 0;
+}
+h2 {
+    color: rgb(98, 102, 105);
+    text-align: left;
+}
+.form-nav{
+	display:flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.form-nav span{
+	margin-right:10px;
+}
+.read-form{
+	width:100%;
+}
+.form-contents{
+	height: 100%;
+	
+}
+
+
+ input[type=button]{
+        height: 35px;
+        width: 100px;
+        background-color: white;
+        border: 2px solid black;
+        margin-top: 2%;
+  }
+ input[type=button]:hover {
+        background-color: black;
+        color: white;
+        border: 2px solid black;
+    }
+
+.center{
+	text-align: center;
+}
+
+
+/* -----------------좋아요------------ */
+
+.heart-btn {
+    position: absolute;
+    /*top: 50%;
+    left: 50%;*/
+    transform: translate(-50%, -50%);
+    
+    margin-top: 36px;
+    margin-left: 600px;
+}
+
+.content {
+    border: 1.5px solid #ccc;
+    padding: 7px 8px;
+    border-radius: 5px;
+    /*display: flex;*/
+    cursor: pointer;
+}
+
+.content.heart-active {
+    background-color: #F8E0E6;
+    background: #F8E0E6;
+}
+
+.content .heart {
+    height: 90px;
+    width: 90px;
+    background: url("/image/like.png") no-repeat;
+    background-position: left;
+    background-size: 2900%;
+    position: absolute;
+    top: 50%;
+    left: 21%;
+    transform: translate(-50%, -50%);
+}
+
+.heart.heart-active {
+    background-position: right;
+    animation: animate .8s steps(28) 1;
+}
+@keyframes animate {
+    0%{
+        background-position: left;
+    }
+    100%{
+        background-position: right;
+    }
+}
+
+.like {
+    margin-left: 35px;
+    font-size: 20px;
+     color: rgb(142, 141, 141);
+}
+
+.like.heart-active {
+    color: black;
+}
+.icon.heart img {
+  width: calc(100vw * (24 / 1920));
+  height: calc(100vw * (24 / 1920));
+}
+.left_area .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100vw * (45 / 1920));
+  height: calc(100vw * (45 / 1920));
+
+  /* border-radius: 50%; */
+  border: solid 2px #eaeaea;
+  background-color: #fff;
+
+  
+}
+.numb:before {
+    content: '12';
+    font-size: 20px;
+    font-weight: 580;
+    font-family: sans-serif;
+    color: rgb(142, 141, 141);
+    margin-left: 6px;
+}
+
+.numb.heart-active:before {
+    content: '13';
+    color: black;
+}
+
+#heart-container{
+	width:30px;
+	height:100%;
+	margin-right: 20px;
+}
+
+
+.reply-div{
+    margin-top: 6%;
+}
+
+.reply-table {
+    width: 80%;
+    height: 50px;
+    border-collapse: collapse;
+    text-align: left;
+    margin: auto;
+    /* margin-top: 3%; */
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.reply-table th {
+    color: rgb(142, 141, 141);
+    padding: 5px 5px;
+    border-bottom: 1px solid #ccc;
+
+}
+
+.reply-table td {
+    font-size: 14px;
+    padding: 3px 3px;
+}
+/* .reply-input-btn{
+	
+} */
+.reply-table button{
+	height: 30px;
+    width: 70px;
+    background-color: white;
+    border: 2px solid #545457;
+}
+.review-button{
+	margin-left:10px;
+	width: 150px;
+}
+
+
+.reply-input {
+    height: 30px;
+    width: 40%;
+    font-size: 14px;
+    /* padding: 7px 14px; */
+    border: 1px solid #ccc;
+    margin-top: 2%;
+}
+
+.reply-btn {
+    height: 30px;
+    width: 80px;
+    background-color: white;
+    border: 2px solid #545457;
+}
+
+.reply-btn:hover {
+    background-color: #545457;
+    color: white;
+    border: 2px solid #545457;
+}
+.not-login-reply{
+	width:100%;
+	background-color:white;
+	border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px
+}
+

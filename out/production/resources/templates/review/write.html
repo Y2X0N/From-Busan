@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>글쓰기</title>
+<script th:inline="javascript">
+//국제화
+			$(document).ready(function() {
+				  $('input[type="submit"], input[type="reset"],input[type="button"]').each(function() {
+				    $(this).val($(this).attr('value'));
+				  });
+				});
+</script>
+<link rel="stylesheet" href="/css/header.css">
+<link rel="stylesheet" href="/css/writeForm.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script src="/js/summernote/summernote-lite.js"></script>
+<script src="/js/summernote/lang/summernote-ko-KR.js"></script>
+
+<link rel="stylesheet" href="/css/summernote/summernote-lite.css">
+
+<script th:inline="javascript">
+$(document).ready(function() {
+	//여기 아래 부분
+	$('#summernote').summernote({
+			height:800,
+		  minHeight: null,             // 최소 높이
+		  maxHeight: null,             // 최대 높이
+		  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+		  lang: "ko-KR",					// 한글 설정
+		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+          
+	});
+});
+
+
+	/* function previewImage(event) {
+		var input = event.target;
+		var reader = new FileReader();
+		reader.onload = function() {
+			var img = document.createElement("img");
+			img.onload = function() {
+				var container = document
+						.getElementById("image-preview-container");
+				var containerWidth = container.clientWidth;
+				var containerHeight = container.clientHeight;
+				var imageWidth = img.width;
+				var imageHeight = img.height;
+
+				if (imageWidth > containerWidth) {
+					imageHeight *= containerWidth / imageWidth;
+					imageWidth = containerWidth;
+				}
+
+				if (imageHeight > containerHeight) {
+					imageWidth *= containerHeight / imageHeight;
+					imageHeight = containerHeight;
+				}
+
+				container.innerHTML = '';
+				container.appendChild(img);
+				img.style.width = imageWidth + 'px';
+				img.style.height = imageHeight + 'px';
+			};
+			img.src = reader.result;
+		};
+		reader.readAsDataURL(input.files[0]);
+	}
+ */
+/////////////// 번역 /////////////////////////////////////////////////////////////////////////
+
+	function translate(lang) {
+		// 번역할 코드
+		//리류장소들 한꺼번에
+		let mainTitle = [];
+		$("[id='main_title']").each(function() {
+			mainTitle.push($(this).attr("data-original"));
+		});
+
+		// ajax 호출 등의 코드 추가
+		$.ajax({
+			url : "/translate/reviewsList",
+			type : "post",
+			data : {
+				mainTitle : mainTitle,
+				lang : lang,
+			},
+			success : function(joined) {
+				//성공
+				let index = 0;
+				var mainTitleElements = $("span#main_title");
+				map = new Map();
+				mainTitleElements.each(function() {
+					var mainTitleElement = $(this);
+					mainTitleElement.text(joined[index].translation);
+					mainTitleElement.attr("data-translation",
+					joined[index].translation);
+					index++;
+				});
+
+			},
+			error : function(xhr, status, error) {
+				console.error('AJAX error:', error);
+			}
+		});
+	}
+ $(document).ready(function() {
+     $('input[type="button"]').each(function() {
+       $(this).val($(this).attr('value'));
+     });
+     
+   const lang = window.localStorage.getItem("lang");
+		console.log(lang);
+		if (lang === "ja") {
+			translate('ja');
+		} else if (lang === "en") {
+			translate('en');
+		} else if (lang === "zh") {
+			translate('zh_CN');
+		}
+   });
+ </script>
+
+<style>
+#image-preview-container {
+	border: none; /* 테두리 제거 */
+	margin-top: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100px;
+	height: 100px;
+}
+/* #summernote{
+	height: 400px;
+	width:100%;
+} */
+</style>
+
+
+</head>
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div class="write-container">
+		<form action="write" method="post" enctype="multipart/form-data"
+			th:object="${writeForm}">
+				<div class="write-header">
+					[[#{alert.wrre}]]
+					<span>
+					<input class="write-btn" type="button" onclick="location.href='/review/list'" data-value="#{alert.onlist}" th:value="#{alert.onlist}"> 
+					<input class="write-btn" type="submit" data-value="#{alert.Registration}" th:value="#{alert.Registration}" > 
+					<input class="write-btn" type="reset" data-value="#{alert.cancel}" th:value="#{alert.cancel}">
+					</span>
+				</div>
+			<table class="write-table">
+				<th>[[#{alert.Reviewl}]]</th>
+				<td>
+					<input type="text" list="searchOptions"
+					
+					 th:field="*{review_place}" style="width: 600px;" />
+					 <datalist id="searchOptions">
+						<option th:each="main_title : ${findAllName}">
+								<span th:text="${main_title}"
+								id="main_title" th:data-original="${main_title}"></span>
+						</option>
+					</datalist>
+					<div class="error" th:if="${#fields.hasErrors('review_place')}"
+						th:errors="*{review_place}"></div>
+					<div class="error" th:if="${placeError != null}"
+						th:text="${placeError}"></div></td>
+				<tr>
+				<tr>
+					<th>[[#{alert.Title}]]</th>
+					<td><input type="text" th:field="*{title}" style="width: 600px;">
+						<div class="error" th:errors="*{title}"></div></td>
+				</tr>
+			</table>
+				<div class="error" th:errors="*{contents}"></div>
+			<div id="summer-box">
+				<textarea id="summernote" name="contents"></textarea>
+			</div>
+					
+		</form>
+	</div>
+</body>
+</html>
