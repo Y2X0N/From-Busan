@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>로그인</title>
+<script th:inline="javascript">
+    //국제화
+                $(document).ready(function() {
+                      $('input[type="button"]').each(function() {
+                        $(this).val($(this).attr('value'));
+                      });
+                    });
+     </script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<link rel="stylesheet" href="/css/findIdForm.css">
+<style>
+
+
+
+</style>
+
+<script th:inline="javascript">
+    
+/* 아이디 모달 없이 alert로 찾기, 5초뒤 화면 종료
+
+ <style>
+	.popup-content {
+	  position: absolute;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	}
+ </style>
+ 
+ <script th:inline="javascript">
+
+    function findId() {
+        let name = $("#name").val();
+        let phone_number = $("#phone_number").val();
+
+      // 리플 내용이 없으면 등록하지 않는다.
+      if (name === "") {
+        alert("이름을 입력하세요");
+        return;
+      }
+      if (phone_number === "") {
+        alert("전화번호를 입력하세요");
+        return;
+      }
+      $.ajax({
+        url: "/member/" ,
+        type: "post",
+        success: function (data, success, xhr) {
+          const data1 = data.filter((item)=>{
+            	 return item.NAME==name && item.PHONE_NUMBER ==phone_number ;
+            	 })
+            	if(data1.length !== 0){
+                    alert("아이디는 " + data1[0].MEMBER_ID + "입니다.");
+                    
+                    let timeLeft = 5; // 5초 카운트다운
+
+                    const countDownEl = document.getElementById("countdown"); // 카운트다운을 표시할 엘리먼트
+                    
+                    const timer = setInterval(() => {
+                    	  if (timeLeft <= 0) {
+                    	    clearInterval(timer);
+                    	    window.close();
+                    	  } else {
+                    	    countDownEl.innerHTML = `팝업 창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
+                    	    timeLeft--;
+                    	  }
+                    	}, 1000);  // setInterval() 함수에서 매 초마다 실행되는 함수의 끝 부분에서, 1초마다 반복 실행될 수 있도록 매개변수로 전달되는 시간(밀리초)
+                    	
+                    	setTimeout(() => {
+                            clearInterval(timer);
+                            window.close();
+                        }, 5000); // 5초 후에 창 닫기
+              	 }else{alert("일치하는 아이디가 없습니다")};
+	               },
+          
+        error: function (xhr, status, error) {
+          console.log(status);
+        }
+      });
+    }
+ */
+ function findId() {
+ 	
+     let name = $("#name").val();
+     let phone_number = $("#phone_number").val();
+
+  
+   if (name === "") {
+     alert([[#{alert.plsName}]]);
+     return;
+   }
+   if (phone_number === "") {
+     alert([[#{alert.phonenumber}]]);
+     return;
+   }
+   $.ajax({
+     url: "/member/" ,
+     type: "post",
+     success: function (data, success, xhr) {
+     	  const data1 = data.filter((item)=>{
+      	    return item.NAME==name && item.PHONE_NUMBER ==phone_number;
+     	  });
+     	  if(data1.length !== 0){
+     	    const member_id = data1[0].MEMBER_ID;
+
+     	    // 비밀번호를 모달 창에 표시
+     	    document.getElementById("member_id").innerHTML = member_id;
+
+     	    // 모달 열기
+     	    const modal = document.querySelector(".modal");
+     	    modal.style.display = "block";
+
+     	    // 카운트다운 시작
+     	    let timeLeft = 5; // 5초 카운트다운
+     	    const countDownEl = document.getElementById("countdown"); // 카운트다운을 표시할 엘리먼트
+     	    countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
+
+     	    const timer = setInterval(() => {
+     	      if (timeLeft <= 0) {
+     	        clearInterval(timer);
+     	        modal.style.display = "none"; // 모달 닫기
+                 window.close();
+     	      } else {
+     	        countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
+     	        timeLeft--;
+     	      }
+     	    }, 1000);
+
+     	    // 모달 닫기 버튼 이벤트 핸들러 등록
+     	    const modalClose = document.querySelector(".modal-close");
+     	    modalClose.addEventListener("click", function() {
+     	      clearInterval(timer); // 타이머 중지
+     	      modal.style.display = "none";
+     	    });
+     	  } else {
+     	    alert([[#{alert.alertnof}]]);
+     	  }
+     	}
+     ,error: function (xhr, status, error) {
+       console.log(status);
+     }
+   });
+ }
+    </script>
+
+
+</head>
+<body>
+	<div class="popup-content">
+		<div id="findLogin-container">
+			<img class="img" src="/image/bugi.png" alt="bugi">
+			<form th:object="${findIdForm}">
+				<h1>[[#{alert.Findid}]]</h1>
+
+
+				<div class="login-input">
+					<input type="text" id="name" th:field="${findIdForm.name}"
+						th:attr="placeholder=#{${'alert.plsName'}}"> <input
+						type="text" id="phone_number"
+						th:field="${findIdForm.phone_number}"
+						th:attr="placeholder=#{${'alert.plsPhone'}}">
+				</div>
+
+				<div class="login-submit">
+					<input class="btn-login" type="button" data-value="#{alert.Findid}"
+						th:value="#{alert.Findid}" onclick="findId()">
+				</div>
+
+				<div id="countdown"></div>
+
+			</form>
+		</div>
+	</div>
+
+	<div class="modal">
+		<div class="modal-content">
+			<h2>[[#{alert.idsuccess}]]</h2>
+			<p>
+				[[#{alert.idis}]] <span id="member_id"></span>[[#{alert.des}]]
+			</p>
+		</div>
+	</div>
+</body>
+</html>

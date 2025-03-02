@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>게시판 리스트</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/css/header.css" />
+<link rel="stylesheet" href="/css/list.css">
+<script src="/js/index.js"></script>
+
+<script type="text/javascript">
+/////////////// 번역 /////////////////////////////////////////////////////////////////////////
+
+function translate(lang) {
+	
+	let main_title = [];
+	$("[id='main_title']").each(function() {
+		main_title.push($(this).attr("data-original"));
+	});
+	
+	let itemcntnts = [];
+	$("[id='itemcntnts']").each(function() {
+		itemcntnts.push($(this).attr("data-original"));
+	});
+	
+
+	// ajax 호출 등의 코드 추가
+	$.ajax({
+		url : "/translate/Lists",
+		type : "post",
+		data : {
+			main_title : main_title,
+			itemcntnts:itemcntnts,
+			lang : lang,
+		},
+		success : function(joined) {
+			//성공
+			let index=0;
+
+			
+			var main_titleElements = $("h2#main_title");
+			main_titleElements.each(function() {
+				var main_titleElement = $(this);
+				main_titleElement.text(joined[index].translation);
+				main_titleElement.attr("data-translation",
+				joined[index].translation);
+				index++;
+				});
+			
+		},
+		error : function(xhr, status, error) {
+			console.error('AJAX error:', error);
+		}
+	});
+}
+
+
+$(document).ready(function() {
+	const lang = window.localStorage.getItem("lang");
+	  console.log(lang);
+	  if(lang==="ja"){
+	    translate('ja');
+	  } else if(lang==="en"){
+	    translate('en');
+	  } else if(lang==="zh"){
+	    translate('zh_CN');
+	  }
+});
+
+</script>
+</head>
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	
+	<div id="card-container">
+	
+		<div class="container">
+
+			<div class="card" style="--clr: #009688;"
+				th:each="course :${findAllCourse}">
+				<div class="imgBx">
+					<!--이미지-->
+					<img th:src="@{${course.main_img}}">
+				</div>
+				<div class="content">
+					<h2 th:text="${course.course_title}"
+					th:data-original="${course.course_title}"id="main_title"></h2>
+					<p th:text="${#strings.abbreviate(course.course_sequense,70)}"></p>
+					
+					
+					<div class="listItem">
+					 <i class="far fa-heart testHeart"
+						style="color: #da202c; font-size:20px" title="like"></i>  
+						<span th:text=" ${course.place_like}" style="font-size: 20px"></span>
+						<i class="fas fa-eye" style="font-size:20px" title="hits"></i>
+						<span th:text="${course.hit}" style="font-size: 20px"></span>
+						<!-- <a  th:utext="'조회수 : '+${tourist.hit}"></a> -->
+					</div>
+				<a th:href="@{/course/CourseInfo(course_id=${course.course_id})}">[[#{alert.View}]]</a>
+				</div>
+					
+			</div>
+		</div>
+	</div>
+</body>
+</html>

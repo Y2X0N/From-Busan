@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>회원수정</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<link rel="stylesheet" href="/css/updateMember.css" />
+
+<script th:inline="javascript">
+    
+	    $(document).ready(function() {
+	        $('input[type="button"]').each(function() {
+	          $(this).val($(this).attr('value'));
+	        });
+	      });
+	    function updateMember() {
+        let name = $("#name").val();
+        let phone_number = $("#phone_number").val();
+        let password = $("#password").val();
+        let password2 = $("#password2").val();
+    		let oldPassword =[[${loginMember.password}]];
+
+      // 리플 내용이 없으면 등록하지 않는다.
+      if (name === "") {
+        alert([[#{alert.alertName}]]);
+        return;
+      }
+      if (phone_number === "") {
+        alert([[#{alert.phonenumber}]]);
+        return;
+      }
+      if (password === "") {
+    	     alert([[#{alert.plsPas}]]);
+    	     return;
+    	   }
+  	   if (password2 === "") {
+  	     alert([[#{alert.plsPas2}]]);
+  	     return;
+    	   }
+  	 if (password !== password2) {
+  	     alert([[#{alert.plsPas3}]]);
+  	     return;
+  	   }
+  	if (password.length < 4 || password.length > 20) {
+		alert([[#{alert.alertPassword}]]);
+		password.focus();
+		return ;
+	}
+  	if (password=== oldPassword) {
+		alert([[#{alert.alertpas}]]);
+		password.focus();
+		return ;
+	}
+  	
+    $.ajax({
+        url: "/member/updateMember",
+        type: "post",
+        data: {
+        	name: name,
+            password:password,
+            phone_number:phone_number,
+        },
+        
+        success: function (data, success, xhr) {
+        	
+        	    // 비밀번호를 모달 창에 표시
+        	    document.getElementById("password").innerHTML = password;
+
+        	    // 모달 열기
+        	    const modal = document.querySelector(".modal");
+        	    modal.style.display = "block";
+
+        	    // 카운트다운 시작
+        	    let timeLeft = 3; // 3초 카운트다운
+        	    const countDownEl = document.getElementById("countdown"); // 카운트다운을 표시할 엘리먼트
+        	    countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
+
+        	    const timer = setInterval(() => {
+        	      if (timeLeft <= 0) {
+        	        clearInterval(timer);
+        	        modal.style.display = "none"; // 모달 닫기
+        	        opener.location.href = '/member/myPage';
+                    window.close();
+        	      } else {
+        	        countDownEl.innerHTML = `창이 ${timeLeft}초 후에 자동으로 닫힙니다.`;
+        	        timeLeft--;
+        	      }
+        	    }, 1000);
+
+        	}
+        ,error: function (xhr, status, error) {
+       	alert([[#{alert.alertupdate}]]);
+          console.log(status);
+        }
+      });
+    }
+
+	
+    </script>
+</head>
+<body>
+
+	<div class="popup-content">
+		<div id="update-container">
+			<img class="img" src="/image/bugi.png" alt="bugi">
+			<form th:object="${findIdForm}">
+				<h1>[[#{alert.UpdateIn}]]</h1>
+				<div class="login-input">
+					<input type="text" id="name" th:field="${loginMember.name}"
+						th:attr="placeholder=#{${'alert.plsName'}}"> <input
+						type="text" id="phone_number"
+						th:field="${loginMember.phone_number}"
+						th:attr="placeholder=#{${'alert.plsPhone'}}"> <input
+						type="text" id="password"
+						th:attr="placeholder=#{${'alert.plsPas'}}"> <input
+						type="text" id="password2"
+						th:attr="placeholder=#{${'alert.plsPas2'}}">
+				</div>
+				<div id="countdown"></div>
+			<div class="login-submit">
+				<input class="btn-login" data-value="#{alert.Password}"
+					th:value="#{alert.update}" value="UPDATE" onclick="updateMember()">
+			</div>
+			</form>
+		</div>
+	</div>
+
+
+	<div class="modal">
+		<div class="modal-content">
+			<h2>[[#{alert.memberchan}]]</h2>
+			<p>[[#{alert.mypage}]].</p>
+		</div>
+	</div>
+
+
+</body>
+</html>

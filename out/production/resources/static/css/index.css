@@ -1,0 +1,174 @@
+@charset "utf-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  box-sizing: border-box;
+  font-family: "Roboto";
+}
+/*인덱스 페이지 헤더 픽스*/
+#header-fixed{
+	width:100%;
+	height:100px;
+	position: sticky;
+	z-index:300;
+  top: 0;
+  background-color:#fff;
+}
+
+#container {
+  margin: 0 auto;
+  width: 1200px;
+  background-color: #fff;
+  overflow:hidden;
+}
+video {
+  width: 100%;
+  height: 700px;
+  object-fit: cover;
+  /*filter:opacity(60%);*/
+}
+
+#popup{
+	width:100%;
+}
+#panel-container{
+	width:100%;
+	height:400px;
+	display:flex;
+	margin-top: 5%;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid #ccc;
+}
+#panel{
+		width:50%;
+		display:flex;
+		margin-left: 27px;
+		flex-direction: column;
+}
+#panel>h1{
+	margin-bottom:10px;
+}
+
+input#start,#end{
+  width: 50%;
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  margin-bottom:10px;
+  outline: none;
+  padding-left: 10px;
+  background-color: rgb(233, 233, 233);
+}
+input[type=button]{
+		background-color: #da202c;
+    border: 0;
+    border-radius: 4px;
+    color: #fff;
+    display: inline-block;
+    font-size: 14px;
+    height: 35px;
+    line-height: 1.73rem;
+    line-height: 35px;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 0 15px;
+    text-align: center;
+    text-overflow: ellipsis;
+		margin-left:10px;
+}
+
+
+
+#map{
+  float: left;
+  width: 75%;
+  height: 400px;
+  background-color: grey;
+  
+}
+
+/* tourlist-spot */
+#tourist-spot-container{
+  width: 100%; /*1200px*/
+  height: 100px;
+ 
+}
+#tourist-spot-title{
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10%;
+
+}
+#tourist-spot-title>span{
+  height: 100px;
+  font: bold;
+  font-size: 40px;
+  line-height: 100px;
+}
+
+.tourist-spot-title-right{
+  display: flex;
+  height: 100px;
+  line-height: 50px;
+  flex-direction: column;
+}
+.tourist-spot-title-right>a{
+  font-size: 30px;
+  
+}
+.tourist-spot-title-right>div{
+  font-size: 50px;
+  line-height: 50px;
+  padding-right: 20px;
+}
+/*===================================*/
+.image-container{
+	width: 1700%; /*1200px*17*/
+	height: 350px;	
+}
+.festival-container{
+	width: 1700%; /*1200px*17*/
+	height: 500px;
+}
+.inner{
+	width:400px;
+	height:300px;
+	float:left;
+	position:relative;
+}
+.inner img{
+	width: 100%;
+	height:300px;
+	padding: 20px 20px;
+	float:left;
+	
+}
+
+.inner a{
+	display:inline;
+	padding-left:20px;
+	/* position:absolute;
+	top:310px;
+	left:40px; */
+	font-size:17px;
+	color:#222;
+}
+/*heart*/
+.testHeart{
+	font-size:24px;
+}
+
+
+
+
+
+
+
+
+
