@@ -97,7 +97,21 @@ input[type=button]{
   height: 100px;
  
 }
+.tourist-spot-container{
+   width: 100%; /*1200px*/
+   height: 100px;
+
+ }
 #tourist-spot-title{
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10%;
+
+}
+
+.tourist-spot-title{
   width: 100%;
   height: 70px;
   display: flex;
@@ -129,8 +143,8 @@ input[type=button]{
 }
 /*===================================*/
 .image-container{
-	width: 1700%; /*1200px*17*/
-	height: 350px;	
+	width: 5000%; /*1200px*17*/
+	height: 350px;
 }
 .festival-container{
 	width: 1700%; /*1200px*17*/
