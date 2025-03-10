@@ -1,0 +1,160 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  box-sizing: border-box;
+  font-family: "Roboto";
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+
+body {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.header-container {
+  margin: 0 auto;
+  width: 1200px;
+  height: 100px;
+  background-color: #fff;
+}
+
+/* header */
+header {
+  width: 100%;
+  height: 100%;
+}
+
+/*로고*/
+.logo {
+  float: left;
+  display: flex; /*로고 이미지를 중앙에 위치 시키기 위해 flex로 지정하여 수평, 수직 정렬이 되도록 하기 위해.*/
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+  width: 25%; /*지시사항에 적힌대로 width값 */
+  height: 100px; /*지시사항에 적힌대로 height값 */
+}
+
+/*로고이미지*/
+.logo > img.logoImage {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+}
+/* nav */
+nav {
+  width: 75%;
+  height: 100%;
+  float: right;
+}
+
+.top-nav {
+  height: 30%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  padding-top: 15px;
+}
+
+.top-nav > div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-top: 15px;
+}
+.top-nav > div > a {
+  width: 100px;
+  height: 15px;
+  font-size: 14px;
+  display: block;
+  justify-content: center;
+  align-items: center;
+}
+.top-nav a {
+  text-align: center;
+}
+
+/* main-nav */
+.main-nav {
+  height: 70%; /*70px*/
+  width: 100%; /*900px*/
+}
+.main-nav > ul {
+  float: left;
+}
+
+.main-nav > ul > li {
+  float: left;
+  text-align: center;
+  line-height: 70px;
+  height: 100%;
+}
+
+.main-nav > ul > li > a {
+  width: 150px;
+  display: block;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: relative;
+}
+.fa-solid fa-globe {
+  font-size: 1px;
+}
+
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
+
+select {
+  /* 생략 */
+  font-family: "Noto Sansf KR", sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #444;
+  background-color: #fff;
+  padding: 0.6em 0.6em 0.6em 0.6em;
+  margin: 0;
+  border: 1px solid #aaa;
+  border-radius: 0.5em;
+  box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
+}
+select:hover {
+  border-color: #888;
+}
+
+select:focus {
+  border-color: #aaa;
+  box-shadow: 0 0 1px 3px rgba(59, 153, 252, 0.7);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: #222;
+  outline: none;
+}
+
+select:disabled {
+  opacity: 0.5;
+}
+.language-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+select option {
+  background-color: white;
+  color: black;
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0 0 5px #ccc;
+}
