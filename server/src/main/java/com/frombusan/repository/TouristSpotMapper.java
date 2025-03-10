@@ -15,9 +15,7 @@ import com.frombusan.model.tourist.Tourist_Spot;
 
 @Mapper
 public interface TouristSpotMapper {
-	
-	
-		
+
 	List<Tourist_Spot> findAllTourist(String searchText,RowBounds rowBounds);
 	
 	List<Tourist_Spot> findAllTourist();
@@ -25,35 +23,32 @@ public interface TouristSpotMapper {
 	List<Tourist_Spot> findAllTouristForMain();
 	
 	Tourist_Spot findTouristSpot(Long tourist_Spot_id);
-	
-	
+
 	int getTotal(String searchText);
 	//좋아요 기능	
-		void updateTourist(Tourist_Spot updateTouristSpot);
-		
-		List<String> findLikesMemberId(Long tourist_Spot_id);
-		
-		List<Map<String,Object>> findLikesById(Long tourist_Spot_id);
-		
-		void saveLikes(TouristSpotLikes touristSpotLikes);
-		
-		void deleteLike(Object like_id);
-	//	
+	void updateTourist(Tourist_Spot updateTouristSpot);
+
+	List<String> findLikesMemberId(Long tourist_Spot_id);
+
+	List<Map<String,Object>> findLikesById(Long tourist_Spot_id);
+
+	void saveLikes(TouristSpotLikes touristSpotLikes);
+
+	void deleteLike(Object like_id);
 
 	//찜 기능
-		void saveMyList(TouristSpotMyList touristSpotMyList);
-		
-		List<Map<String,Object>> findMyListById(Long tourist_Spot_id);
-		
-		List<String> findMyListMemberId(Long tourist_Spot_id);
-		
-		void deleteMyList(Object wishboard_id);
-		
-		
+	void saveMyList(TouristSpotMyList touristSpotMyList);
+
+	List<Map<String,Object>> findMyListById(Long tourist_Spot_id);
+
+	List<String> findMyListMemberId(Long tourist_Spot_id);
+
+	void deleteMyList(Object wishboard_id);
+
 	//찜 목록
-		List<Map<String, Object>> findMyListByMemberId(String member_id);
-		
-		void addHit(Tourist_Spot tourist_Spot);
+	List<Map<String, Object>> findMyListByMemberId(String member_id);
+
+	void addHit(Tourist_Spot tourist_Spot);
 		
 
 }

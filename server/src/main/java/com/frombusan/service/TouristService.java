@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class TouristService {
@@ -31,11 +30,15 @@ public class TouristService {
     private final TouristSpotMapper touristSpotMapper;
 
 
-   
+    @Transactional(readOnly = true)
     public List<Tourist_Spot> findAllTourist(String searchText, int startRecord, int countPerPage) {
         // 전체 검색 결과 중 시작 위치와 갯수
         RowBounds rowBounds = new RowBounds(startRecord, countPerPage);
         return touristSpotMapper.findAllTourist(searchText, rowBounds);
+    }
+
+    public List<Tourist_Spot> findAllTouristForMain() {
+        return touristSpotMapper.findAllTouristForMain();
     }
 
    

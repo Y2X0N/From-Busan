@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -33,6 +34,13 @@ import net.rakugakibox.util.YamlResourceBundle;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		// 모든 경로에 대해 CORS 허용
+		registry.addMapping("/**").allowedOrigins("http://localhost:5173");
+	}
+
 	//url
     private String[] excludePaths = {"/", "/js/**","/member/join",
     		"/member/login", "/member/logout", "/css/**","/member/","/member/idCheck",

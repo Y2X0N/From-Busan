@@ -36,6 +36,9 @@ public class FestivalService {
         return festivalMapper.findAllFestival(searchText, rowBounds);
     }
 
+    public List<Festival> findAllFestivalForMain(){
+        return festivalMapper.findAllFestivalForMain();
+    }
     
     
 }
