@@ -1,0 +1,111 @@
+.joinContainer {
+  width: 1200px;
+  height: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.logoContainer {
+  width: 700px;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.logoContainer > h2 {
+  width: auto;
+  height: 30px;
+  margin-top: 65px;
+}
+
+.img {
+  width: 15%;
+  height: 100px;
+  object-fit: cover;
+}
+
+.form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.btnIdCheck {
+  height: 25px;
+  width: 80px;
+  color: white;
+  background-color: black;
+  border-color: black;
+  margin-left: 6px;
+}
+
+.btnIdCheck:hover {
+  background-color: #b9b9b9;
+  color: black;
+  border: 2px solid black;
+}
+
+table {
+  height: 50%;
+  width: 700px;
+  border-top: 3px solid black;
+  border-collapse: collapse;
+}
+
+td {
+  border-bottom: 1px solid black;
+}
+
+.firstTd {
+  background-color: #e6f6ff;
+  padding: 10px;
+  text-align: right;
+  font-weight: bold;
+  font-size: 0.85em;
+}
+.secondTd {
+  text-align: left;
+  padding: 5px;
+}
+
+.error {
+  font-size: 11px;
+  color: light-gray;
+}
+
+.btnContainer {
+  width: 700px;
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  border-bottom: 3px solid black;
+  gap: 6px;
+}
+
+.btnJoin {
+  height: 35px;
+  width: 150px;
+  background-color: white;
+  border: 2px solid black;
+}
+
+.btnJoin:hover {
+  background-color: black;
+  color: white;
+  border: 2px solid black;
+}
+
+.btnCancel {
+  height: 35px;
+  width: 150px;
+  background-color: white;
+}
+
+.btnCancel:hover {
+  background-color: black;
+  color: white;
+  border: 2px solid black;
+}

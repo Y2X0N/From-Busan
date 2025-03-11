@@ -43,16 +43,16 @@ function MenuLayout() {
             <nav className={classes["main-nav"]}>
               <ul>
                 <li>
-                  <Link to="/">명소</Link>
+                  <Link to="/tourspot">명소</Link>
                 </li>
                 <li>
-                  <Link to="/">축제</Link>
+                  <Link to="/festival">축제</Link>
                 </li>
                 <li>
-                  <Link to="/">추천 코스</Link>
+                  <Link to="/course">추천 코스</Link>
                 </li>
                 <li>
-                  <Link to="/">후기 게시판</Link>
+                  <Link to="/review">후기 게시판</Link>
                 </li>
               </ul>
             </nav>
