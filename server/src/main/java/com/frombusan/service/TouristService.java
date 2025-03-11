@@ -1,23 +1,14 @@
 package com.frombusan.service;
 
 import java.util.List;
-import java.util.Map;
 
+import com.frombusan.util.PageNavigator;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.frombusan.model.AttachedImg;
-import com.frombusan.model.festival.Festival;
-import com.frombusan.model.review.Review;
-import com.frombusan.model.review.ReviewLikes;
 import com.frombusan.model.tourist.Tourist_Spot;
-import com.frombusan.repository.FestivalMapper;
-import com.frombusan.repository.ReviewMapper;
-import com.frombusan.repository.TouristSpotMapper;
-import com.frombusan.util.FileService;
+import com.frombusan.repository.TouristMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,18 +18,31 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class TouristService {
 
-    private final TouristSpotMapper touristSpotMapper;
+    private final TouristMapper touristMapper;
 
+    /**
+     *  만약 search-condition이 null인 경우 전체 조회
+     * @param searchText search-condition
+     * @return search-condition 따른 관광 조회수
+     * */
+    public int getTotal(String searchText) {
+        return touristMapper.getTotal(searchText);
+    }
 
-    @Transactional(readOnly = true)
+    public List<Tourist_Spot> findAllTourist() {
+        return touristMapper.findAllTourist();
+    }
+
     public List<Tourist_Spot> findAllTourist(String searchText, int startRecord, int countPerPage) {
         // 전체 검색 결과 중 시작 위치와 갯수
         RowBounds rowBounds = new RowBounds(startRecord, countPerPage);
-        return touristSpotMapper.findAllTourist(searchText, rowBounds);
+        return touristMapper.findAllTourist(searchText, rowBounds);
     }
 
+
+
     public List<Tourist_Spot> findAllTouristForMain() {
-        return touristSpotMapper.findAllTouristForMain();
+        return touristMapper.findAllTouristForMain();
     }
 
    

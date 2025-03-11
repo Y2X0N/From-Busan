@@ -18,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,14 +31,13 @@ import com.frombusan.model.festival.Festival;
 import com.frombusan.model.member.LoginForm;
 import com.frombusan.model.member.Member;
 import com.frombusan.model.member.MemberJoinForm;
-import com.frombusan.model.member.MemberUpdateForm;
 import com.frombusan.model.member.findIdForm;
 import com.frombusan.model.tourist.Tourist_Spot;
 import com.frombusan.repository.CourseMapper;
 import com.frombusan.repository.FestivalMapper;
 import com.frombusan.repository.MemberMapper;
 import com.frombusan.repository.ReviewMapper;
-import com.frombusan.repository.TouristSpotMapper;
+import com.frombusan.repository.TouristMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +57,7 @@ public class MemberController {
     
 	private final FestivalMapper festivalMapper;
 	private final ReviewMapper reviewMapper;
-	private final TouristSpotMapper touristMapper;
+	private final TouristMapper touristMapper;
 	private final CourseMapper courseMapper;
 	
 	

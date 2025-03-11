@@ -14,13 +14,13 @@ import com.frombusan.model.tourist.Tourist_Spot;
 
 
 @Mapper
-public interface TouristSpotMapper {
+public interface TouristMapper {
+
+	List<Tourist_Spot> findAllTouristForMain();
 
 	List<Tourist_Spot> findAllTourist(String searchText,RowBounds rowBounds);
 	
 	List<Tourist_Spot> findAllTourist();
-	
-	List<Tourist_Spot> findAllTouristForMain();
 	
 	Tourist_Spot findTouristSpot(Long tourist_Spot_id);
 

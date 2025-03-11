@@ -1,27 +1,15 @@
 package com.frombusan.controller;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import com.frombusan.dto.HomeDto;
 import com.frombusan.service.FestivalService;
 import com.frombusan.service.TouristService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.frombusan.model.festival.Festival;
-import com.frombusan.model.restaurant.Restaurant;
 import com.frombusan.model.tourist.Tourist_Spot;
-import com.frombusan.repository.FestivalMapper;
-import com.frombusan.repository.RestaurantMapper;
-import com.frombusan.repository.TouristSpotMapper;
-import com.modernmt.ModernMT;
-import com.modernmt.model.Memory;
-import com.modernmt.model.Translation;
 
 import lombok.extern.slf4j.Slf4j;
 
