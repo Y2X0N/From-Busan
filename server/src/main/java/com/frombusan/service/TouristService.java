@@ -40,11 +40,12 @@ public class TouristService {
     }
 
 
-
     public List<Tourist_Spot> findAllTouristForMain() {
         return touristMapper.findAllTouristForMain();
     }
 
-   
-    
+
+    public Tourist_Spot findTouristSpot(Long touristSpotId) {
+        return touristMapper.findTouristSpot(touristSpotId);
+    }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.frombusan.dto.TouristListDto;
+import com.frombusan.repository.TouristMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -22,14 +23,46 @@ import static com.frombusan.dto.TouristListDto.countPerPage;
 import static com.frombusan.dto.TouristListDto.pagePerGroup;
 
 @Slf4j
-@RequestMapping("tourist")
 @RestController
 public class TouristController {
 
     @Autowired
     private TouristService touristService;
 
-    @GetMapping("list")
+    @Autowired
+    private TouristMapper touristMapper;
+
+//    // 명소 조회
+//    @GetMapping("/tourist/{id}")
+//    public ResponseEntity<Tourist_Spot> getTouristById(@RequestParam("tourist_Spot_id") Long tourist_Spot_id
+//                       , @SessionAttribute(value = "loginMember", required = false) Member loginMember) {
+//        Tourist_Spot tourist_Spot = touristService.findTouristSpot(tourist_Spot_id);
+////        if (tourist_Spot == null) {
+////            log.info("명소 없음");
+////            return "redirect:/tourist_Spot/list";
+////        }
+//        tourist_Spot.addHit();
+//        touristService.addHit(tourist_Spot);
+//
+//        model.addAttribute("tourist_Spot", tourist_Spot);
+//
+//        List<String> findTouristSpotLikes = touristMapper.findLikesMemberId(tourist_Spot_id);
+//        model.addAttribute("findTouristSpotLikes", findTouristSpotLikes);
+//
+//        List<String> findTouristSpotMyList = touristMapper.findMyListMemberId(tourist_Spot_id);
+//        model.addAttribute("findTouristSpotMyList", findTouristSpotMyList);
+//
+//        if (loginMember != null) {
+//            model.addAttribute("member_id", loginMember.getMember_id());
+//        }
+//
+//
+//        // board/read.html 를 찾아서 리턴한다.
+//        return "/tourist/TouristSpotInfo";
+//    }
+
+    // 명소 리스트 조회
+    @GetMapping("/tourist")
     public ResponseEntity<TouristListDto> getList(@RequestParam(value = "page", defaultValue = "1") int page,
                                                   @RequestParam(value = "searchText", defaultValue = "") String searchText) {
 
@@ -49,37 +82,8 @@ public class TouristController {
         return ResponseEntity.ok(touristListDto);
     }
 
-    // 게시글 읽기
-    @GetMapping("/TouristInfo")
-    public String read(@RequestParam("tourist_Spot_id") Long tourist_Spot_id, @SessionAttribute(value = "loginMember", required = false) Member loginMember,
-                       Model model) {
-        Tourist_Spot tourist_Spot = touristMapper.findTouristSpot(tourist_Spot_id);
-
-
-        if (tourist_Spot == null) {
-            log.info("명소 없음");
-            return "redirect:/tourist_Spot/list";
-        }
-        tourist_Spot.addHit();
-        touristMapper.addHit(tourist_Spot);
-
-        model.addAttribute("tourist_Spot", tourist_Spot);
-        List<String> findTouristSpotLikes = touristMapper.findLikesMemberId(tourist_Spot_id);
-        model.addAttribute("findTouristSpotLikes", findTouristSpotLikes);
-
-        List<String> findTouristSpotMyList = touristMapper.findMyListMemberId(tourist_Spot_id);
-        model.addAttribute("findTouristSpotMyList", findTouristSpotMyList);
-
-        if (loginMember != null) {
-            model.addAttribute("member_id", loginMember.getMember_id());
-        }
-
-
-        // board/read.html 를 찾아서 리턴한다.
-        return "/tourist/TouristSpotInfo";
-    }
-
-    @PostMapping("/like")
+    // 명소 좋아요
+    @PostMapping("/tourist/{id}/like")
     public ResponseEntity<Tourist_Spot> likeTouristSpot(@RequestParam("touristSpotId") Long tourist_Spot_id
             , @SessionAttribute(value = "loginMember", required = false) Member loginMember
     ) {
@@ -119,7 +123,8 @@ public class TouristController {
         }
     }
 
-    @PostMapping("/myList")
+    // 명소 찜목록 추가
+    @PostMapping("/tourist/{id}/wishlist")
     public ResponseEntity<Tourist_Spot> myTouristSpot(@RequestParam("touristSpotId") Long tourist_Spot_id
             , @SessionAttribute(value = "loginMember", required = false) Member loginMember
     ) {
