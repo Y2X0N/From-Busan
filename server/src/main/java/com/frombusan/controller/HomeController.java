@@ -1,50 +1,33 @@
 package com.frombusan.controller;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
+import com.frombusan.dto.HomeDto;
+import com.frombusan.service.FestivalService;
+import com.frombusan.service.TouristService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.frombusan.model.festival.Festival;
-import com.frombusan.model.restaurant.Restaurant;
 import com.frombusan.model.tourist.Tourist_Spot;
-import com.frombusan.repository.FestivalMapper;
-import com.frombusan.repository.RestaurantMapper;
-import com.frombusan.repository.TouristSpotMapper;
-import com.modernmt.ModernMT;
-import com.modernmt.model.Memory;
-import com.modernmt.model.Translation;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Controller
+@RestController
 public class HomeController {
 
 	@Autowired
-	private RestaurantMapper spotMapper;
+	private TouristService touristService;
 	
 	@Autowired
-	private TouristSpotMapper tourMapper;
-	
-	@Autowired
-	private FestivalMapper festivalMapper;
-	
-	
+	private FestivalService festivalService;
+
 	@GetMapping("/")
-	public String home(Model model) {
-		List<Tourist_Spot> findAllTourist = tourMapper.findAllTouristForMain();
-		List<Festival> findAllFestival = festivalMapper.findAllFestivalForMain();
-		model.addAttribute("tourist",findAllTourist);
-		model.addAttribute("festival",findAllFestival);
-		return "main/index";
+	public HomeDto home() {
+		List<Tourist_Spot> allTouristForMain = touristService.findAllTouristForMain();
+		List<Festival> findAllFestival = festivalService.findAllFestivalForMain();
+		return new HomeDto(allTouristForMain,findAllFestival);
 	}
 
 	/*
