@@ -20,8 +20,7 @@
 		<id property="id" column="id" />
 		<result property="hit" column="hit" />
 	</resultMap>
-	
-	
+
 	<select id="findAllTouristForMain" resultMap="touristForMain">
 		select tourist_spot_id,place_like,main_img_normal,main_title from
 		tourist_spot order by place_like desc
@@ -30,18 +29,39 @@
 		<id property="id" column="id" />
 		<result property="hit" column="hit" />
 	</resultMap>
-	
-	
-	
+
 	<select id="getTotal" resultType="int">
 		select count(*) from tourist_Spot
 		<if test="_parameter != null">
             where main_title like '%' || #{searchText} || '%'
         </if>
 	</select>
+
+	<select id="checkMemberLikeStatus" resultType="boolean">
+		SELECT CASE
+		WHEN EXISTS (
+		SELECT 1 FROM tourist_spot_likes
+		WHERE tourist_spot_id = #{tourist_spot_id}
+		AND member_id = #{member_id}
+		)
+		THEN TRUE
+		ELSE FALSE
+		END AS isFavorite
+	</select>
+
+	<select id="checkMemberWishListStatus" resultType="boolean">
+		SELECT CASE
+		WHEN EXISTS (
+		SELECT 1 FROM wish_list
+		WHERE tourist_spot_id = #{tourist_spot_id}
+		AND member_id = #{member_id}
+		)
+		THEN TRUE
+		ELSE FALSE
+		END AS isWishList
+	</select>
+
 	<!-- /////////////////좋아요 기능//////////////////////////////////////////////////////////////// -->
-
-
 	<update id="updateTourist">
 		update tourist_Spot
 		<set>
@@ -50,8 +70,8 @@
 		where tourist_Spot_id = #{tourist_Spot_id}
 	</update>
 
-	<select id="findLikesMemberId" resultType="string">
-		select member_id from tourist_spot_likes where
+	<select id="findMyListById" resultType="map">
+		select member_id, wishboard_id from wish_list where
 		tourist_Spot_id=#{tourist_Spot_id}
 	</select>
 
@@ -81,7 +101,6 @@
 	</delete>
 
 	<!-- /////////////////찜 기능//////////////////////////////////////////////////////////////// -->
-
 	<insert id="saveMyList">
 		<selectKey keyProperty="wishboard_id" resultType="long"
 			order="BEFORE">
@@ -98,21 +117,11 @@
 		)
 	</insert>
 
-	<select id="findMyListById" resultType="map">
-		select member_id, wishboard_id from wish_list where
-		tourist_Spot_id=#{tourist_Spot_id}
-	</select>
-
-	<select id="findMyListMemberId" resultType="string">
-		select member_id from wish_list where tourist_Spot_id=#{tourist_Spot_id}
-	</select>
-
 	<delete id="deleteMyList">
 		delete from wish_list where wishboard_id = #{wishboard_id}
 	</delete>
 
 	<!-- /////////////////찜 목록//////////////////////////////////////////////////////////////// -->
-
 	<select id="findMyListByMemberId" resultType="map">
 		select tourist_Spot_id from wish_list where member_id=#{member_id}
 	</select>
@@ -124,8 +133,5 @@
 		</set>
 		where tourist_Spot_id = #{tourist_Spot_id}
 	</update>
-	
 
-	
-	
 </mapper>
