@@ -2,8 +2,12 @@ package com.frombusan.service;
 
 import java.util.List;
 
+import com.frombusan.dto.TouristInfoDto;
+import com.frombusan.dto.TouristListDto;
+import com.frombusan.model.member.Member;
 import com.frombusan.util.PageNavigator;
 import org.apache.ibatis.session.RowBounds;
+import org.codehaus.groovy.util.StringUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +16,7 @@ import com.frombusan.repository.TouristMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.thymeleaf.util.StringUtils;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,6 +24,32 @@ import lombok.extern.slf4j.Slf4j;
 public class TouristService {
 
     private final TouristMapper touristMapper;
+
+    public List<Tourist_Spot> findAllTouristForMain() {
+        return touristMapper.findAllTouristForMain();
+    }
+
+    @Transactional
+    public TouristInfoDto getTouristById(Long touristSpotId, Member loginMember) {
+        try {
+            Tourist_Spot findTouristSpot = touristMapper.findTouristSpot(touristSpotId);
+            //조회수 증가
+            findTouristSpot.addHit();
+            touristMapper.addHit(findTouristSpot);
+
+            Boolean isFavorite = null;
+            Boolean isWishList = null;
+
+            if (loginMember != null && !StringUtils.isEmpty(loginMember.getMember_id())) {
+                isFavorite = touristMapper.checkMemberLikeStatus(touristSpotId, loginMember.getMember_id());
+                isWishList = touristMapper.checkMemberWishListStatus(touristSpotId, loginMember.getMember_id());
+            }
+
+            return new TouristInfoDto(findTouristSpot,isFavorite,isWishList);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      *  만약 search-condition이 null인 경우 전체 조회
@@ -39,12 +70,4 @@ public class TouristService {
         return touristMapper.findAllTourist(searchText, rowBounds);
     }
 
-
-
-    public List<Tourist_Spot> findAllTouristForMain() {
-        return touristMapper.findAllTouristForMain();
-    }
-
-   
-    
 }

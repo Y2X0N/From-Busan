@@ -10,9 +10,6 @@ import com.frombusan.model.tourist.TouristSpotLikes;
 import com.frombusan.model.tourist.TouristSpotMyList;
 import com.frombusan.model.tourist.Tourist_Spot;
 
-
-
-
 @Mapper
 public interface TouristMapper {
 
@@ -25,10 +22,13 @@ public interface TouristMapper {
 	Tourist_Spot findTouristSpot(Long tourist_Spot_id);
 
 	int getTotal(String searchText);
+
+	Boolean checkMemberLikeStatus(Long tourist_Spot_id,String member_id);
+
+	Boolean checkMemberWishListStatus(Long tourist_Spot_id,String member_id);
+
 	//좋아요 기능	
 	void updateTourist(Tourist_Spot updateTouristSpot);
-
-	List<String> findLikesMemberId(Long tourist_Spot_id);
 
 	List<Map<String,Object>> findLikesById(Long tourist_Spot_id);
 
@@ -41,14 +41,10 @@ public interface TouristMapper {
 
 	List<Map<String,Object>> findMyListById(Long tourist_Spot_id);
 
-	List<String> findMyListMemberId(Long tourist_Spot_id);
-
 	void deleteMyList(Object wishboard_id);
 
 	//찜 목록
 	List<Map<String, Object>> findMyListByMemberId(String member_id);
 
 	void addHit(Tourist_Spot tourist_Spot);
-		
-
 }

@@ -149,3 +149,8 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,windows,gradle,java
+
+#ide file
+.idea
+# build file
+/out/**

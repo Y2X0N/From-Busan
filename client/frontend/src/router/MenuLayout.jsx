@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, NavLink, Link } from "react-router-dom";
 import classes from "./MenuLayout.module.css";
 
 function MenuLayout() {
@@ -43,16 +43,44 @@ function MenuLayout() {
             <nav className={classes["main-nav"]}>
               <ul>
                 <li>
-                  <Link to="/tourspot">명소</Link>
+                  <NavLink
+                    to="/tourspot"
+                    className={({ isActive }) =>
+                      isActive ? classes.active : ""
+                    }
+                  >
+                    명소
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to="/festival">축제</Link>
+                  <NavLink
+                    to="/festival"
+                    className={({ isActive }) =>
+                      isActive ? classes.active : ""
+                    }
+                  >
+                    축제
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to="/course">추천 코스</Link>
+                  <NavLink
+                    to="/course"
+                    className={({ isActive }) =>
+                      isActive ? classes.active : ""
+                    }
+                  >
+                    추천 코스
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to="/review">후기 게시판</Link>
+                  <NavLink
+                    to="/review"
+                    className={({ isActive }) =>
+                      isActive ? classes.active : ""
+                    }
+                  >
+                    후기 게시판
+                  </NavLink>
                 </li>
               </ul>
             </nav>

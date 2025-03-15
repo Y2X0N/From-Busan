@@ -1,16 +1,17 @@
+import classes from "./HomeSlide.module.css";
 import { Link } from "react-router-dom";
 
-const HomeSlide = ({ contents, navi }) => {
+const HomeSlide = ({ contents, navi, data }) => {
   return (
     <>
-      <div id="tourist-spot-container">
-        <div id="tourist-spot-title">
+      <div className={classes.slideHeaderContainer}>
+        <div className={classes.headerTitle}>
           <span style={{ color: "rgb(98, 102, 105)", fontSize: "33px" }}>
-            {contents}
+            {"| " + contents + " |"}
           </span>
-          <div class="tourist-spot-title-right">
-            <Link to={navi} style={{ color: "#da202c", fontSize: "25px" }}>
-              자세히
+          <div className={classes.headerControl}>
+            <Link className={classes.link} to={navi}>
+              자세히&#8594;
             </Link>
             <div>
               <i
@@ -26,28 +27,24 @@ const HomeSlide = ({ contents, navi }) => {
         </div>
       </div>
 
-      <div class="image-container">
-        <div class="inner" th:each="tour : ${tourist}">
-          <a th:href="@{/tourist/TouristInfo(tourist_Spot_id=${tour.tourist_Spot_id})}">
-            <img th:alt="${tour.main_title}" th:src="${tour.main_img_normal}" />
-          </a>
-          <div class="innerContent">
-            <a
-              th:text="${tour.main_title}"
-              th:data-original="${tour.main_title}"
-              id="tourMainTitle"
-            ></a>
-            <i
-              class="far fa-heart testHeart"
-              style={{ color: "#da202c", marginLeft: "10px" }}
-              title="like"
-            ></i>
-            <span
-              th:text="${tour.place_like}"
-              style={{ fontSize: "24px" }}
-            ></span>
+      <div className={classes.slideImageContainer}>
+        {data.map((data) => (
+          <div className={classes.cardContainer} key={Object.values(data)[0]}>
+            <Link to={Object.values(data)[0]}>
+              <img alt={data.main_title} src={data.main_img_normal} />
+            </Link>
+            <div>
+              <Link to={Object.values(data)[0]}>
+                <span className={classes.innerContent}>{data.main_title}</span>
+              </Link>
+              <i
+                class="far fa-heart testHeart"
+                style={{ color: "#da202c", marginLeft: "10px" }}
+              ></i>
+              <span text={data.place_like} style={{ fontSize: "24px" }}></span>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </>
   );

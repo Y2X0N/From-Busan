@@ -1,0 +1,68 @@
+.slideHeaderContainer {
+  width: 100%; /*1200px*/
+  height: 100px;
+}
+
+.headerTitle {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10%;
+}
+
+.headerTitle > span {
+  height: 100px;
+  font: bold;
+  font-size: 40px;
+  line-height: 100px;
+}
+
+.headerControl {
+  display: flex;
+  height: 100px;
+  flex-direction: column;
+  margin-top: 3vh;
+}
+
+.headerControl > .link {
+  color: #da202c;
+  font-size: 25px;
+}
+
+.headerControl > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  height: 50px;
+  gap: 10px;
+}
+
+.slideImageContainer {
+  width: 5000%; /*1200px*17*/
+  height: 350px;
+}
+
+.cardContainer {
+  width: 400px;
+  height: 300px;
+  float: left;
+  position: relative;
+}
+.cardContainer img {
+  width: 100%;
+  height: 300px;
+  padding: 20px 20px;
+  float: left;
+}
+
+.cardContainer .innerContent {
+  display: inline;
+  padding-left: 20px;
+  /* position:absolute;
+        top:310px;
+        left:40px; */
+  font-size: 17px;
+  color: #222;
+}
