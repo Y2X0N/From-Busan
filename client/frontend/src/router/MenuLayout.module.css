@@ -87,11 +87,11 @@ nav {
   width: 100%; /*900px*/
 }
 .main-nav > ul {
-  float: left;
+  display: flex;
+  gap: 5%;
 }
 
 .main-nav > ul > li {
-  float: left;
   text-align: center;
   line-height: 70px;
   height: 100%;

@@ -64,16 +64,6 @@ function MenuLayout() {
                 </li>
                 <li>
                   <NavLink
-                    to="/course"
-                    className={({ isActive }) =>
-                      isActive ? classes.active : ""
-                    }
-                  >
-                    추천 코스
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
                     to="/review"
                     className={({ isActive }) =>
                       isActive ? classes.active : ""

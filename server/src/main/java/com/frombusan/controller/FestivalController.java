@@ -3,16 +3,13 @@ package com.frombusan.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.frombusan.dto.FestivalListDto;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import com.frombusan.model.festival.Festival;
 import com.frombusan.model.festival.FestivalLikes;
@@ -26,13 +23,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequestMapping("festival")
-@Controller
+@RestController
 public class FestivalController {
 
 	@Autowired
 	private FestivalMapper festivalMapper;
 	@Autowired
-	private FestivalService festivalservice;
+	private FestivalService festivalService;
 
 	final int countPerPage = 9;
 	final int pagePerGroup = 5;
@@ -48,22 +45,11 @@ public class FestivalController {
 	}
 
 	@GetMapping("list")
-	public String list(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam(value = "searchText", defaultValue = "") String searchText, Model model) {
+	public FestivalListDto getList(@RequestParam(value = "page", defaultValue = "1") int page,
+								@RequestParam(value = "searchText", defaultValue = "") String searchText) {
 
-		int total = festivalMapper.getTotal(searchText);
-		PageNavigator navi = new PageNavigator(countPerPage, pagePerGroup, page, total);
-		
-		List<Festival> findAllFestival = festivalservice.findFestivals(searchText,navi.getStartRecord(),navi.getCountPerPage());
-		
-		List<Festival> searchFes = festivalMapper.findAllFestival();
-		
-		model.addAttribute("searchFes", searchFes);
-		model.addAttribute("findAllFestival", findAllFestival);
-		model.addAttribute("navi", navi);
-        model.addAttribute("searchText", searchText);
-
-		return "festival/FestivalList";
+		FestivalListDto list = festivalService.getList(searchText, page);
+		return list;
 	}
 
 	// 게시글 읽기
