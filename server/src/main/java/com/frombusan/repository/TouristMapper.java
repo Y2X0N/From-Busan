@@ -32,6 +32,10 @@ public interface TouristMapper {
 
 	List<Map<String,Object>> findLikesById(Long tourist_Spot_id);
 
+	TouristSpotLikes findTouristSpotLike(Long tourist_Spot_id,String member_id);
+
+	TouristSpotMyList findTouristSpotWishList(Long touristSpotId, String memberId);
+
 	void saveLikes(TouristSpotLikes touristSpotLikes);
 
 	void deleteLike(Object like_id);
@@ -39,12 +43,11 @@ public interface TouristMapper {
 	//찜 기능
 	void saveMyList(TouristSpotMyList touristSpotMyList);
 
-	List<Map<String,Object>> findMyListById(Long tourist_Spot_id);
-
 	void deleteMyList(Object wishboard_id);
 
 	//찜 목록
 	List<Map<String, Object>> findMyListByMemberId(String member_id);
 
 	void addHit(Tourist_Spot tourist_Spot);
+
 }

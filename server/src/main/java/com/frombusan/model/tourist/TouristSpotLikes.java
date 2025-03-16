@@ -13,13 +13,5 @@ public class TouristSpotLikes {
 	private Long tourist_Spot_id;
 	private String member_id;
 	private boolean liked;
-	
-	public boolean isLiked() {
-	    return liked;
-	  }
-  
-	  public void setLiked(boolean liked) {
-	    this.liked = liked;
-	  }
 
 }

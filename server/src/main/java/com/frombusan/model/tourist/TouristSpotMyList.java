@@ -13,6 +13,4 @@ public class TouristSpotMyList {
 	private Long tourist_Spot_id;
 	private String member_id;
 
-
-
 }

@@ -32,9 +32,6 @@ public class Tourist_Spot {
     private Long restaurant_id;
     private Long wish_list;
     private Long hit;
-    private boolean liked;
-    private boolean jjim;
-
 
     public void addPlace_like() {
         this.place_like++;
