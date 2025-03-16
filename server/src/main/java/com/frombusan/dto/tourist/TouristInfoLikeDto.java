@@ -1,4 +1,4 @@
-package com.frombusan.dto;
+package com.frombusan.dto.tourist;
 
 import com.frombusan.model.tourist.Tourist_Spot;
 import lombok.AllArgsConstructor;
@@ -7,9 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class TouristInfoDto {
+public class TouristInfoLikeDto {
     Tourist_Spot touristSpot;
-    Boolean isFavorite;
-    Boolean isWishList;
+    boolean isFavorite;
 }
