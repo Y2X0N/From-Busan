@@ -1,0 +1,135 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900");
+
+.contentsContainer {
+  margin: 0 auto;
+  width: 1400px;
+}
+
+.searchContainer {
+  margin-top: 60px;
+  padding: 15px 0;
+  background-color: #e6f6ff;
+  text-align: center;
+}
+
+.searchBar {
+  display: flex;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 564px;
+}
+
+.searchBar > input {
+  height: 40px;
+  width: 100%;
+  font-size: 14px;
+  padding: 7px 14px;
+  border: 1px solid #ccc;
+}
+
+.searchBar > input:focus {
+  border-color: #333;
+  outline: 0;
+  border-width: 2px;
+}
+
+.searchBar > button {
+  font-size: 16px;
+  height: 40px;
+  width: 150px;
+  background-color: white;
+  border: 2px solid #545457;
+}
+
+.ContentsContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 100px 50px;
+  padding: 100px 50px;
+}
+.ContentsContainer .card {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 350px;
+  height: 300px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.15);
+  transition: 0.5s;
+}
+.ContentsContainer .card:hover {
+  height: 400px;
+}
+.ContentsContainer .card .imgBx {
+  position: absolute;
+  top: 20px;
+  width: 300px;
+  height: 220px;
+  background: #333;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: 0.5s;
+}
+.ContentsContainer .card:hover .imgBx {
+  top: -100px;
+  scale: 0.75;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+}
+.ContentsContainer .card .imgBx img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ContentsContainer .card .content {
+  position: absolute;
+  top: 252px;
+  width: 100%;
+  padding: 0 30px;
+  height: 35px;
+  overflow: hidden;
+  text-align: center;
+  transition: 0.5s;
+}
+.ContentsContainer .card:hover .content {
+  top: 130px;
+  height: 250px;
+}
+
+.ContentsContainer .card .content h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #009688;
+}
+.ContentsContainer .card .content p {
+  color: #333;
+}
+.ContentsContainer .card .content .link {
+  position: relative;
+  top: 20px;
+  display: inline-block;
+  padding: 12px 25px;
+  background: #009688;
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.listItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  margin-left: 10px;
+  gap: 10px;
+}

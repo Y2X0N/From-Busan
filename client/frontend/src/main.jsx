@@ -4,9 +4,8 @@ import "./index.css";
 import MenuLayout from "./router/MenuLayout.jsx";
 import Home, { loader as initDataLoad } from "./router/Home.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Festival from "./router/Festival";
-import TourSpot from "./router/TourSpot";
-import Course from "./router/Course";
+import Festival, { loader as festivalListLoad } from "./router/Festival";
+import TourSpot, { loader as touristSpotListLoad } from "./router/TourSpot";
 import Review from "./router/Review";
 import Login from "./router/Login";
 import SignIn from "./router/SignIn.Jsx";
@@ -39,14 +38,12 @@ const router = createBrowserRouter([
       {
         path: "/tourspot",
         element: <TourSpot />,
+        loader: touristSpotListLoad,
       },
       {
         path: "/festival",
         element: <Festival />,
-      },
-      {
-        path: "/course",
-        element: <Course />,
+        loader: festivalListLoad,
       },
       {
         path: "/review",
