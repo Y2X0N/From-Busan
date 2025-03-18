@@ -44,7 +44,7 @@ function MenuLayout() {
               <ul>
                 <li>
                   <NavLink
-                    to="/tourspot"
+                    to="/tourist"
                     className={({ isActive }) =>
                       isActive ? classes.active : ""
                     }
