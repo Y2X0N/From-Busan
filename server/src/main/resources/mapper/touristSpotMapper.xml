@@ -41,7 +41,7 @@
 		SELECT CASE
 		WHEN EXISTS (
 		SELECT 1 FROM tourist_spot_likes
-		WHERE tourist_spot_id = #{tourist_spot_id}
+		WHERE tourist_Spot_id = #{tourist_Spot_id}
 		AND member_id = #{member_id}
 		)
 		THEN TRUE
@@ -53,7 +53,7 @@
 		SELECT CASE
 		WHEN EXISTS (
 		SELECT 1 FROM wish_list
-		WHERE tourist_spot_id = #{tourist_spot_id}
+		WHERE tourist_Spot_id = #{tourist_Spot_id}
 		AND member_id = #{member_id}
 		)
 		THEN TRUE
