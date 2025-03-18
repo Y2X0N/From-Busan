@@ -11,6 +11,8 @@ import Login from "./router/Login";
 import SignIn from "./router/SignIn.Jsx";
 import MyPage from "./router/MyPage.Jsx";
 import ModalContents from "./components/ModalContents.jsx";
+import TourSpotDetail from "./router/TourSpotDetail.jsx";
+import FestivalDetail from "./router/FestivalDetail.jsx";
 
 const router = createBrowserRouter([
   {
@@ -41,9 +43,17 @@ const router = createBrowserRouter([
         loader: touristSpotListLoad,
       },
       {
+        path: "/tourspot/:id",
+        element: <TourSpotDetail />,
+      },
+      {
         path: "/festival",
         element: <Festival />,
         loader: festivalListLoad,
+      },
+      {
+        path: "/festival/:id",
+        element: <FestivalDetail />,
       },
       {
         path: "/review",

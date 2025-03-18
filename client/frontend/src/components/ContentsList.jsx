@@ -1,13 +1,34 @@
 import classes from "./ContentsList.module.css";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+
+import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const ContentsList = ({ data, navi }) => {
   const [searchText, setSearchText] = useState("");
+  const [currentPageData, setCurrentPageData] = useState(data);
+  const [currentNavi, setCurrentNavi] = useState(navi);
+  const currentLocation = useLocation();
 
   function handleSearchText(event) {
     setSearchText(event.target.value);
   }
+
+  useEffect(() => {
+    const loader = async () => {
+      console.log(currentPageData);
+      console.log(currentNavi);
+
+      const response = await fetch(
+        `http://localhost:9000${currentLocation.pathname}list/${currentLocation.search}`
+      );
+      const reqData = await response.json();
+      console.log(reqData);
+      setCurrentPageData(reqData[Object.keys(reqData)[0]]);
+      setCurrentNavi(reqData[Object.keys(reqData)[1]]);
+    };
+
+    loader();
+  }, [currentLocation]);
 
   return (
     <>
@@ -33,11 +54,11 @@ const ContentsList = ({ data, navi }) => {
         </div>
 
         <div className={classes.ContentsContainer}>
-          {data.map((data) => (
+          {currentPageData.map((data) => (
             <div
               className={classes.card}
               style={{ color: "#009688" }}
-              key={data.tourist_Spot_id}
+              key={Object.values(data)[0]}
             >
               <div className={classes.imgBx}>
                 <img src={data.main_img_normal} />
@@ -57,10 +78,7 @@ const ContentsList = ({ data, navi }) => {
                       style={{ color: "#da202c", fontSize: "20px" }}
                       title="like"
                     ></i>
-                    <span
-                      text={data.place_like}
-                      style={{ fontSize: "20px" }}
-                    ></span>
+                    <span style={{ fontSize: "20px" }}>{data.place_like}</span>
                   </div>
                   <div>
                     <i
@@ -68,12 +86,12 @@ const ContentsList = ({ data, navi }) => {
                       style={{ fontSize: "20px" }}
                       title="hits"
                     ></i>
-                    <span text={data.hit} style={{ fontSize: "20px" }}></span>
+                    <span style={{ fontSize: "20px" }}>{data.hit}</span>
                   </div>
                 </div>
                 <Link
                   className={classes.link}
-                  to={`/festival_id=${data.touristSpot_id}`}
+                  to={`./${Object.values(data)[0]}`}
                 >
                   상세보기
                 </Link>
@@ -91,7 +109,7 @@ const ContentsList = ({ data, navi }) => {
         <div id="navigator" className="pageNumber">
           {navi.currentPage - navi.pagePerGroup > 0 && (
             <Link
-              to={`/festival/list?page=${
+              to={`./?page=${
                 navi.currentPage - navi.pagePerGroup
               }&searchText=${searchText}`}
             >
@@ -101,9 +119,7 @@ const ContentsList = ({ data, navi }) => {
 
           {navi.currentPage - 1 > 0 && (
             <Link
-              to={`/festival/list?page=${
-                navi.currentPage - 1
-              }&searchText=${searchText}`}
+              to={`./?page=${navi.currentPage - 1}&searchText=${searchText}`}
             >
               &lt;
             </Link>
@@ -116,7 +132,7 @@ const ContentsList = ({ data, navi }) => {
                 return (
                   <Link
                     key={counter}
-                    to={`/festival/list?page=${counter}&searchText=${searchText}`}
+                    to={`./?page=${counter}&searchText=${searchText}`}
                   >
                     {counter}
                   </Link>
@@ -126,9 +142,7 @@ const ContentsList = ({ data, navi }) => {
 
           {navi.currentPage < navi.totalPageCount && (
             <Link
-              to={`/festival/list?page=${
-                navi.currentPage + 1
-              }&searchText=${searchText}`}
+              to={`./?page=${navi.currentPage + 1}&searchText=${searchText}`}
             >
               &gt;
             </Link>
@@ -136,7 +150,7 @@ const ContentsList = ({ data, navi }) => {
 
           {navi.currentPage + navi.pagePerGroup < navi.totalPageCount && (
             <Link
-              to={`/festival/list?page=${
+              to={`./?page=${
                 navi.currentPage + navi.pagePerGroup
               }&searchText=${searchText}`}
             >
