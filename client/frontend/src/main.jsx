@@ -38,12 +38,12 @@ const router = createBrowserRouter([
         element: <MyPage />,
       },
       {
-        path: "/tourspot",
+        path: "/tourist",
         element: <TourSpot />,
         loader: touristSpotListLoad,
       },
       {
-        path: "/tourspot/:id",
+        path: "/tourist/:id",
         element: <TourSpotDetail />,
       },
       {

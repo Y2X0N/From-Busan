@@ -13,6 +13,5 @@ export default TourSpot;
 export async function loader() {
   const response = await fetch("http://localhost:9000/tourist/list");
   const reqData = await response.json();
-  console.log(reqData);
   return reqData;
 }

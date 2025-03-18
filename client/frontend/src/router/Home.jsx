@@ -174,7 +174,7 @@ function Home() {
         <div>
           <HomeSlide
             contents={"인기명소"}
-            navi={"/tourspot"}
+            navi={"/tourist"}
             data={touristSpot}
           />
         </div>

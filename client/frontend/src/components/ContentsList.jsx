@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 const ContentsList = ({ data, navi }) => {
   const [searchText, setSearchText] = useState("");
   const [currentPageData, setCurrentPageData] = useState(data);
-  const [currentNavi, setCurrentNavi] = useState(navi);
   const currentLocation = useLocation();
 
   function handleSearchText(event) {
@@ -15,16 +14,20 @@ const ContentsList = ({ data, navi }) => {
 
   useEffect(() => {
     const loader = async () => {
-      console.log(currentPageData);
-      console.log(currentNavi);
-
-      const response = await fetch(
-        `http://localhost:9000${currentLocation.pathname}list/${currentLocation.search}`
-      );
-      const reqData = await response.json();
-      console.log(reqData);
-      setCurrentPageData(reqData[Object.keys(reqData)[0]]);
-      setCurrentNavi(reqData[Object.keys(reqData)[1]]);
+      if (currentLocation.search === "") {
+        return;
+      } else {
+        try {
+          const response = await fetch(
+            `http://localhost:9000${currentLocation.pathname}list/${currentLocation.search}`
+          );
+          const reqData = await response.json();
+          console.log(reqData);
+          setCurrentPageData(reqData[Object.keys(reqData)[0]]);
+        } catch (error) {
+          console.log(error);
+        }
+      }
     };
 
     loader();
