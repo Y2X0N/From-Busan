@@ -1,7 +1,19 @@
+import { useState } from "react";
 import classes from "./HomeSlide.module.css";
 import { Link } from "react-router-dom";
 
 const HomeSlide = ({ contents, navi, data }) => {
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  const TOTAL_SLIDES = Math.ceil(data.length / 3);
+
+  function clickLeft() {
+    setSlideIndex((prev) => (prev - 1 + TOTAL_SLIDES) % TOTAL_SLIDES);
+  }
+
+  function clickRight() {
+    setSlideIndex((prev) => (prev + 1) % TOTAL_SLIDES);
+  }
   return (
     <>
       <div className={classes.slideHeaderContainer}>
@@ -16,18 +28,26 @@ const HomeSlide = ({ contents, navi, data }) => {
             <div>
               <i
                 class="fa-sharp fa-solid fa-play fa-rotate-180 fa-xs imagel"
-                style={{ color: "#2f4365" }}
+                style={{ color: "#2f4365", cursor: "pointer" }}
+                onClick={clickLeft}
               ></i>
               <i
                 class="fa-sharp fa-solid fa-play fa-xs imager"
-                style={{ color: "#2f4365" }}
+                style={{ color: "#2f4365", cursor: "pointer" }}
+                onClick={clickRight}
               ></i>
             </div>
           </div>
         </div>
       </div>
 
-      <div className={classes.slideImageContainer}>
+      <div
+        className={classes.slideImageContainer}
+        style={{
+          transform: `translateX(-${1200 * slideIndex}px)`,
+          width: `${1200 * TOTAL_SLIDES}px`,
+        }}
+      >
         {data.map((data) => (
           <div className={classes.cardContainer} key={Object.values(data)[0]}>
             <Link to={Object.values(data)[0]}>
