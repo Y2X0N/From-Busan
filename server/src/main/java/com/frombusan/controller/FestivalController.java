@@ -31,59 +31,22 @@ public class FestivalController {
 	@Autowired
 	private FestivalService festivalService;
 
-	final int countPerPage = 9;
-	final int pagePerGroup = 5;
-
-	@PostMapping("/{festival_id}")
-	public ResponseEntity<List<Festival>> findFestival(Long festival_id, Model model) {
-
-		log.info("축제 실행");
-
-		List<Festival> findAllFestival = festivalMapper.findAllFestival();
-
-		return ResponseEntity.ok(findAllFestival);
-	}
-
 	@GetMapping("list")
 	public FestivalListDto getList(@RequestParam(value = "page", defaultValue = "1") int page,
 								@RequestParam(value = "searchText", defaultValue = "") String searchText) {
-
 		FestivalListDto list = festivalService.getList(searchText, page);
 		return list;
 	}
 
 	// 게시글 읽기
-	@GetMapping("/FestivalInfo")
-	public String read(@RequestParam("festival_id") Long festival_id,
-			@SessionAttribute(value = "loginMember", required = false) Member loginMember, Model model) {
-
-		// board_id 에 해당하는 게시글을 데이터베이스에서 찾는다.
-
-		Festival festival = festivalMapper.findFestival(festival_id);
-
-		// board_id에 해당하는 게시글이 없으면 리스트로 리다이렉트 시킨다.
-		if (festival == null) {
-			log.info("축제 없음");
-			return "redirect:/festival/list";
+	@GetMapping("/{id}")
+	public ResponseEntity<Festival> getFestival(@PathVariable(value = "id") Long festivalId, @SessionAttribute(value ="loginMember", required = false) Member loginMember) {
+		try {
+			Festival festival = festivalService.findFestivalById(festivalId, loginMember);
+			return ResponseEntity.ok(festival);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		
-		festival.addHit();
-		festivalMapper.updateFestival(festival);
-		
-		model.addAttribute("festival", festival);
-		
-		List<String> findFestivalLikes = festivalMapper.findLikesMemberId(festival_id);
-		model.addAttribute("findFestivalLikes", findFestivalLikes);
-		
-		List<String> findFestivalMyList = festivalMapper.findMyListMemberId(festival_id);
-		model.addAttribute("findFestivalMyList", findFestivalMyList);
-		
-		if(loginMember!=null) {
-		model.addAttribute("member_id", loginMember.getMember_id());
-		}
-
-
-		return "festival/FestivalInfo";
 	}
 
 	//좋아요 기능

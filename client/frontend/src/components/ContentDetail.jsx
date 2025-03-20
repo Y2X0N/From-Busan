@@ -1,159 +1,153 @@
 import { useState } from "react";
+import classes from "./ContentDetail.module.css";
+import {
+  APIProvider,
+  Map,
+  Marker,
+  AdvancedMarker,
+} from "@vis.gl/react-google-maps";
 
 function ContentDetail({ data }) {
   const [showDetail, setShowDetail] = useState("detailInfo");
 
   return (
     <>
-      <div id="container">
-        <h1 id="main_title">{data.main_title}</h1>
+      <div className={classes.detailContainer}>
+        <div className={classes.titleContainer}>
+          <h1>{data.main_title}</h1>
+        </div>
 
-        <nav class="tabnav">
-          <span class="item" onClick={() => setShowDetail("detailInfo")}>
+        <nav className={classes.navContainer}>
+          <span
+            className={`${showDetail === "detailInfo" ? classes.active : ""}`}
+            onClick={() => setShowDetail("detailInfo")}
+          >
             상세 보기
           </span>
-          <span class="item" onClick={() => setShowDetail("useInfo")}>
+          <span
+            className={`${showDetail === "useInfo" ? classes.active : ""}`}
+            onClick={() => setShowDetail("useInfo")}
+          >
             이용 정보
           </span>
-          <span class="item" onClick={() => setShowDetail("restInfo")}>
+          <span
+            className={`${showDetail === "restInfo" ? classes.active : ""}`}
+            onClick={() => setShowDetail("restInfo")}
+          >
             주변 맛집 정보
           </span>
         </nav>
 
-        <div id="spot-header-container">
+        <div className={classes.detailBodyContainer}>
           {showDetail === "detailInfo" && (
-            <div class="itemcntnts" id="itemcntnts">
+            <>
               <img src={data.main_img_normal} alt={data.main_title} />
 
-              <div class="heartWish" th:if="${member_id}">
-                <div class="left_area">
-                  <a
-                    th:unless="${#lists.contains(findFestivalLikes, member_id)}"
-                    href="javascript:;"
-                    class="icon heart"
-                    th:onclick="|like(*{festival_id})|"
-                  >
-                    <img
-                      class="like_img"
-                      src="/image/heart-regular.svg"
-                      alt="하트"
-                    />
+              {/* Todo: 조건별화면표시제어 */}
+              <div className={classes.buttonContainer}>
+                <div className={classes.buttons}>
+                  <a className={classes.icon}>
+                    <img src="/heart.svg" alt="like" />
                   </a>
-                  <a
-                    th:if="${#lists.contains(findFestivalLikes, member_id)}"
-                    href="javascript:;"
-                    class="icon heart"
-                    th:onclick="|like(*{festival_id})|"
-                  >
+                  <a className={classes.icon}>
                     <img
-                      class="like_img"
                       src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
-                      alt="하트"
+                      alt="likeFilled"
                     />
                   </a>
                 </div>
-                <div class="right_area">
-                  <a
-                    th:unless="${#lists.contains(findFestivalMyList, member_id)}"
-                    href="javascript:;"
-                    class="icon wish"
-                    th:onclick="|myList(*{festival_id})|"
-                  >
-                    <img
-                      class="wish_img"
-                      src="/image/bookmark-regular%20(1).svg"
-                      alt="찜하기"
-                    />
+                <div className={classes.buttons}>
+                  <a className={classes.icon}>
+                    <img src="/bookmark.svg" alt="bookmark" />
                   </a>
-                  <a
-                    th:if="${#lists.contains(findFestivalMyList, member_id)}"
-                    href="javascript:;"
-                    class="icon wish"
-                    th:onclick="|myList(*{festival_id})|"
-                  >
-                    <img
-                      class="wish_img"
-                      src="/image/bookmark-solid%20(2).svg"
-                      alt="찜하기"
-                    />
+                  <a className={classes.icon}>
+                    <img src="/bookmarkFilled.svg" alt="bookmarkFilled" />
                   </a>
                 </div>
               </div>
+
               <input
                 type="button"
-                class="btn btn-success"
-                th:onclick="location.href='/review/reviewList?main_title=[[${festival.main_title}]]'"
-                data-value="#{alert.relevant}"
-                th:value="#{alert.relevant}"
+                className={classes.findReviewButton}
+                value="관련 리뷰 찾기"
               />
-              <div class="explain">
+
+              <div className={classes.detailExplain}>
                 <p>{data.itemcntnts}</p>
               </div>
-            </div>
+            </>
           )}
+
           {showDetail === "useInfo" && (
-            <div class="information" id="information">
-              <table class="information-table" border="1px solid black">
-                <tr>
-                  <th>주소</th>
-                  <td id="add1">{data.add1}</td>
-                </tr>
-                <tr>
-                  <th>전화번호</th>
-                  <td>{data.cntct_tel}</td>
-                </tr>
-                <tr>
-                  <th>관련 홈페이지</th>
-                  <td>
-                    <a
-                      href="#"
-                      th:onclick="findFestival([[${festival.homepage_url}]])"
-                      th:text="${festival.homepage_url}"
-                    >
-                      {data.homepage_url}
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <th>휴무일</th>
-                  <td id="hldy_info">{data.hldy}</td>
-                </tr>
-                <tr>
-                  <th>운영요일 및 시간</th>
-                  <td id="usage_day_week_and_time">
-                    {data.usage_day_week_and_time}
-                  </td>
-                </tr>
-                <tr>
-                  <th>이용 요금</th>
-                  <td id="usage_amount">{data.usage_amout}</td>
-                </tr>
-                <tr>
-                  <th>교통 정보</th>
-                  <td id="trfc_info">{data.trfc_info}</td>
-                </tr>
+            <>
+              <table className={classes.useInfoTable}>
+                <tbody>
+                  <tr>
+                    <th>주소</th>
+                    <td>{data.addr1}</td>
+                  </tr>
+                  <tr>
+                    <th>전화번호</th>
+                    <td>{data.cntct_tel}</td>
+                  </tr>
+                  <tr>
+                    <th>관련 홈페이지</th>
+                    <td>
+                      <a href={data.homepage_url}>{data.homepage_url}</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>휴무일</th>
+                    <td>{data.hldy_info}</td>
+                  </tr>
+                  <tr>
+                    <th>운영요일 및 시간</th>
+                    <td>{data.usage_day_week_and_time}</td>
+                  </tr>
+                  <tr>
+                    <th>이용 요금</th>
+                    <td>{data.usage_amount}</td>
+                  </tr>
+                  <tr>
+                    <th>교통 정보</th>
+                    <td>{data.trfc_info}</td>
+                  </tr>
+                </tbody>
               </table>
-            </div>
+            </>
           )}
 
           {showDetail === "restInfo" && (
-            <div id="mapContainer">
-              <div class="find">
+            <div className={classes.restInfoContainer}>
+              <div className={classes.routeFindButtonContainer}>
                 <input
-                  class="findRT"
+                  className={classes.routeFindButton}
                   type="button"
-                  onclick="getRestaurant()"
                   value="맛집 찾기"
                 />
                 <input
-                  class="findRT"
+                  className={classes.routeFindButton}
                   type="button"
-                  onclick="getDb()"
                   value="명소 찾기"
                 />
               </div>
 
-              <div id="map"></div>
+              <div className={classes.map}>
+                <APIProvider apiKey={"AIzaSyALFwCG2TvwNdzJ7yJFWyGTfYn8fmrAhhE"}>
+                  <Map
+                    mapId={"bf51a910020fa25a"}
+                    defaultZoom={13}
+                    defaultCenter={{ lat: data.lat, lng: data.lng }}
+                  ></Map>
+                  <AdvancedMarker
+                    position={{ lat: data.lat, lng: data.lng }}
+                    clickable={true}
+                    onClick={() => alert("marker was clicked!")}
+                    title={"clickable google.maps.Marker"}
+                    animation={"DROP"}
+                  />
+                </APIProvider>
+              </div>
               <div class="modal">
                 <span class="close">&times;</span>
                 <div id="modalText"></div>
