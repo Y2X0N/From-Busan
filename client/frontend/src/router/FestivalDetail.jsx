@@ -11,7 +11,7 @@ function FestivalDetail() {
       const response = await fetch(`http://localhost:9000/festival/${id}`);
       const reqData = await response.json();
       console.log(reqData);
-      setData(reqData);
+      setData(reqData.festival);
     };
     loader();
   }, [id]);

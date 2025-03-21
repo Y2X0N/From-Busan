@@ -5,9 +5,11 @@ import {
   Map,
   Marker,
   AdvancedMarker,
+  Pin,
 } from "@vis.gl/react-google-maps";
 
 function ContentDetail({ data }) {
+  console.log(data);
   const [showDetail, setShowDetail] = useState("detailInfo");
 
   return (
@@ -135,7 +137,7 @@ function ContentDetail({ data }) {
               <div className={classes.map}>
                 <APIProvider apiKey={"AIzaSyALFwCG2TvwNdzJ7yJFWyGTfYn8fmrAhhE"}>
                   <Map
-                    mapId={"bf51a910020fa25a"}
+                    mapId={"dd1b7984afb1bbc9"}
                     defaultZoom={13}
                     defaultCenter={{ lat: data.lat, lng: data.lng }}
                   ></Map>
@@ -144,8 +146,13 @@ function ContentDetail({ data }) {
                     clickable={true}
                     onClick={() => alert("marker was clicked!")}
                     title={"clickable google.maps.Marker"}
-                    animation={"DROP"}
-                  />
+                  >
+                    <img
+                      src="/festival.png"
+                      style={{ width: "3vw", height: "3vh" }}
+                      alt="Festival"
+                    />
+                  </AdvancedMarker>
                 </APIProvider>
               </div>
               <div class="modal">

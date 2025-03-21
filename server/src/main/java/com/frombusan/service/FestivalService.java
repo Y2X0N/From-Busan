@@ -2,6 +2,7 @@ package com.frombusan.service;
 
 import java.util.List;
 
+import com.frombusan.dto.FestivalInfoDto;
 import com.frombusan.dto.FestivalListDto;
 import com.frombusan.model.member.Member;
 import com.frombusan.util.PageNavigator;
@@ -14,6 +15,7 @@ import com.frombusan.repository.FestivalMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.thymeleaf.util.StringUtils;
 
 import static com.frombusan.dto.FestivalListDto.countPerPage;
 import static com.frombusan.dto.FestivalListDto.pagePerGroup;
@@ -40,40 +42,33 @@ public class FestivalService {
         return list;
     }
 
-    public Festival findFestivalById(Long festivalId, Member loginMember) {
+    public FestivalInfoDto findFestivalById(Long festivalId, Member loginMember) {
+        try{
+            Festival festival = festivalMapper.findFestival(festivalId);
+            festival.addHit();
+            festivalMapper.updateFestival(festival);
 
+            Boolean isFavorite = null;
+            Boolean isWishList = null;
 
-        Festival festival = festivalMapper.findFestival(festivalId);
-
-        // board_id에 해당하는 게시글이 없으면 리스트로 리다이렉트 시킨다.
-//		if (festival == null) {
-//		}
-
-        festival.addHit();
-        festivalMapper.updateFestival(festival);
-
-//		model.addAttribute("festival", festival);
-//
-//		List<String> findFestivalLikes = festivalMapper.findLikesMemberId(festival_id);
-//		model.addAttribute("findFestivalLikes", findFestivalLikes);
-//
-//		List<String> findFestivalMyList = festivalMapper.findMyListMemberId(festival_id);
-//		model.addAttribute("findFestivalMyList", findFestivalMyList);
-//
-//		if(loginMember!=null) {
-//		model.addAttribute("member_id", loginMember.getMember_id());
-//		}
-
-
-
-
-
-        return festival;
+            if(checkLoginMember(loginMember)){
+                isFavorite = festivalMapper.checkMemberLikeStatus(festivalId, loginMember.getMember_id());
+                isWishList = festivalMapper.checkMemberWishListStatus(festivalId, loginMember.getMember_id());
+            }
+            FestivalInfoDto festivalInfoDto = new FestivalInfoDto(festival, isFavorite, isWishList);
+            return festivalInfoDto;
+        } catch(Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     private List<Festival> findFestivals(String searchText, int startRecord, int countPerPage) {
         // 전체 검색 결과 중 시작 위치와 갯수
         RowBounds rowBounds = new RowBounds(startRecord, countPerPage);
         return festivalMapper.findAllFestival(searchText, rowBounds);
+    }
+
+    private Boolean checkLoginMember(Member loginMember){
+        return loginMember != null && !StringUtils.isEmpty(loginMember.getMember_id());
     }
 }

@@ -1,6 +1,6 @@
 import classes from "./ContentsList.module.css";
 
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const ContentsList = ({ data, navi }) => {
@@ -8,9 +8,15 @@ const ContentsList = ({ data, navi }) => {
   const [currentPageData, setCurrentPageData] = useState(data);
   const [currentNavi, setCurrentNavi] = useState(navi);
   const currentLocation = useLocation();
+  const navigate = useNavigate();
 
   function handleSearchText(event) {
     setSearchText(event.target.value);
+  }
+  function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      navigate(`./?searchText=${searchText}`);
+    }
   }
 
   useEffect(() => {
@@ -45,6 +51,7 @@ const ContentsList = ({ data, navi }) => {
               type="search"
               placeholder="명소를 입력해주세요."
               onChange={handleSearchText}
+              onKeyDown={handleKeyDown}
             />
             {/* <datalist id="searchOptions">
               <option th:each="festival : ${searchFes}">
@@ -55,7 +62,9 @@ const ContentsList = ({ data, navi }) => {
                 ></span>
               </option>
             </datalist> */}
-            <button type="button">검색</button>
+            <Link to={`./?searchText=${searchText}`}>
+              <button type="button">검색</button>
+            </Link>
           </div>
         </div>
 
@@ -113,7 +122,7 @@ const ContentsList = ({ data, navi }) => {
             </div>
           ))}
 
-          {!data && (
+          {currentPageData.length === 0 && (
             <span className={classes.color}>찾으시는 명소가 없습니다</span>
           )}
         </div>
