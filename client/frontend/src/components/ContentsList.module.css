@@ -34,7 +34,7 @@
   border-width: 2px;
 }
 
-.searchBar > button {
+.searchBar button {
   font-size: 16px;
   height: 40px;
   width: 150px;
@@ -132,4 +132,20 @@
   margin-top: 15px;
   margin-left: 10px;
   gap: 10px;
+}
+
+.pageContainer {
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.pageContainer a {
+  margin: 0 8px;
+}
+
+.active {
+  font-size: 22px;
+  font-weight: 1000;
 }

@@ -27,16 +27,14 @@ function MenuLayout() {
                 </div>
               )}
               <div className={classes["language-select"]}>
-                <div class="dropdown">
-                  <i class="fa-solid fa-globe">&nbsp;</i>
-                  <select id="languageDropdown">
-                    <option value="/">-언어-</option>
-                    <option value="?lang=ko">한국어</option>
-                    <option value="?lang=ja">日本語</option>
-                    <option value="?lang=zh">中文</option>
-                    <option value="?lang=en">English</option>
-                  </select>
-                </div>
+                <i class="fa-solid fa-globe">&nbsp;</i>
+                <select id="languageDropdown">
+                  <option value="/">-언어-</option>
+                  <option value="?lang=ko">한국어</option>
+                  <option value="?lang=ja">日本語</option>
+                  <option value="?lang=zh">中文</option>
+                  <option value="?lang=en">English</option>
+                </select>
               </div>
             </div>
 

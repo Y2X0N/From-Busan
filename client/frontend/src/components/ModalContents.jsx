@@ -1,4 +1,4 @@
-import { Form, useLocation } from "react-router-dom";
+import { Form, Link, useLocation } from "react-router-dom";
 import Modal from "./Modal";
 import classes from "./ModalContents.module.css";
 
@@ -10,6 +10,11 @@ function ModalContents() {
     <>
       <Modal>
         <div className={classes.modalContainer}>
+          <div className={classes.btnContainer}>
+            <Link to={".."} className={classes.closeBtn}>
+              <span>&times;</span>
+            </Link>
+          </div>
           <div className={classes.formContainer}>
             <img className={classes.img} src="/bugi.png" alt="bugi" />
             <Form className={classes.form}>

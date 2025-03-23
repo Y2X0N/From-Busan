@@ -22,7 +22,11 @@ const HomeSlide = ({ contents, navi, data }) => {
             {"| " + contents + " |"}
           </span>
           <div className={classes.headerControl}>
-            <Link className={classes.link} to={navi}>
+            <Link
+              className={classes.link}
+              to={navi}
+              onClick={() => window.scrollTo(0, 0)}
+            >
               자세히&#8594;
             </Link>
             <div>
@@ -50,11 +54,17 @@ const HomeSlide = ({ contents, navi, data }) => {
       >
         {data.map((data) => (
           <div className={classes.cardContainer} key={Object.values(data)[0]}>
-            <Link to={Object.values(data)[0]}>
+            <Link
+              to={`${navi}/${Object.values(data)[0]}`}
+              onClick={() => window.scrollTo(0, 0)}
+            >
               <img alt={data.main_title} src={data.main_img_normal} />
             </Link>
             <div>
-              <Link to={Object.values(data)[0]}>
+              <Link
+                to={`${navi}/${Object.values(data)[0]}`}
+                onClick={() => window.scrollTo(0, 0)}
+              >
                 <span className={classes.innerContent}>{data.main_title}</span>
               </Link>
               <i

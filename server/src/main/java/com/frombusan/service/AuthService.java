@@ -1,6 +1,8 @@
 package com.frombusan.service;
 
+import com.frombusan.dto.member.JoinFormDto;
 import com.frombusan.model.member.Member;
+import com.frombusan.model.member.MemberJoinForm;
 import com.frombusan.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,5 +38,18 @@ public class AuthService {
         if (session != null) {
             session.invalidate(); // 세션 무효화
         }
+    }
+
+    @Transactional
+    public void join(JoinFormDto joinFormDto) {
+        // 사용자로부터 입력받은 아이디로 데이터베이스에서 Member 를 검색한다.
+        Member member = memberMapper.findMember(joinFormDto.getMember_id());
+        // 사용자 정보가 존재하면
+        if (member != null) {
+            throw new RuntimeException();
+        }
+        // MemberJoinForm 객체를 Member 타입으로 변환하여 데이터베이스에 저장한다.
+        memberMapper.saveMember(JoinFormDto.toMember(joinFormDto));
+
     }
 }
