@@ -53,15 +53,6 @@ const ContentsList = ({ data, navi }) => {
               onChange={handleSearchText}
               onKeyDown={handleKeyDown}
             />
-            {/* <datalist id="searchOptions">
-              <option th:each="festival : ${searchFes}">
-                <span
-                  th:text="${festival.main_title}"
-                  id="searchName"
-                  th:data-original="*{festival.main_title}"
-                ></span>
-              </option>
-            </datalist> */}
             <Link to={`./?searchText=${searchText}`}>
               <button type="button">검색</button>
             </Link>

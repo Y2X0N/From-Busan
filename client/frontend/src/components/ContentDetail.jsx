@@ -9,7 +9,6 @@ import {
 } from "@vis.gl/react-google-maps";
 
 function ContentDetail({ data }) {
-  console.log(data);
   const [showDetail, setShowDetail] = useState("detailInfo");
 
   return (

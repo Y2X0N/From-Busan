@@ -7,7 +7,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Festival, { loader as festivalListLoad } from "./router/Festival";
 import TourSpot, { loader as touristSpotListLoad } from "./router/TourSpot";
 import Review from "./router/Review";
-import Login from "./router/Login";
+import Login, { action as loginAction } from "./router/Login";
 import SignIn from "./router/SignIn.Jsx";
 import MyPage from "./router/MyPage.Jsx";
 import ModalContents from "./components/ModalContents.jsx";
@@ -27,7 +27,13 @@ const router = createBrowserRouter([
       {
         path: "/member/login",
         element: <Login />,
-        children: [{ path: "/member/login/check", element: <ModalContents /> }],
+        children: [
+          {
+            path: "/member/login/check",
+            element: <ModalContents />,
+          },
+        ],
+        action: loginAction,
       },
       {
         path: "/member/join",

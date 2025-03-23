@@ -120,7 +120,7 @@ select {
   font-family: "Noto Sansf KR", sans-serif;
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1;
   color: #444;
   background-color: #fff;
   padding: 0.6em 0.6em 0.6em 0.6em;
@@ -144,10 +144,12 @@ select:focus {
 select:disabled {
   opacity: 0.5;
 }
+
 .language-select {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.1vw;
 }
 
 select option {
