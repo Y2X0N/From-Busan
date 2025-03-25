@@ -3,31 +3,17 @@ package com.frombusan.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-
-
+import com.frombusan.dto.request.ReviewWriteDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import com.frombusan.model.member.Member;
 import com.frombusan.model.review.Review;
 import com.frombusan.model.review.ReviewLikes;
 import com.frombusan.model.review.ReviewUpdateForm;
-import com.frombusan.model.review.ReviewWriteForm;
-import com.frombusan.repository.ReviewMapper;
 import com.frombusan.service.ReviewService;
 import com.frombusan.util.PageNavigator;
 
@@ -37,76 +23,51 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("review")
-@Controller
+@RestController
 public class ReviewController {
-	
-	//국제화
-	@Autowired
-	private MessageSource messageSource;
-	
-	//의존성주입
+
     private final ReviewService reviewService;
-    private final ReviewMapper reviewMapper;
-    
+
     // 게시판 관련 상수 값
     final int countPerPage = 10;    // 페이지 당 글 수
     final int pagePerGroup = 5;     // 페이지 이동 그룹 당 표시할 페이지 수
-    
-    // 후기 글쓰기 페이지 이동
-    @GetMapping("write")
-    public String writeForm(Model model,RedirectAttributes redirectAttributes) {
-        // writeForm.html의 필드 표시를 위해 빈 BoardWriteForm 객체를 생성하여 model 에 저장한다.
-        model.addAttribute("writeForm", new ReviewWriteForm());
-        List<String> findAllName = reviewService.findAllMainTitle();
-        model.addAttribute("findAllName", findAllName);
-        
-        // board/writeForm.html 을 찾아 리턴한다.
-        return "review/write";
-    }
-  
 
     // 게시글 쓰기
     @PostMapping("write")
-    public String write(@SessionAttribute(value = "loginMember", required = false) Member loginMember,
-                        @Validated @ModelAttribute("writeForm") ReviewWriteForm reviewWriteForm,
-                        BindingResult result,Model model,RedirectAttributes redirectAttributes) {
-        // 로그인 상태가 아니면 로그인 페이지로 보낸다.
-        if (loginMember == null) {
-            return "redirect:/member/login";
-        }
+    public ResponseEntity<String> write(@SessionAttribute(value = "loginMember") Member loginMember,
+                        @RequestBody ReviewWriteDto reviewWriteDto) {
+        reviewService.write(loginMember,reviewWriteDto);
+        return ResponseEntity.ok("게시글 쓰기 성공");
+
         // findAllName 리스트에 review_place와 일치하는 값이 있는지 확인한다.
-        List<String> findAllName = reviewService.findAllMainTitle();
-        
-        model.addAttribute("findAllName", findAllName);
-        
-        if (result.hasErrors()) {
-            model.addAttribute("findAllName", findAllName);
-            return "review/write";}
+        //model.addAttribute("findAllName", findAllName);
+//        if (result.hasErrors()) {
+//            model.addAttribute("findAllName", findAllName);
+//            return "review/write";}
 
-        if (!findAllName.contains(reviewWriteForm.getReview_place())) {
-            model.addAttribute("placeError", messageSource.getMessage("alert.Placecon", null, LocaleContextHolder.getLocale()));
-            model.addAttribute("findAllName", findAllName);
-            return "review/write";}
+//        if (!findAllName.contains(reviewWriteForm.getReview_place())) {
+//            model.addAttribute("placeError", messageSource.getMessage("alert.Placecon", null, LocaleContextHolder.getLocale()));
+//            model.addAttribute("findAllName", findAllName);
+//            return "review/write";
+//        }
+//
+//        // title과 review_place에 대한 공백 검사
+//        if (reviewWriteForm.getTitle()==null || reviewWriteForm.getReview_place()==null) {
+//            // validation 에러 메시지를 BindingResult에 추가합니다.
+//            result.rejectValue("title", "NotEmpty");
+//            result.rejectValue("review_place", "NotEmpty");
+//            // board/write.html 페이지를 다시 보여줍니다.
+//            redirectAttributes.addFlashAttribute("findAllName", findAllName);
+//            return "review/write";
+//        }
 
-        // title과 review_place에 대한 공백 검사
-        if (reviewWriteForm.getTitle()==null || reviewWriteForm.getReview_place()==null) {
-            // validation 에러 메시지를 BindingResult에 추가합니다.
-            result.rejectValue("title", "NotEmpty");
-            result.rejectValue("review_place", "NotEmpty");
-            // board/write.html 페이지를 다시 보여줍니다.
-            redirectAttributes.addFlashAttribute("findAllName", findAllName);
-            return "review/write"; }
-      
         // 파라미터로 받은 BoardWriteForm 객체를 Board 타입으로 변환한다.
-        Review review = ReviewWriteForm.toReview(reviewWriteForm);
+        //Review review = ReviewWriteForm.toReview(reviewWriteForm);
         // board 객체에 로그인한 사용자의 아이디를 추가한다.
-        review.setMember_id(loginMember.getMember_id());
-        
-        // board 객체를 저장한다.
-        reviewService.saveReview(review);
-   
+        //review.setMember_id(loginMember.getMember_id());
+
         // board/list 로 리다이렉트한다.
-        return "redirect:/review/list";
+
     }
 
     // 게시글 전체 보기
@@ -122,20 +83,20 @@ public class ReviewController {
         // 데이터베이스에 저장된 모든 Board 객체를 리스트 형태로 받는다.
         List<Review> reviews = reviewService.findReviews(searchText,
         		navi.getStartRecord(), navi.getCountPerPage());
-        
+
         List<String> findAllName = reviewService.findAllMainTitle();
         model.addAttribute("findAllName", findAllName);
-        
+
         // Board 리스트를 model 에 저장한다.
         model.addAttribute("reviews", reviews);
         // PageNavigation 객체를 model 에 저장한다.
         model.addAttribute("navi", navi);
         model.addAttribute("searchText", searchText);
-        
+
         model.addAttribute("loginMember", loginMember);
-        
-        List<Review> findReviewRank5 = reviewMapper.findReviewRank5();
-        model.addAttribute("findReviewRank5", findReviewRank5);
+
+       // List<Review> findReviewRank5 = reviewMapper.findReviewRank5();
+        //model.addAttribute("findReviewRank5", findReviewRank5);
 
         // board/list.html 를 찾아서 리턴한다.
         return "review/list";
@@ -152,13 +113,13 @@ public class ReviewController {
         if (review == null) {
             log.info("게시글 없음");
             return "redirect:/review/list";
-        }        
-        
+        }
+
 
         // 모델에 Board 객체를 저장한다.
         model.addAttribute("review", review);
         model.addAttribute("loginMember",loginMember);
-        
+
         List<String> findReviewLikes = reviewService.findLikesMemberId(review_id);
 		log.info("findReviewLikes:{}",findReviewLikes);
 		model.addAttribute("findReviewLikes", findReviewLikes);
@@ -193,7 +154,7 @@ public class ReviewController {
                          @RequestParam Long review_id,
                          @Validated @ModelAttribute("review") ReviewUpdateForm updateReview,
                          BindingResult result) {
-                         
+
         // validation 에 에러가 있으면 board/update.html 페이지로 돌아간다.
         if (result.hasErrors()) {
             return "review/update";
@@ -210,7 +171,7 @@ public class ReviewController {
         review.setTitle(updateReview.getTitle());
         // 내용을 수정한다.
         review.setContents(updateReview.getContents());
-        
+
         // 수정한 Board 를 데이터베이스에 update 한다.
         reviewService.updateReview(review);
         // 수정이 완료되면 리스트로 리다이렉트 시킨다.
@@ -235,9 +196,9 @@ public class ReviewController {
         // board/list 로 리다이렉트 한다.
         return "redirect:/review/list";
     }
-    
 
-    
+
+
  // 한 장소 게시글 전체 보기
     @GetMapping("reviewList")
     public String reviewList(@RequestParam(value = "page", defaultValue = "1") int page,
@@ -249,12 +210,12 @@ public class ReviewController {
         //PageNavigator navi = new PageNavigator(countPerPage, pagePerGroup, page, total);
         // 데이터베이스에 저장된 모든 Board 객체를 리스트 형태로 받는다.
         //List<Review> reviews = reviewService.findReviews(searchText, navi.getStartRecord(), navi.getCountPerPage());
-        
+
         List<Review> findReviewsByMainTitle = reviewService.findReviewsByMainTitle(review_place);
         //model.addAttribute("member_id",loginMember.getMember_id());
         // Board 리스트를 model 에 저장한다.
         model.addAttribute("findReviewsByMainTitle", findReviewsByMainTitle);
-        
+
         String reviewPlace = review_place.substring(1, review_place.length() - 1);
         model.addAttribute("reviewPlace", reviewPlace);
         // PageNavigation 객체를 model 에 저장한다.
@@ -264,14 +225,14 @@ public class ReviewController {
         // board/list.html 를 찾아서 리턴한다.
         return "review/reviewList";
     }
-    
-    
+
+
     // 내가 쓴 리뷰 리스트
     @GetMapping("myReviewList")
     public String myReviewList(
                         @SessionAttribute(value = "loginMember", required = false) Member loginMember
                         ,Model model) {
-    	
+
     	List<Review> reviews = reviewService.findReviewsByMemberId(loginMember.getMember_id());
     	if(loginMember!=null) {
     		model.addAttribute("reviews", reviews);
@@ -280,8 +241,8 @@ public class ReviewController {
 
     	return "member/myReviewList";
     }
-    
-    
+
+
   //좋아요 기능
  	@PostMapping("/like")
 	public ResponseEntity<Review> likeReview(@RequestParam("review_id") Long review_id
@@ -289,8 +250,8 @@ public class ReviewController {
 											) {
  		List<String> findReviewLikes = reviewService.findLikesMemberId(review_id);
 		List<Map<String, Object>> findLikesById = reviewService.findLikesById(review_id);
-		
-		
+
+
 		Review review= reviewService.findReview(review_id);
 		ReviewLikes reviewLikes = new ReviewLikes();
 		String member_id = loginMember.getMember_id();
@@ -315,7 +276,7 @@ public class ReviewController {
 				reviewService.saveLikes(reviewLikes);
 				review.setLiked(true);
 				log.info("aa:{}",review);
-				
+
 			}
 			else {
 				review.removeReview_like();
@@ -329,5 +290,5 @@ public class ReviewController {
 	    return ResponseEntity.badRequest().build();
 	  }
 	}
-    
+
 }

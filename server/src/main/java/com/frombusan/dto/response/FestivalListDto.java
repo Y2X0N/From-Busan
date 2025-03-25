@@ -1,4 +1,4 @@
-package com.frombusan.dto;
+package com.frombusan.dto.response;
 
 import com.frombusan.model.festival.Festival;
 import com.frombusan.util.PageNavigator;

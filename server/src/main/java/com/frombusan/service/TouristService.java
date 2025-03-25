@@ -2,16 +2,15 @@ package com.frombusan.service;
 
 import java.util.List;
 
-import com.frombusan.dto.tourist.TouristInfoDto;
-import com.frombusan.dto.tourist.TouristInfoLikeDto;
-import com.frombusan.dto.tourist.TouristInfoWishListDto;
-import com.frombusan.dto.tourist.TouristListDto;
+import com.frombusan.dto.response.TouristInfoDto;
+import com.frombusan.dto.response.TouristInfoLikeDto;
+import com.frombusan.dto.response.TouristInfoWishListDto;
+import com.frombusan.dto.response.TouristListDto;
 import com.frombusan.model.member.Member;
 import com.frombusan.model.tourist.TouristSpotLikes;
 import com.frombusan.model.tourist.TouristSpotMyList;
 import com.frombusan.util.PageNavigator;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

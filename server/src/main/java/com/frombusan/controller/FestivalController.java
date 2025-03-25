@@ -1,24 +1,13 @@
 package com.frombusan.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import com.frombusan.dto.FestivalInfoDto;
-import com.frombusan.dto.FestivalListDto;
-import org.apache.ibatis.session.RowBounds;
+import com.frombusan.dto.response.FestivalInfoDto;
+import com.frombusan.dto.response.FestivalListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.frombusan.model.festival.Festival;
-import com.frombusan.model.festival.FestivalLikes;
-import com.frombusan.model.festival.FestivalMyList;
 import com.frombusan.model.member.Member;
-import com.frombusan.repository.FestivalMapper;
 import com.frombusan.service.FestivalService;
-import com.frombusan.util.PageNavigator;
 
 import lombok.extern.slf4j.Slf4j;
 
