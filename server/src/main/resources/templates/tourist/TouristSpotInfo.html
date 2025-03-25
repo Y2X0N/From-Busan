@@ -307,35 +307,35 @@ function getRestaurant(){
 function findRestaurant(data1){
 		modalClose();
 		let lat = [[${tourist_Spot.lat}]];
-    let lng = [[${tourist_Spot.lng}]];
+         let lng = [[${tourist_Spot.lng}]];
 		const main_title = [[${tourist_Spot.main_title}]];
 		const itemcntnts= [[${#strings.abbreviate(tourist_Spot.itemcntnts,80)}]];
-    const img_date = [[${tourist_Spot.main_img_normal}]]
+            const img_date = [[${tourist_Spot.main_img_normal}]]
     
-    //로케이션 별로 마크 생성
-  /* 	marker = new google.maps.Marker({
-      position: new google.maps.LatLng(lat,lng),
-      map:map,
-      animation: google.maps.Animation.DROP,
-    	//icon: 'your-icon.png'
-  	}); */
-	
-	//console.log(data1);
-  //구군의 맛집리스트 추가
+            //로케이션 별로 마크 생성
+          /* 	marker = new google.maps.Marker({
+              position: new google.maps.LatLng(lat,lng),
+              map:map,
+              animation: google.maps.Animation.DROP,
+                //icon: 'your-icon.png'
+            }); */
+
+            //console.log(data1);
+          //구군의 맛집리스트 추가
   
 
- const infowindow = new google.maps.InfoWindow();
- let i,res;
- //맛집마커
- let marker;
- //명소마커
- let marker2;
- //icons
- const icons ={
-			restaurant:'/image/restaurant.png',
-			attraction:'/image/attraction.png',
-			festival:'/image/festival.png'
-	}
+         const infowindow = new google.maps.InfoWindow();
+         let i,res;
+         //맛집마커
+         let marker;
+         //명소마커
+         let marker2;
+         //icons
+         const icons ={
+                    restaurant:'/image/restaurant.png',
+                    attraction:'/image/attraction.png',
+                    festival:'/image/festival.png'
+            }
  
 	//maps api 객체생성
 	let map= new google.maps.Map(document.getElementById("map"),{

@@ -2,8 +2,8 @@ package com.frombusan.service;
 
 import java.util.List;
 
-import com.frombusan.dto.FestivalInfoDto;
-import com.frombusan.dto.FestivalListDto;
+import com.frombusan.dto.response.FestivalInfoDto;
+import com.frombusan.dto.response.FestivalListDto;
 import com.frombusan.model.member.Member;
 import com.frombusan.util.PageNavigator;
 import org.apache.ibatis.session.RowBounds;
@@ -17,8 +17,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.thymeleaf.util.StringUtils;
 
-import static com.frombusan.dto.FestivalListDto.countPerPage;
-import static com.frombusan.dto.FestivalListDto.pagePerGroup;
+import static com.frombusan.dto.response.FestivalListDto.countPerPage;
+import static com.frombusan.dto.response.FestivalListDto.pagePerGroup;
 
 @Slf4j
 @RequiredArgsConstructor

@@ -2,7 +2,7 @@ package com.frombusan.controller;
 
 import java.util.List;
 
-import com.frombusan.dto.HomeDto;
+import com.frombusan.dto.response.HomeDto;
 import com.frombusan.service.FestivalService;
 import com.frombusan.service.TouristService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,12 +1,10 @@
 package com.frombusan.service;
 
-import com.frombusan.dto.member.JoinFormDto;
+import com.frombusan.dto.request.JoinFormDto;
 import com.frombusan.model.member.Member;
-import com.frombusan.model.member.MemberJoinForm;
 import com.frombusan.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

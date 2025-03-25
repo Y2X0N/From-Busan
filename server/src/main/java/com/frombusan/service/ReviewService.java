@@ -3,6 +3,8 @@ package com.frombusan.service;
 import java.util.List;
 import java.util.Map;
 
+import com.frombusan.dto.request.ReviewWriteDto;
+import com.frombusan.model.member.Member;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,9 +28,25 @@ public class ReviewService {
 
     private final ReviewMapper reviewMapper;
 
-    public void saveReview(Review review) {
-    	reviewMapper.saveReview(review);
+    @Transactional
+    public void write(Member loginMember, ReviewWriteDto reviewWriteDto) {
+        //존재하지않는review_place는 insert 되지않는다.
+        try {
+            Review review = ReviewWriteDto.toReview(reviewWriteDto);
+            review.setMember_id(loginMember.getMember_id());
+            reviewMapper.saveReview(review);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
+
+    public List<String> findAllMainTitle() {
+        return reviewMapper.findAllMainTitle();
+    }
+
+
+
 
     public List<Review> findReviews(String searchText, int startRecord, int countPerPage) {
         // 전체 검색 결과 중 시작 위치와 갯수
@@ -70,15 +88,11 @@ public class ReviewService {
 	String result = review_place.substring(1, review_place.length() - 1);
     return reviewMapper.findReviewsByMainTitle(result);
     }
-    
-    public List<String> findAllMainTitle() {
-    return reviewMapper.findAllMainTitle();
-    }
+
     public List<Review> findReviewsByMemberId(String member_id) {
         return reviewMapper.findReviewsByMemberId(member_id);
     }
-    
-    
+
     //좋아요
  	public List<String> findLikesMemberId(Long review_id ){
  		return reviewMapper.findLikesMemberId( review_id);
@@ -95,7 +109,5 @@ public class ReviewService {
  	public void deleteLike(Object like_id) {
  		reviewMapper.deleteLike(like_id);
  	}
-
-    
     
 }
