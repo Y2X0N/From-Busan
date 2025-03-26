@@ -1,6 +1,8 @@
+import { useAuth } from "../AuthProvider";
 import classes from "./Review.module.css";
-
+import { Link } from "react-router-dom";
 function Review() {
+  const { user } = useAuth();
   return (
     <>
       <div className={classes.contentsContainer}>
@@ -155,14 +157,13 @@ function Review() {
             </tbody>
           </table>
 
-          <div class="write-btn">
-            <input
-              class="input-btn"
-              type="button"
-              onclick="location.href='/review/write'"
-              value="글쓰기"
-            />
-          </div>
+          {user && (
+            <div className={classes.writeBtn}>
+              <Link to={"./write"}>
+                <input type="button" value="글쓰기" />
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </>

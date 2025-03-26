@@ -29,7 +29,7 @@
   width: 800px;
 }
 
-.buttonContainer > input {
+.buttonContainer > a > input {
   padding: 10px 30px;
   text-align: center;
   font-size: 30px;
@@ -42,7 +42,7 @@
   transition: all ease-in-out 0.3s;
 }
 
-.buttonContainer > input:hover {
+.buttonContainer > a > input:hover {
   border-color: #fff;
   background: #666;
   color: #fff;

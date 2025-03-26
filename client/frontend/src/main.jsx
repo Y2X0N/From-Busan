@@ -14,6 +14,9 @@ import ModalContents from "./components/ModalContents.jsx";
 import TourSpotDetail from "./router/TourSpotDetail.jsx";
 import FestivalDetail from "./router/FestivalDetail.jsx";
 import AuthProvider from "./AuthProvider.jsx";
+import MyReviewPage from "./router/MyReviewPage.jsx";
+import MyBookmark from "./router/MyBookmark.jsx";
+import WriteReview from "./router/WriteReview.jsx";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +49,15 @@ const router = createBrowserRouter([
         element: <MyPage />,
       },
       {
+        path: "/member/myPage/myreview",
+        element: <MyReviewPage />,
+      },
+      {
+        path: "/member/myPage/mybookmark",
+        element: <MyBookmark />,
+      },
+
+      {
         path: "/tourist",
         element: <TourSpot />,
         loader: touristSpotListLoad,
@@ -66,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: "/review",
         element: <Review />,
+      },
+      {
+        path: "/review/write",
+        element: <WriteReview />,
       },
     ],
   },

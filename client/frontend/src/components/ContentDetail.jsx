@@ -7,8 +7,10 @@ import {
   AdvancedMarker,
   Pin,
 } from "@vis.gl/react-google-maps";
+import { useAuth } from "../AuthProvider";
 
 function ContentDetail({ data }) {
+  const { user } = useAuth();
   const [showDetail, setShowDetail] = useState("detailInfo");
 
   return (
@@ -44,28 +46,29 @@ function ContentDetail({ data }) {
             <>
               <img src={data.main_img_normal} alt={data.main_title} />
 
-              {/* Todo: 조건별화면표시제어 */}
-              <div className={classes.buttonContainer}>
-                <div className={classes.buttons}>
-                  <a className={classes.icon}>
-                    <img src="/heart.svg" alt="like" />
-                  </a>
-                  <a className={classes.icon}>
-                    <img
-                      src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
-                      alt="likeFilled"
-                    />
-                  </a>
+              {user && (
+                <div className={classes.buttonContainer}>
+                  <div className={classes.buttons}>
+                    <a className={classes.icon}>
+                      <img src="/heart.svg" alt="like" />
+                    </a>
+                    <a className={classes.icon}>
+                      <img
+                        src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
+                        alt="likeFilled"
+                      />
+                    </a>
+                  </div>
+                  <div className={classes.buttons}>
+                    <a className={classes.icon}>
+                      <img src="/bookmark.svg" alt="bookmark" />
+                    </a>
+                    <a className={classes.icon}>
+                      <img src="/bookmarkFilled.svg" alt="bookmarkFilled" />
+                    </a>
+                  </div>
                 </div>
-                <div className={classes.buttons}>
-                  <a className={classes.icon}>
-                    <img src="/bookmark.svg" alt="bookmark" />
-                  </a>
-                  <a className={classes.icon}>
-                    <img src="/bookmarkFilled.svg" alt="bookmarkFilled" />
-                  </a>
-                </div>
-              </div>
+              )}
 
               <input
                 type="button"
