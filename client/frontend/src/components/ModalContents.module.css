@@ -30,7 +30,7 @@
 
 .formContainer {
   width: 100%;
-  height: 80%;
+  height: auto;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -52,24 +52,26 @@ h1 {
 }
 
 .loginInfoContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
   height: auto;
   margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .loginInfoContainer > input {
+  width: 50%;
+  height: 2.5vh;
   background-color: #eaeaea;
   border: 0px;
   margin-top: 20px;
-  width: 50%;
-  height: 25%;
+  padding-left: 8px;
 }
 
 .loginInfoSubmit {
   margin-top: 20px;
+  margin-bottom: 20px;
   width: 100%;
   height: 20%;
 }

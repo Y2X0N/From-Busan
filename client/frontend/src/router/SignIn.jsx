@@ -1,4 +1,4 @@
-import { Form } from "react-router-dom";
+import { Form, redirect } from "react-router-dom";
 import classes from "./SignIn.module.css";
 
 function SignIn() {
@@ -15,7 +15,7 @@ function SignIn() {
               <tr>
                 <td className={classes.firstTd}>아이디</td>
                 <td className={classes.secondTd}>
-                  <input type="text" />
+                  <input type="text" name="member_id" />
                   <input
                     className={classes.btnIdCheck}
                     type="button"
@@ -27,7 +27,7 @@ function SignIn() {
               <tr>
                 <td className={classes.firstTd}>비밀번호</td>
                 <td className={classes.secondTd}>
-                  <input type="password" />
+                  <input type="password" name="password" />
                   <span className={classes.error}>에러표시부분</span>
                 </td>
               </tr>
@@ -41,21 +41,21 @@ function SignIn() {
               <tr>
                 <td className={classes.firstTd}>이름</td>
                 <td className={classes.secondTd}>
-                  <input type="text" />
+                  <input type="text" name="name" />
                   <span className={classes.error}>에러표시부분</span>
                 </td>
               </tr>
               <tr>
                 <td className={classes.firstTd}>생년월일</td>
                 <td className={classes.secondTd}>
-                  <input type="date" />
+                  <input type="date" name="birth" />
                   <span className={classes.error}>에러표시부분</span>
                 </td>
               </tr>
               <tr>
                 <td className={classes.firstTd}>전화번호</td>
                 <td className={classes.secondTd}>
-                  <input type="tel" />
+                  <input type="tel" name="phone_number" />
                   <span className={classes.error}>에러표시부분</span>
                 </td>
               </tr>
@@ -73,3 +73,19 @@ function SignIn() {
 }
 
 export default SignIn;
+
+export async function action({ request }) {
+  const formData = await request.formData();
+  const postData = Object.fromEntries(formData);
+  const response = await fetch("http://localhost:9000/auth/join", {
+    method: "POST",
+    body: JSON.stringify(postData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (response.status === 200) {
+    return redirect("/");
+  }
+}

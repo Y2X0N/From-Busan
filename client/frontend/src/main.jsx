@@ -8,11 +8,12 @@ import Festival, { loader as festivalListLoad } from "./router/Festival";
 import TourSpot, { loader as touristSpotListLoad } from "./router/TourSpot";
 import Review from "./router/Review";
 import Login, { action as loginAction } from "./router/Login";
-import SignIn from "./router/SignIn.Jsx";
+import SignIn, { action as signInAction } from "./router/SignIn.Jsx";
 import MyPage from "./router/MyPage.Jsx";
 import ModalContents from "./components/ModalContents.jsx";
 import TourSpotDetail from "./router/TourSpotDetail.jsx";
 import FestivalDetail from "./router/FestivalDetail.jsx";
+import AuthProvider from "./AuthProvider.jsx";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
       {
         path: "/member/join",
         element: <SignIn />,
+        action: signInAction,
       },
       {
         path: "/member/myPage",
@@ -70,7 +72,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  <AuthProvider>
     <RouterProvider router={router} />
-  </StrictMode>
+  </AuthProvider>
 );
