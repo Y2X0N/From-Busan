@@ -5,33 +5,37 @@
 <mapper namespace="com.frombusan.repository.MemberMapper">
     <insert id="saveMember">
         insert into member (
-            member_id,
-            password,
-            name,
-            birth,
-            phone_number
+        member_id,
+        password,
+        name,
+        birth,
+        phone_number
         ) values (
-            #{member_id},
-            #{password},
-            #{name},
-            #{birth},
-            #{phone_number}
+        #{member_id},
+        #{password},
+        #{name},
+        #{birth},
+        #{phone_number}
         )
     </insert>
 
     <select id="findMember" resultType="member">
         select * from member where member_id = #{member_id}
     </select>
-    
+
     <select id="findAllMemberId" resultType="String">
-        select member_id from member 
+        select member_id from member
     </select>
-    
-    <select id="findIdOrPassword" resultType="map">
-        select member_id,password,name,phone_number from member 
+
+    <select id="checkMemberForChange" resultType="boolean">
+        select count(*) > 0
+        from member
+        where member_id = #{member_id} and
+              name = #{name} and
+              phone_number = #{phone_number}
     </select>
-    
-    
+
+
     <!--  게시글 수정  -->
     <update id="updateMember">
         update member
@@ -42,15 +46,11 @@
         </set>
         where member_id = #{member_id}
     </update>
-    
-    
-    <select id="idCheck" parameterType="String" resultType="Integer">
-      SELECT COUNT(*) FROM member
-      WHERE
-          member_id = #{member_id}
-			</select>
 
-    
-    
-    
+    <!--아이디 중복확인-->
+    <select id="idCheck" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM member
+        WHERE member_id = #{member_id}
+    </select>
 </mapper>
