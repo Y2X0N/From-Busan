@@ -1,7 +1,21 @@
 import { Form, redirect } from "react-router-dom";
 import classes from "./SignIn.module.css";
+import { useRef, useState } from "react";
 
 function SignIn() {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const idInput = useRef();
+  const [idCheckError, setIdCheckError] = useState(false);
+
+  async function handleIdCheck() {
+    const id = idInput.current.value;
+    const response = await fetch(`${apiUrl}/member/idCheck/${id}`);
+    const result = await response.json();
+    if (result === true) {
+      setIdCheckError(true);
+    }
+  }
+
   return (
     <>
       <div className={classes.joinContainer}>
@@ -15,13 +29,16 @@ function SignIn() {
               <tr>
                 <td className={classes.firstTd}>아이디</td>
                 <td className={classes.secondTd}>
-                  <input type="text" name="member_id" />
+                  <input type="text" name="member_id" ref={idInput} />
                   <input
                     className={classes.btnIdCheck}
                     type="button"
                     value="중복확인"
+                    onClick={handleIdCheck}
                   />
-                  <span className={classes.error}>에러표시부분</span>
+                  {idCheckError && (
+                    <span className={classes.error}>에러표시부분</span>
+                  )}
                 </td>
               </tr>
               <tr>

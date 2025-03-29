@@ -54,6 +54,12 @@
   margin-left: 80%;
 }
 
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .buttons .icon {
   display: flex;
   align-items: center;
@@ -65,6 +71,10 @@
   transform-origin: center;
   color: inherit;
   cursor: pointer;
+}
+
+.buttons .icon:hover {
+  background-color: #eaeaea;
 }
 
 .buttons .icon img {
@@ -104,7 +114,10 @@
   width: 80%;
   height: 500px;
   margin-left: 10%;
-  margin-top: 5%;
+  margin-top: 3vh;
+}
+.reviewBtn {
+  margin-top: 3vh;
 }
 
 .findReviewButton {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import classes from "./ContentDetail.module.css";
 import {
   APIProvider,
@@ -8,10 +8,53 @@ import {
   Pin,
 } from "@vis.gl/react-google-maps";
 import { useAuth } from "../AuthProvider";
+import { useLocation } from "react-router-dom";
 
-function ContentDetail({ data }) {
+function ContentDetail({ data, isFavorite, isWishList }) {
+  const location = useLocation();
   const { user } = useAuth();
   const [showDetail, setShowDetail] = useState("detailInfo");
+  const [isFavoriteStat, setIsFavoriteStat] = useState(isFavorite);
+  const [isWishListStat, setIsWishListStat] = useState(isWishList);
+  console.log(isFavorite);
+  console.log(isFavoriteStat);
+
+  useEffect(() => {
+    setIsFavoriteStat(isFavorite);
+  }, [isFavorite]);
+
+  useEffect(() => {
+    setIsWishListStat(isWishList);
+  }, [isWishList]);
+
+  async function handleIsFavorite() {
+    const response = await fetch(
+      `http://localhost:9000${location.pathname}/like`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    console.log(response);
+    setIsFavoriteStat(response.isFavorite);
+  }
+  async function handleIsWishList() {
+    const response = await fetch(
+      `http://localhost:9000${location.pathname}/wishlist`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    console.log(response);
+    setIsWishListStat(response.isWishList);
+  }
 
   return (
     <>
@@ -49,32 +92,51 @@ function ContentDetail({ data }) {
               {user && (
                 <div className={classes.buttonContainer}>
                   <div className={classes.buttons}>
-                    <a className={classes.icon}>
-                      <img src="/heart.svg" alt="like" />
-                    </a>
-                    <a className={classes.icon}>
-                      <img
-                        src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
-                        alt="likeFilled"
-                      />
-                    </a>
-                  </div>
-                  <div className={classes.buttons}>
-                    <a className={classes.icon}>
-                      <img src="/bookmark.svg" alt="bookmark" />
-                    </a>
-                    <a className={classes.icon}>
-                      <img src="/bookmarkFilled.svg" alt="bookmarkFilled" />
-                    </a>
+                    {!isFavoriteStat && (
+                      <button
+                        className={classes.icon}
+                        onClick={handleIsFavorite}
+                      >
+                        <img src="/heart.svg" alt="like" />
+                      </button>
+                    )}
+                    {isFavoriteStat && (
+                      <button
+                        className={classes.icon}
+                        onClick={handleIsFavorite}
+                      >
+                        <img
+                          src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
+                          alt="likeFilled"
+                        />
+                      </button>
+                    )}
+                    {!isWishListStat && (
+                      <button
+                        className={classes.icon}
+                        onClick={handleIsWishList}
+                      >
+                        <img src="/bookmark.svg" alt="bookmark" />
+                      </button>
+                    )}
+                    {isWishListStat && (
+                      <button
+                        className={classes.icon}
+                        onClick={handleIsWishList}
+                      >
+                        <img src="/bookmarkFilled.svg" alt="bookmarkFilled" />
+                      </button>
+                    )}
                   </div>
                 </div>
               )}
-
-              <input
-                type="button"
-                className={classes.findReviewButton}
-                value="관련 리뷰 찾기"
-              />
+              <div className={classes.reviewBtn}>
+                <input
+                  type="button"
+                  className={classes.findReviewButton}
+                  value="관련 리뷰 찾기"
+                />
+              </div>
 
               <div className={classes.detailExplain}>
                 <p>{data.itemcntnts}</p>

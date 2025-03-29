@@ -77,6 +77,7 @@ export async function action({ request }) {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
+    credentials: "include",
   });
 
   if (response.status === 200) {

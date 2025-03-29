@@ -5,19 +5,30 @@ import { useEffect, useState } from "react";
 function TourSpotDetail() {
   const { id } = useParams();
   const [data, setData] = useState("");
+  const [isFavorite, setIsFavorite] = useState(null);
+  const [isWishList, setIsWishList] = useState(null);
 
   useEffect(() => {
     const loader = async () => {
-      console.log("1");
-      const response = await fetch(`http://localhost:9000/tourist/${id}`);
+      const response = await fetch(`http://localhost:9000/tourist/${id}`, {
+        credentials: "include",
+      });
       const reqData = await response.json();
-      console.log(reqData.touristSpot);
+      console.log(reqData);
       setData(reqData.touristSpot);
+      setIsFavorite(reqData.isFavorite);
+      setIsWishList(reqData.isWishList);
     };
     loader();
   }, [id]);
 
-  return <ContentDetail data={data} />;
+  return (
+    <ContentDetail
+      data={data}
+      isFavorite={isFavorite}
+      isWishList={isWishList}
+    />
+  );
 }
 
 export default TourSpotDetail;

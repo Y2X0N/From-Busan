@@ -1,10 +1,12 @@
 import { Form, Link, useLocation } from "react-router-dom";
 import Modal from "./Modal";
 import classes from "./ModalContents.module.css";
+// import { useState } from "react";
 
 function ModalContents() {
   const location = useLocation();
   const title = location.state.title;
+  // const [findItem, setFindItem] = useState("");
 
   return (
     <>
@@ -64,3 +66,17 @@ function ModalContents() {
 }
 
 export default ModalContents;
+
+// export async function action({ request }) {
+//   const reqBody = request.formData();
+//   const urlEncodedData = new URLSearchParams(reqBody);
+//   console.log(urlEncodedData);
+//   const response = await fetch("http://localhost:9000/member/", {
+//     method: "POST",
+//     body: urlEncodedData,
+//     headers: {
+//       "Content-Type": "application/x-www-form-urlencoded",
+//     },
+//     credentials: "include",
+//   });
+// }
