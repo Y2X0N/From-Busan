@@ -33,7 +33,7 @@ public interface TouristMapper {
 
 	List<Map<String,Object>> findLikesById(Long tourist_Spot_id);
 
-	TouristSpotLikes findTouristSpotLike(@Param("tourist_Spot_id") Long tourist_Spot_id, @Param("member_id") String member_id);
+	TouristSpotLikes findTouristSpotLike(@Param("tourist_Spot_id") Long touristSpotId, @Param("member_id") String memberId);
 
 	TouristSpotMyList findTouristSpotWishList(@Param("tourist_Spot_id") Long touristSpotId, @Param("member_id") String memberId);
 

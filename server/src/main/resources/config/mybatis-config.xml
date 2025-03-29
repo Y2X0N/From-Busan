@@ -16,5 +16,8 @@
         <typeAlias type="com.frombusan.model.course.Course" alias="course"/>
 
         <typeAlias type="com.frombusan.model.tourist.TouristSpotLikes" alias="touristSpotLikes"/>
+        <typeAlias type="com.frombusan.model.tourist.TouristSpotMyList" alias="touristSpotMyList"/>
+
+
     </typeAliases>
 </configuration>
