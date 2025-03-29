@@ -83,7 +83,22 @@
 	<select id="findTouristSpotLike" resultType="touristSpotLikes">
 		SELECT like_id,member_id,tourist_spot_id
 		FROM tourist_spot_likes
-		WHERE tourist_spot_id = #{tourist_spot_id}
+		WHERE tourist_Spot_id = #{tourist_Spot_id}
+		AND member_id = #{member_id}
+	</select>
+
+	<select id="findTouristSpotWishList" resultType="touristSpotMyList">
+		SELECT *
+		FROM wish_list
+		WHERE tourist_Spot_id = #{tourist_Spot_id}
+		AND member_id = #{member_id}
+	</select>
+
+
+	<select id="findTouristSpotLike" resultType="touristSpotLikes">
+		SELECT like_id,member_id,tourist_spot_id
+		FROM tourist_spot_likes
+		WHERE tourist_Spot_id = #{tourist_Spot_id}
 		AND member_id = #{member_id}
 	</select>
 

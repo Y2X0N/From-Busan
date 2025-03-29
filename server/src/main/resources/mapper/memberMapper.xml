@@ -27,8 +27,15 @@
         select member_id from member
     </select>
 
-    <select id="checkMemberForChange" resultType="boolean">
-        select count(*) > 0
+    <select id="findId" resultType="String">
+        select member_id
+        from member
+        where name = #{name} and
+              phone_number = #{phone_number}
+    </select>
+
+    <select id="findPw" resultType="String">
+        select password
         from member
         where member_id = #{member_id} and
               name = #{name} and

@@ -5,8 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ChangePwDto {
-    private String member_id;
+public class UpdateMemberDto {
     private String name;
+    private String password;
     private String phone_number;
 }

@@ -1,14 +1,14 @@
 package com.frombusan.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
+import com.frombusan.dto.request.FindIdDto;
+import com.frombusan.dto.request.FindPwDto;
+import com.frombusan.dto.request.UpdateMemberDto;
 import com.frombusan.service.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -18,12 +18,10 @@ import com.frombusan.model.course.Course;
 import com.frombusan.model.festival.Festival;
 import com.frombusan.model.member.LoginForm;
 import com.frombusan.model.member.Member;
-import com.frombusan.model.member.findIdForm;
 import com.frombusan.model.tourist.Tourist_Spot;
 import com.frombusan.repository.CourseMapper;
 import com.frombusan.repository.FestivalMapper;
 import com.frombusan.repository.MemberMapper;
-import com.frombusan.repository.ReviewMapper;
 import com.frombusan.repository.TouristMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -41,46 +39,31 @@ public class MemberController {
 	private final TouristMapper touristMapper;
 	private final CourseMapper courseMapper;
 
+	//아이디 중복확인
 	@GetMapping("idCheck/{id}")
 	public ResponseEntity<Boolean> idCheck(@PathVariable(value = "id") String memberId) {
 		boolean result = memberService.idCheck(memberId);
 		return ResponseEntity.ok(result);
 	}
 
-	//id*비번찾기(위한 정보)
-//	@PostMapping("")
-//	public ResponseEntity<List<findIdForm>> findIdOrPassword(
-//	) {
-//		List<findIdForm> findIdOrPassword = memberMapper.findIdOrPassword();
-//		return ResponseEntity.ok(findIdOrPassword);
-//	}
+	//아이디 찾기
+	@GetMapping("findId")
+	public ResponseEntity<String> findId(@RequestBody FindIdDto findIdDto) {
+		String result = memberService.findId(findIdDto);
+		return ResponseEntity.ok(result);
+	}
 
-	//비번 변경
-	@PostMapping("changePassword")
-	public ResponseEntity<String> changePassword2(@RequestParam("member_id") String member_id
-			,@RequestParam("password")String password, Model model ) {
-
-		log.info("member_id:{}",member_id);
-		// 사용자가 입력한 이이디에 해당하는 Member 정보를 데이터베이스에서 가져온다.
-		Member member = memberMapper.findMember(member_id);
-		member.setPassword(password);
-		memberMapper.updateMember(member);
-
-		return ResponseEntity.ok("변경성공");
+	//비밀번호 찾기
+	@PostMapping("findPw")
+	public ResponseEntity<String> findPw(@RequestBody FindPwDto findPwDto){
+		String result = memberService.findPw(findPwDto);
+		return ResponseEntity.ok(result);
 	}
 
 	@PostMapping("updateMember")
-	public ResponseEntity<String> updateMember2(Model model
-			,@RequestParam String name, @RequestParam String password, @RequestParam String phone_number
-			,@SessionAttribute(value = "loginMember", required = false) Member loginMember) {
-
-
-		loginMember.setPassword(password);
-		loginMember.setName(name);
-		loginMember.setPhone_number(phone_number);
-
-		memberMapper.updateMember(loginMember);
-
+	public ResponseEntity<String> updateMember(@RequestBody UpdateMemberDto updateMemberDto,
+							@SessionAttribute(value = "loginMember") Member loginMember) {
+		memberService.updateMember(updateMemberDto,loginMember);
 		return ResponseEntity.ok("변경성공");
 	}
 
