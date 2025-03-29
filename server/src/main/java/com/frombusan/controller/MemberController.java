@@ -48,12 +48,12 @@ public class MemberController {
 	}
 
 	//id*비번찾기(위한 정보)
-	@PostMapping("")
-	public ResponseEntity<List<findIdForm>> findIdOrPassword(
-	) {
-		List<findIdForm> findIdOrPassword = memberMapper.findIdOrPassword();
-		return ResponseEntity.ok(findIdOrPassword);
-	}
+//	@PostMapping("")
+//	public ResponseEntity<List<findIdForm>> findIdOrPassword(
+//	) {
+//		List<findIdForm> findIdOrPassword = memberMapper.findIdOrPassword();
+//		return ResponseEntity.ok(findIdOrPassword);
+//	}
 
 	//비번 변경
 	@PostMapping("changePassword")
