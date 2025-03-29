@@ -80,7 +80,7 @@
 		)
 	</insert>
 
-	<select id="findTouristSpotLike" >
+	<select id="findTouristSpotLike" resultType="touristSpotLikes">
 		SELECT like_id,member_id,tourist_spot_id
 		FROM tourist_spot_likes
 		WHERE tourist_spot_id = #{tourist_spot_id}

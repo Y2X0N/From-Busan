@@ -10,13 +10,17 @@ import com.frombusan.model.member.findIdForm;
 
 @Mapper
 public interface MemberMapper {
+    // 회원가입
     void saveMember(Member member);
+
     Member findMember(String member_id);
+
     List<String> findAllMemberId();
     
-    List<findIdForm> findIdOrPassword();
+    //List<findIdForm> findIdOrPassword();
     
     void updateMember(Member updateMember);
-	//idcheck
-    int idCheck(String member_id);
+
+    // 아이디 중복확인
+    boolean idCheck(String member_id);
 }
