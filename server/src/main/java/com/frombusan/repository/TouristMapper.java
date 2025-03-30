@@ -47,7 +47,7 @@ public interface TouristMapper {
 	void deleteMyList(Object wishboard_id);
 
 	//찜 목록
-	List<Map<String, Object>> findMyListByMemberId(String member_id);
+	List<Tourist_Spot> findMyWishlistByMemberId(String member_id);
 
 	void addHit(Tourist_Spot tourist_Spot);
 

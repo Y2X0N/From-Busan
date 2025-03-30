@@ -16,8 +16,6 @@ public interface MemberMapper {
 
     Member findMember(String member_id);
 
-    List<String> findAllMemberId();
-
     // 아이디 중복확인
     boolean idCheck(String member_id);
 
