@@ -4,7 +4,9 @@ import com.frombusan.dto.request.FindIdDto;
 import com.frombusan.dto.request.FindPwDto;
 import com.frombusan.dto.request.UpdateMemberDto;
 import com.frombusan.dto.response.MyWishlist;
+import com.frombusan.model.festival.Festival;
 import com.frombusan.model.member.Member;
+import com.frombusan.model.tourist.Tourist_Spot;
 import com.frombusan.repository.FestivalMapper;
 import com.frombusan.repository.MemberMapper;
 import com.frombusan.repository.TouristMapper;
@@ -13,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -49,8 +53,13 @@ public class MemberService {
         memberMapper.updateMember(loginMember);
     }
 
-//    @Transactional()
-//    public MyWishlist getMyWishList(Member loginMember) {
-//        touristMapper
-//    }
+    @Transactional(readOnly = true)
+    public MyWishlist getMyWishList(Member loginMember) {
+        List<Tourist_Spot> findMyTouristSpotWishlist = touristMapper.findMyWishlistByMemberId(loginMember.getMember_id());
+        List<Festival> findMyFestivalWishlist = festivalMapper.findMyWishlistByMemberId(loginMember.getMember_id());
+        MyWishlist myWishlist = new MyWishlist();
+        myWishlist.setTouristSpotList(findMyTouristSpotWishlist);
+        myWishlist.setFestivalList(findMyFestivalWishlist);
+        return myWishlist;
+    }
 }

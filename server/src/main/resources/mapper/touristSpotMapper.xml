@@ -113,8 +113,9 @@
 		delete from wish_list where wishboard_id = #{wishboard_id}
 	</delete>
 
+	<!--명소찜목록-->
 	<select id="findMyWishlistByMemberId" resultType="tourist">
-		select *
+		select itemcntnts,tourist_spot_id,place_like,main_img_normal,main_title, hit
 		from wish_list
 		inner join tourist_Spot
 		on wish_list.tourist_Spot_id = tourist_Spot.tourist_Spot_id

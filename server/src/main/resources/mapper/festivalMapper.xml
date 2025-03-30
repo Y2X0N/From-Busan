@@ -3,15 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.frombusan.repository.FestivalMapper">
-    
 
-    
      <select id="findFestival" resultType="festival">
         select * from festival where festival_id=#{festival_id}
     </select>
-    
-    
-    
+
     <select id="findAllFestival" resultMap="festivalResultMap">
         select itemcntnts,festival_id,place_like,main_img_normal,main_title,hit 
         from festival 
@@ -43,11 +39,7 @@
             where main_title like '%' || #{searchText} || '%'
         </if>
     </select>
-    
-    
-    
-     <!-- ///////////////////////////////////////////////////////////////////////////////// -->
-    
+
     <update id="updateFestival">
         update festival
         <set>
@@ -113,13 +105,14 @@
     <delete id="deleteMyList">
         delete from wish_list_fes where wishboard_id = #{wishboard_id} 
     </delete>
-    
-    
-        
- <!-- /////////////////찜 목록//////////////////////////////////////////////////////////////// -->
 
-	 <select id="findMyListByMemberId" resultType="map">
-        select festival_id from wish_list_fes where member_id=#{member_id}
+    <!--명소찜목록-->
+    <select id="findMyWishlistByMemberId" resultType="festival">
+        select itemcntnts,festival_id,place_like,main_img_normal,main_title,hit
+        from wish_list_fes
+        inner join festival
+        on wish_list_fes.festival_id = tourist_Spot.festival_id
+        where wish_list_fes.member_id = #{member_id}
     </select>
     
     

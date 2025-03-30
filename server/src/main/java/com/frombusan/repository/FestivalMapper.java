@@ -48,7 +48,6 @@ public interface FestivalMapper {
 	//테이블 다른걸로!
 	void deleteMyList(Object wishboard_id);
 
-	List<Map<String, Object>> findMyListByMemberId(String member_id);
-
+	List<Festival> findMyWishlistByMemberId(String member_id);
 
 }
