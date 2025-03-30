@@ -94,14 +94,6 @@
 		AND member_id = #{member_id}
 	</select>
 
-
-	<select id="findTouristSpotLike" resultType="touristSpotLikes">
-		SELECT like_id,member_id,tourist_spot_id
-		FROM tourist_spot_likes
-		WHERE tourist_Spot_id = #{tourist_Spot_id}
-		AND member_id = #{member_id}
-	</select>
-
 	<delete id="deleteLike">
 		delete from tourist_spot_likes where like_id = #{like_id}
 	</delete>
@@ -121,9 +113,12 @@
 		delete from wish_list where wishboard_id = #{wishboard_id}
 	</delete>
 
-	<!-- /////////////////찜 목록//////////////////////////////////////////////////////////////// -->
-	<select id="findMyListByMemberId" resultType="map">
-		select tourist_Spot_id from wish_list where member_id=#{member_id}
+	<select id="findMyWishlistByMemberId" resultType="tourist">
+		select *
+		from wish_list
+		inner join tourist_Spot
+		on wish_list.tourist_Spot_id = tourist_Spot.tourist_Spot_id
+		where wish_list.member_id = #{member_id}
 	</select>
 	
 	 <update id="addHit">
