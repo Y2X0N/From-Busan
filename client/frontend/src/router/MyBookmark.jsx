@@ -9,7 +9,7 @@ function MyBookmark() {
 
   return (
     <>
-      <div className={classes.contentsContainer}>
+      <div className={classes.container}>
         <div className={classes.pageTitle}>
           <div>
             <h2>{user.member_id}님의 찜목록</h2>
@@ -30,134 +30,131 @@ function MyBookmark() {
             축제
           </span>
         </nav>
-
-        <div className={classes.detailBodyContainer}>
-          {showList === "touristSpot" && (
-            <>
-              <div className={classes.ContentsContainer}>
-                {mockTouristSpot.map((data) => (
-                  <div
-                    className={classes.card}
-                    style={{ color: "#009688" }}
-                    key={Object.values(data)[0]}
-                  >
-                    <div className={classes.imgBx}>
-                      <img src={data.main_img_normal} />
-                    </div>
-                    <div className={classes.content}>
-                      <h2>{data.main_title}</h2>
-                      <p>
-                        {data.itemcntnts.length > 50
-                          ? data.itemcntnts.substring(0, 50) + "..."
-                          : data.itemcntnts}
-                      </p>
-
-                      <div className={classes.listItem}>
-                        <div>
-                          <i
-                            class="far fa-heart testHeart"
-                            style={{
-                              color: "#da202c",
-                              fontSize: "20px",
-                              marginRight: "4px",
-                            }}
-                            title="like"
-                          ></i>
-                          <span style={{ fontSize: "20px", color: "black" }}>
-                            {data.place_like}
-                          </span>
-                        </div>
-                        <div>
-                          <i
-                            class="fas fa-eye"
-                            style={{ fontSize: "20px", marginRight: "4px" }}
-                            title="hits"
-                          ></i>
-                          <span style={{ fontSize: "20px", color: "black" }}>
-                            {data.hit}
-                          </span>
-                        </div>
-                      </div>
-                      <Link
-                        className={classes.link}
-                        to={`/tourist/${Object.values(data)[0]}`}
-                      >
-                        상세보기
-                      </Link>
-                    </div>
+        {showList === "touristSpot" && (
+          <>
+            <div className={classes.ContentsContainer}>
+              {mockTouristSpot.map((data) => (
+                <div
+                  className={classes.card}
+                  style={{ color: "#009688" }}
+                  key={Object.values(data)[0]}
+                >
+                  <div className={classes.imgBx}>
+                    <img src={data.main_img_normal} />
                   </div>
-                ))}
+                  <div className={classes.content}>
+                    <h2>{data.main_title}</h2>
+                    <p>
+                      {data.itemcntnts.length > 50
+                        ? data.itemcntnts.substring(0, 50) + "..."
+                        : data.itemcntnts}
+                    </p>
 
-                {mockTouristSpot.length === 0 && (
-                  <span className={classes.color}>찜 한 명소가 없습니다</span>
-                )}
-              </div>
-            </>
-          )}
-
-          {showList === "festival" && (
-            <>
-              <div className={classes.ContentsContainer}>
-                {mockFestival.map((data) => (
-                  <div
-                    className={classes.card}
-                    style={{ color: "#009688" }}
-                    key={Object.values(data)[0]}
-                  >
-                    <div className={classes.imgBx}>
-                      <img src={data.main_img_normal} />
-                    </div>
-                    <div className={classes.content}>
-                      <h2>{data.main_title}</h2>
-                      <p>
-                        {data.itemcntnts.length > 50
-                          ? data.itemcntnts.substring(0, 50) + "..."
-                          : data.itemcntnts}
-                      </p>
-
-                      <div className={classes.listItem}>
-                        <div>
-                          <i
-                            class="far fa-heart testHeart"
-                            style={{
-                              color: "#da202c",
-                              fontSize: "20px",
-                              marginRight: "4px",
-                            }}
-                            title="like"
-                          ></i>
-                          <span style={{ fontSize: "20px", color: "black" }}>
-                            {data.place_like}
-                          </span>
-                        </div>
-                        <div>
-                          <i
-                            class="fas fa-eye"
-                            style={{ fontSize: "20px", marginRight: "4px" }}
-                            title="hits"
-                          ></i>
-                          <span style={{ fontSize: "20px", color: "black" }}>
-                            {data.hit}
-                          </span>
-                        </div>
+                    <div className={classes.listItem}>
+                      <div>
+                        <i
+                          class="far fa-heart testHeart"
+                          style={{
+                            color: "#da202c",
+                            fontSize: "20px",
+                            marginRight: "4px",
+                          }}
+                          title="like"
+                        ></i>
+                        <span style={{ fontSize: "20px", color: "black" }}>
+                          {data.place_like}
+                        </span>
                       </div>
-                      <Link
-                        className={classes.link}
-                        to={`/festival/${Object.values(data)[0]}`}
-                      >
-                        상세보기
-                      </Link>
+                      <div>
+                        <i
+                          class="fas fa-eye"
+                          style={{ fontSize: "20px", marginRight: "4px" }}
+                          title="hits"
+                        ></i>
+                        <span style={{ fontSize: "20px", color: "black" }}>
+                          {data.hit}
+                        </span>
+                      </div>
                     </div>
+                    <Link
+                      className={classes.link}
+                      to={`/tourist/${Object.values(data)[0]}`}
+                    >
+                      상세보기
+                    </Link>
                   </div>
-                ))}
+                </div>
+              ))}
+            </div>
+            <div className={classes.noContent}>
+              {mockTouristSpot.length === 0 && (
+                <span>찜 한 명소가 없습니다</span>
+              )}
+            </div>
+          </>
+        )}
 
-                {mockFestival.length === 0 && (
-                  <span className={classes.color}>찜 한 축제가 없습니다</span>
-                )}
-              </div>
-            </>
-          )}
-        </div>
+        {showList === "festival" && (
+          <>
+            <div className={classes.ContentsContainer}>
+              {mockFestival.map((data) => (
+                <div
+                  className={classes.card}
+                  style={{ color: "#009688" }}
+                  key={Object.values(data)[0]}
+                >
+                  <div className={classes.imgBx}>
+                    <img src={data.main_img_normal} />
+                  </div>
+                  <div className={classes.content}>
+                    <h2>{data.main_title}</h2>
+                    <p>
+                      {data.itemcntnts.length > 50
+                        ? data.itemcntnts.substring(0, 50) + "..."
+                        : data.itemcntnts}
+                    </p>
+
+                    <div className={classes.listItem}>
+                      <div>
+                        <i
+                          class="far fa-heart testHeart"
+                          style={{
+                            color: "#da202c",
+                            fontSize: "20px",
+                            marginRight: "4px",
+                          }}
+                          title="like"
+                        ></i>
+                        <span style={{ fontSize: "20px", color: "black" }}>
+                          {data.place_like}
+                        </span>
+                      </div>
+                      <div>
+                        <i
+                          class="fas fa-eye"
+                          style={{ fontSize: "20px", marginRight: "4px" }}
+                          title="hits"
+                        ></i>
+                        <span style={{ fontSize: "20px", color: "black" }}>
+                          {data.hit}
+                        </span>
+                      </div>
+                    </div>
+                    <Link
+                      className={classes.link}
+                      to={`/festival/${Object.values(data)[0]}`}
+                    >
+                      상세보기
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className={classes.noContent}>
+              {mockFestival.length === 0 && <span>찜 한 축제가 없습니다</span>}
+            </div>
+          </>
+        )}
       </div>
     </>
   );

@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         element: <Login />,
         children: [
           {
-            path: "/member/login/check",
+            path: "/member/login/:path",
             element: <ModalContents />,
           },
         ],

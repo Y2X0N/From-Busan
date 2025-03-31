@@ -149,7 +149,7 @@ function Review() {
 
               {true && (
                 <tr th:if="${reviews.empty}">
-                  <td class="color" colspan="6">
+                  <td class="color" colSpan="6">
                     리뷰가 없습니다
                   </td>
                 </tr>

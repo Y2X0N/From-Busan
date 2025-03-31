@@ -1,13 +1,29 @@
+.container {
+  margin: 0 auto;
+  width: 1400px;
+}
 .detailContainer {
   width: 1200px;
   margin: auto;
   text-align: center;
 }
 
+.pageTitle {
+  font-size: 50px;
+  margin-top: 8vh;
+}
+
+.pageTitle h2 {
+  font-size: 35px;
+  color: #6e6e6e;
+  font-weight: 400;
+  text-align: center;
+}
+
 .titleContainer {
   width: 100%;
   height: 5vh;
-  margin-top: 10vh;
+  margin-top: 8vh;
   text-align: center;
 }
 
@@ -89,16 +105,6 @@
     transform: scale(1);
   }
 }
-
-/* active일때 처리하기 */
-/* .icon.heart.fas {
-      color: red
-    }
-  
-    .icon.wish.fas {
-      color: rgb(255, 242, 0)
-    } */
-
 .detailExplain {
   border: none;
   width: 80%;
@@ -172,13 +178,10 @@
 }
 
 .ContentsContainer {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 100px 50px;
-  padding: 100px 50px;
+  padding: 8vh 50px;
 }
 .ContentsContainer .card {
   position: relative;
@@ -261,4 +264,7 @@
   margin-top: 15px;
   margin-left: 10px;
   gap: 10px;
+}
+.noContent {
+  text-align: center;
 }
