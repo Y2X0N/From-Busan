@@ -16,54 +16,45 @@ function MyReviewPage() {
         <table className={classes.reviewTable}>
           <thead>
             <tr className={classes.mainTitle}>
-              <th>번호</th>
-              <th>장소</th>
-              <th>제목</th>
-              <th>글쓴이</th>
-              <th>날짜</th>
-              <th>좋아요</th>
-              <th>조회수</th>
+              <th scope="col" className={classes.th1}>
+                번호
+              </th>
+              <th scope="col" className={classes.th2}>
+                장소
+              </th>
+              <th scope="col" className={classes.th4}>
+                제목
+              </th>
+              <th scope="col" className={classes.th3}>
+                글쓴이
+              </th>
+              <th scope="col" className={classes.th2}>
+                날짜
+              </th>
+              <th scope="col" className={classes.th1}>
+                좋아요
+              </th>
+              <th scope="col" className={classes.th1}>
+                조회수
+              </th>
             </tr>
           </thead>
           <tbody>
-            {false && (
-              <>
-                <tr
-                  th:if="${reviews}"
-                  th:each="review, reviewsStat: ${reviews}"
-                >
-                  <td class="color" th:text="${reviewsStat.count}"></td>
-                  <td
-                    class="color"
-                    th:text="${review.review_place}"
-                    id="review_place"
-                    th:data-original="${review.review_place}"
-                  ></td>
-                  <th>
-                    <a
-                      th:text="${review.title}"
-                      th:data-original="${review.title}"
-                      id="title"
-                      th:href="@{/review/read(review_id=${review.review_id})}"
-                    ></a>
-                  </th>
-                  <td th:text="${review.member_id}" class="center"></td>
-                  <td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
-                  <td th:text="${review.hit}"></td>
-                </tr>
-                <tr th:if="${reviews.empty}">
-                  <td class="color" colSpan="6">
-                    [[#{alert.noreviews}]]
-                  </td>
-                </tr>
-              </>
-            )}
+            <tr>
+              <td>1</td>
+              <td>대공원</td>
+              <td>대공원제목</td>
+              <td>
+                <a>naver</a>
+              </td>
+              <td>오늘</td>
+              <td>1</td>
+              <td>1</td>
+            </tr>
 
-            {true && (
-              <tr>
-                <td colSpan="10">리뷰가 없습니다</td>
-              </tr>
-            )}
+            <tr>
+              <td colSpan="10">리뷰가 없습니다</td>
+            </tr>
           </tbody>
         </table>
       </div>

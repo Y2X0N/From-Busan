@@ -16,8 +16,6 @@ function ContentDetail({ data, isFavorite, isWishList }) {
   const [showDetail, setShowDetail] = useState("detailInfo");
   const [isFavoriteStat, setIsFavoriteStat] = useState(isFavorite);
   const [isWishListStat, setIsWishListStat] = useState(isWishList);
-  console.log(isFavorite);
-  console.log(isFavoriteStat);
 
   useEffect(() => {
     setIsFavoriteStat(isFavorite);
@@ -38,8 +36,8 @@ function ContentDetail({ data, isFavorite, isWishList }) {
         credentials: "include",
       }
     );
-    console.log(response);
-    setIsFavoriteStat(response.isFavorite);
+    const resData = await response.json();
+    setIsFavoriteStat(resData.favorite);
   }
   async function handleIsWishList() {
     const response = await fetch(
@@ -52,8 +50,8 @@ function ContentDetail({ data, isFavorite, isWishList }) {
         credentials: "include",
       }
     );
-    console.log(response);
-    setIsWishListStat(response.isWishList);
+    const resData = await response.json();
+    setIsWishListStat(resData.wishList);
   }
 
   return (

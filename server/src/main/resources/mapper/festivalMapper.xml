@@ -3,15 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.frombusan.repository.FestivalMapper">
-    
 
-    
      <select id="findFestival" resultType="festival">
         select * from festival where festival_id=#{festival_id}
     </select>
-    
-    
-    
+
     <select id="findAllFestival" resultMap="festivalResultMap">
         select itemcntnts,festival_id,place_like,main_img_normal,main_title,hit 
         from festival 
@@ -120,6 +116,18 @@
 
 	 <select id="findMyListByMemberId" resultType="map">
         select festival_id from wish_list_fes where member_id=#{member_id}
+    </select>
+
+    <select id="checkMemberLikeStatus" resultType="boolean">
+        SELECT CASE
+        WHEN EXISTS (
+        SELECT 1 FROM festival_likes
+        WHERE festival_id = #{festival_id}
+        AND member_id = #{member_id}
+        )
+        THEN TRUE
+        ELSE FALSE
+        END AS isFavorite
     </select>
     
     
