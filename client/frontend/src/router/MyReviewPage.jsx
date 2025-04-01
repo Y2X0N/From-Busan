@@ -52,7 +52,7 @@ function MyReviewPage() {
                   <td th:text="${review.hit}"></td>
                 </tr>
                 <tr th:if="${reviews.empty}">
-                  <td class="color" colspan="6">
+                  <td class="color" colSpan="6">
                     [[#{alert.noreviews}]]
                   </td>
                 </tr>
@@ -61,7 +61,7 @@ function MyReviewPage() {
 
             {true && (
               <tr>
-                <td colspan="10">리뷰가 없습니다</td>
+                <td colSpan="10">리뷰가 없습니다</td>
               </tr>
             )}
           </tbody>

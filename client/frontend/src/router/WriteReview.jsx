@@ -1,85 +1,67 @@
+import { ReactSummernoteLite } from "@easylogic/react-summernote-lite";
+import { Form, useNavigate } from "react-router-dom";
 import classes from "./WriteReview.module.css";
 
 function WriteReview() {
-  return (
-    <div class="write-container">
-      <form
-        action="write"
-        method="post"
-        enctype="multipart/form-data"
-        th:object="${writeForm}"
-      >
-        <div class="write-header">
-          리뷰쓰기
-          <span>
-            <input
-              class="write-btn"
-              type="button"
-              onclick="location.href='/review/list'"
-              data-value="#{alert.onlist}"
-              th:value="#{alert.onlist}"
-            />
-            <input
-              class="write-btn"
-              type="submit"
-              data-value="#{alert.Registration}"
-              th:value="#{alert.Registration}"
-            />
-            <input
-              class="write-btn"
-              type="reset"
-              data-value="#{alert.cancel}"
-              th:value="#{alert.cancel}"
-            />
-          </span>
-        </div>
-        <table class="write-table">
-          <th>리뷰장소</th>
-          <td>
-            <input
-              type="text"
-              list="searchOptions"
-              th:field="*{review_place}"
-              style={{ width: "600px" }}
-            />
-            <datalist id="searchOptions">
-              <option th:each="main_title : ${findAllName}">
-                <span
-                  th:text="${main_title}"
-                  id="main_title"
-                  th:data-original="${main_title}"
-                ></span>
-              </option>
-            </datalist>
-            <div
-              class="error"
-              th:if="${#fields.hasErrors('review_place')}"
-              th:errors="*{review_place}"
-            ></div>
-            <div
-              class="error"
-              th:if="${placeError != null}"
-              th:text="${placeError}"
-            ></div>
-          </td>
+  const navi = useNavigate();
 
-          <tr>
-            <th>제목</th>
-            <td>
-              <input
-                type="text"
-                th:field="*{title}"
-                style={{ width: "600px" }}
-              />
-              <div class="error" th:errors="*{title}"></div>
-            </td>
-          </tr>
-        </table>
-        <div class="error" th:errors="*{contents}"></div>
-        <div id="summer-box">
-          <textarea id="summernote" name="contents"></textarea>
+  function handleReturn() {
+    navi("../review");
+  }
+
+  return (
+    <div className={classes.writeContainer}>
+      <Form method="post">
+        <div className={classes.writeHeader}>
+          <span>리뷰쓰기</span>
+          <div className={classes.writeBtnContainer}>
+            <input
+              className={classes.writeBtn}
+              type="button"
+              value="목록으로"
+              onClick={handleReturn}
+            />
+            <input className={classes.writeBtn} type="submit" value="등록" />
+            <input className={classes.writeBtn} type="reset" value="취소" />
+          </div>
         </div>
-      </form>
+        <table className={classes.writeTable}>
+          <tbody>
+            <tr>
+              <th>리뷰장소</th>
+              <td>
+                <input
+                  type="text"
+                  list="searchOptions"
+                  style={{ width: "600px" }}
+                />
+                <datalist id="searchOptions">
+                  <option value="하라주쿠"></option>
+                  <option value="신주쿠"></option>
+                </datalist>
+                <div class="error">에러표시장소</div>
+                <div class="error">에러표시장소</div>
+              </td>
+            </tr>
+
+            <tr>
+              <th>제목</th>
+              <td>
+                <input type="text" style={{ width: "600px" }} />
+                <div class="error">에러표시장소</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="error">에러표시장소</div>
+        <div id="summer-box">
+          <ReactSummernoteLite
+            id="sample"
+            height="500px"
+            placeholder="내용을 입력해주세요"
+          />
+        </div>
+      </Form>
     </div>
   );
 }

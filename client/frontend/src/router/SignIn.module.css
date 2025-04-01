@@ -65,6 +65,7 @@ td {
   text-align: right;
   font-weight: bold;
   font-size: 0.85em;
+  width: 9vw;
 }
 .secondTd {
   text-align: left;
@@ -73,7 +74,17 @@ td {
 
 .error {
   font-size: 11px;
-  color: light-gray;
+  color: red;
+}
+.notice {
+  font-size: 11px;
+  color: black;
+}
+
+.inputError {
+  border: 2px solid red;
+  outline: none;
+  background-color: rgba(232, 30, 30, 0.1);
 }
 
 .btnContainer {
