@@ -22,7 +22,7 @@ public interface FestivalMapper {
 	int getTotal(String searchText);
 	List<Festival> findAllFestival(String searchText,RowBounds rowBounds);
 	//좋아요유무
-	Boolean checkMemberLikeStatus(@Param("festival_Id")Long festival_Id, @Param("member_Id")String memberId);
+	Boolean checkMemberLikeStatus(@Param("festival_Id")Long festivalId, @Param("member_Id")String memberId);
 	//찜유무
 	Boolean checkMemberWishListStatus(@Param("festival_Id")Long festival_Id, @Param("member_Id")String memberId);
 

@@ -49,14 +49,14 @@ function Login() {
               type="button"
               value="아이디 찾기"
               onClick={() => {
-                navi("./checkid");
+                navi("./findId");
               }}
             />
             <input
               type="button"
               value="비밀번호 찾기"
               onClick={() => {
-                navi("./checkpassword");
+                navi("./findPassword");
               }}
             />
           </div>

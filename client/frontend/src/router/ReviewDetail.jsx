@@ -1,19 +1,18 @@
+import classes from "./ReviewDetail.module.css";
 import { ReactSummernoteLite } from "@easylogic/react-summernote-lite";
 import { Form, useNavigate } from "react-router-dom";
-import classes from "./WriteReview.module.css";
 
-function WriteReview() {
+function ReviewDetail() {
   const navi = useNavigate();
 
   function handleReturn() {
     navi("../review");
   }
-
   return (
     <div className={classes.writeContainer}>
       <Form method="post">
         <div className={classes.writeHeader}>
-          <span>리뷰쓰기</span>
+          <span>제목</span>
           <div className={classes.writeBtnContainer}>
             <input
               className={classes.writeBtn}
@@ -21,8 +20,6 @@ function WriteReview() {
               value="목록으로"
               onClick={handleReturn}
             />
-            <input className={classes.writeBtn} type="submit" value="등록" />
-            <input className={classes.writeBtn} type="reset" value="취소" />
           </div>
         </div>
         <table className={classes.writeTable}>
@@ -59,9 +56,6 @@ function WriteReview() {
             id="sample"
             height="500px"
             placeholder="내용을 입력해주세요"
-            onInit={({ note }) => {
-              note.summernote("justifyLeft");
-            }}
           />
         </div>
       </Form>
@@ -69,4 +63,4 @@ function WriteReview() {
   );
 }
 
-export default WriteReview;
+export default ReviewDetail;

@@ -114,6 +114,18 @@
         on wish_list_fes.festival_id = tourist_Spot.festival_id
         where wish_list_fes.member_id = #{member_id}
     </select>
+
+    <select id="checkMemberLikeStatus" resultType="boolean">
+        SELECT CASE
+        WHEN EXISTS (
+        SELECT 1 FROM festival_likes
+        WHERE festival_id = #{festival_id}
+        AND member_id = #{member_id}
+        )
+        THEN TRUE
+        ELSE FALSE
+        END AS isFavorite
+    </select>
     
     
 </mapper>

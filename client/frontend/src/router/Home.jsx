@@ -12,7 +12,6 @@ import { useLoaderData } from "react-router-dom";
 export async function loader() {
   const response = await fetch("http://localhost:9000");
   const reqdata = await response.json();
-  console.log(reqdata);
   return reqdata;
 }
 
@@ -151,21 +150,10 @@ function Home() {
             </div>
           </div>
           <div className={classes.map}>
-            <APIProvider
-              apiKey={"AIzaSyALFwCG2TvwNdzJ7yJFWyGTfYn8fmrAhhE"}
-              onLoad={() => console.log("Maps API has loaded.")}
-            >
+            <APIProvider apiKey={"AIzaSyALFwCG2TvwNdzJ7yJFWyGTfYn8fmrAhhE"}>
               <Map
                 defaultZoom={12}
                 defaultCenter={{ lat: 35.15, lng: 129.0756416 }}
-                onCameraChanged={(ev) =>
-                  console.log(
-                    "camera changed:",
-                    ev.detail.center,
-                    "zoom:",
-                    ev.detail.zoom
-                  )
-                }
               ></Map>
               {showDirections && <Directions from={from} to={to} mode={mode} />}
             </APIProvider>

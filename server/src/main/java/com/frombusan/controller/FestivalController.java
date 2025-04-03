@@ -37,6 +37,25 @@ public class FestivalController {
 		}
 	}
 
+	@GetMapping("/{id}/like")
+	public ResponseEntity<Boolean> toggleLike(@PathVariable(value ="id") Long festivalId, @SessionAttribute(value="loginMember", required=true) Member loginMember) {
+		try {
+			boolean result = festivalService.toggleLike(festivalId, loginMember);
+			return ResponseEntity.ok(result);
+		} catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GetMapping("/{id}/wishlist")
+	public ResponseEntity<Boolean> toggleWishList(@PathVariable(value ="id") Long festivalId, @SessionAttribute(value="loginMember", required=true) Member loginMember) {
+		try {
+			boolean result = festivalService.toggleWishlist(festivalId, loginMember);
+			return ResponseEntity.ok(result);
+		} catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
 	//좋아요 기능
 //	 	@PostMapping("/like")
 //		public ResponseEntity<Festival> likeTouristSpot(@RequestParam("festivalId") Long festival_id

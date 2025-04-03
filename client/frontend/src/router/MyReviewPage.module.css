@@ -31,30 +31,24 @@
 }
 
 .reviewTable th {
-  font-size: 15px;
+  font-size: 13px;
   text-align: center;
 }
 
-.mainTitle th:nth-child(1) {
-  width: 8%;
+.th1 {
+  width: 5%;
 }
-.mainTitle th:nth-child(2) {
-  width: 12%;
+
+.th2 {
+  width: 12.5%;
 }
-.mainTitle th:nth-child(3) {
-  width: 40%;
+
+.th3 {
+  width: 10%;
 }
-.mainTitle th:nth-child(4) {
-  width: 12%;
-}
-.mainTitle th:nth-child(5) {
-  width: 12%;
-}
-.mainTitle th:nth-child(6) {
-  width: 8%;
-}
-.mainTitle th:nth-child(7) {
-  width: 8%;
+
+.th4 {
+  width: 50%;
 }
 
 .reviewTable th,

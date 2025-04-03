@@ -6,9 +6,21 @@ import { useState } from "react";
 
 function ModalContents() {
   const { path } = useParams();
-  const title = path === "checkid" ? "아이디 찾기" : "비밀번호 찾기";
   const [findItem, setFindItem] = useState(null);
   const [findItemError, setFindItemError] = useState(false);
+  let title = "";
+
+  switch (path) {
+    case "findId":
+      title = "아이디 찾기";
+      break;
+    case "findPassword":
+      title = "비밀번호 찾기";
+      break;
+    case "checkPassword":
+      title = "비밀번호 재확인";
+      break;
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -118,7 +130,25 @@ function ModalContents() {
                 </>
               )}
 
-              <div id="countdown"></div>
+              {title === "비밀번호 재확인" && (
+                <>
+                  <div className={classes.loginInfoContainer}>
+                    <input
+                      type="text"
+                      placeholder="아이디를 입력해주세요"
+                      name="member_id"
+                    />
+                    <input
+                      type="text"
+                      placeholder="비밀번호를 입력해주세요"
+                      name="password"
+                    />
+                  </div>
+                  <div className={classes.loginInfoSubmit}>
+                    <input type="submit" value="정보변경으로" />
+                  </div>
+                </>
+              )}
             </Form>
           </div>
         </div>

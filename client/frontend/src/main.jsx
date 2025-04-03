@@ -17,6 +17,7 @@ import AuthProvider from "./AuthProvider.jsx";
 import MyReviewPage from "./router/MyReviewPage.jsx";
 import MyBookmark from "./router/MyBookmark.jsx";
 import WriteReview from "./router/WriteReview.jsx";
+import ReviewDetail from "./router/ReviewDetail.jsx";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,12 @@ const router = createBrowserRouter([
       {
         path: "/member/myPage",
         element: <MyPage />,
+        children: [
+          {
+            path: "/member/myPage/:path",
+            element: <ModalContents />,
+          },
+        ],
       },
       {
         path: "/member/myPage/myreview",
@@ -78,6 +85,10 @@ const router = createBrowserRouter([
       {
         path: "/review",
         element: <Review />,
+      },
+      {
+        path: "/review/:id",
+        element: <ReviewDetail />,
       },
       {
         path: "/review/write",

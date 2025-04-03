@@ -62,6 +62,38 @@ public class FestivalService {
         }
     }
 
+    @Transactional
+    public Boolean toggleLike(Long festivalId, Member loginMember) {
+
+        if(!checkLoginMember(loginMember)){
+            throw new RuntimeException();
+        }
+
+        Festival findedFestival = festivalMapper.findFestival(festivalId);
+
+        if(findedFestival == null) {
+            throw new RuntimeException();
+        }
+
+        boolean isFavorite = festivalMapper.checkMemberLikeStatus(festivalId, loginMember.getMember_id());
+
+        if(isFavorite) {
+
+        } else {
+
+        }
+
+
+        return false;
+    }
+
+    @Transactional
+    public Boolean toggleWishlist(Long festivalId, Member loginMember) {
+
+        return false;
+    }
+
+
     private List<Festival> findFestivals(String searchText, int startRecord, int countPerPage) {
         // 전체 검색 결과 중 시작 위치와 갯수
         RowBounds rowBounds = new RowBounds(startRecord, countPerPage);
