@@ -37,17 +37,18 @@ public class FestivalController {
 		}
 	}
 
-	@GetMapping("/{id}/like")
+	@PostMapping("/{id}/like")
 	public ResponseEntity<Boolean> toggleLike(@PathVariable(value ="id") Long festivalId, @SessionAttribute(value="loginMember", required=true) Member loginMember) {
 		try {
 			boolean result = festivalService.toggleLike(festivalId, loginMember);
+			log.info("{}",ResponseEntity.ok(result));
 			return ResponseEntity.ok(result);
 		} catch(Exception e){
 			throw new RuntimeException(e);
 		}
 	}
 
-	@GetMapping("/{id}/wishlist")
+	@PostMapping("/{id}/wishlist")
 	public ResponseEntity<Boolean> toggleWishList(@PathVariable(value ="id") Long festivalId, @SessionAttribute(value="loginMember", required=true) Member loginMember) {
 		try {
 			boolean result = festivalService.toggleWishlist(festivalId, loginMember);

@@ -1,4 +1,4 @@
-import { Form, Link, useParams } from "react-router-dom";
+import { Form, Link, useNavigate, useParams } from "react-router-dom";
 import Modal from "./Modal";
 import classes from "./ModalContents.module.css";
 import { useState } from "react";
@@ -8,6 +8,7 @@ function ModalContents() {
   const { path } = useParams();
   const [findItem, setFindItem] = useState(null);
   const [findItemError, setFindItemError] = useState(false);
+  const navi = useNavigate();
   let title = "";
 
   switch (path) {
@@ -27,31 +28,55 @@ function ModalContents() {
     const formData = Object.fromEntries(new FormData(e.target));
     const body = JSON.stringify(formData);
     let apiUrl = import.meta.env.VITE_API_URL;
-    if (title === "아이디 찾기") {
-      apiUrl += "/member/findId";
-    } else if (title === "비밀번호 찾기") {
-      apiUrl += "/member/findPw";
+
+    if (title === "비밀번호 재확인") {
+      apiUrl += "/member/checkPw";
+      // const response = await fetch(apiUrl, {
+      //   method: "POST",
+      //   body: body,
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   credentials: "include",
+      // });
+      const response = {
+        member_id: "test",
+        password: "test",
+        name: "test",
+        birth: "1992-12-28",
+        phone_number: "07089051410",
+      };
+      if (!response) {
+        setFindItemError(true);
+      } else if (response) {
+        navi("/member/join", { state: { response: response } });
+      }
+    } else {
+      if (title === "아이디 찾기") {
+        apiUrl += "/member/findId";
+      } else if (title === "비밀번호 찾기") {
+        apiUrl += "/member/findPw";
+      }
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        body: body,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      const resData = await response.text();
+
+      if (!resData) {
+        setFindItemError(true);
+      }
+
+      if (resData) {
+        setFindItem(resData);
+      }
     }
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      body: body,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-
-    const resData = await response.text();
-
-    if (!resData) {
-      setFindItemError(true);
-    }
-
-    if (resData) {
-      setFindItem(resData);
-    }
-
-    return response;
   }
 
   return (
@@ -132,21 +157,23 @@ function ModalContents() {
 
               {title === "비밀번호 재확인" && (
                 <>
-                  <div className={classes.loginInfoContainer}>
-                    <input
-                      type="text"
-                      placeholder="아이디를 입력해주세요"
-                      name="member_id"
-                    />
-                    <input
-                      type="text"
-                      placeholder="비밀번호를 입력해주세요"
-                      name="password"
-                    />
-                  </div>
-                  <div className={classes.loginInfoSubmit}>
-                    <input type="submit" value="정보변경으로" />
-                  </div>
+                  {!findItem && (
+                    <>
+                      {findItemError && (
+                        <div>비밀번호가 틀렸습니다. 다시 입력해주세요</div>
+                      )}
+                      <div className={classes.loginInfoContainer}>
+                        <input
+                          type="text"
+                          placeholder="비밀번호를 입력해주세요"
+                          name="password"
+                        />
+                      </div>
+                      <div className={classes.loginInfoSubmit}>
+                        <input type="submit" value="정보변경으로" />
+                      </div>
+                    </>
+                  )}
                 </>
               )}
             </Form>

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.frombusan.dto.response.FestivalInfoDto;
 import com.frombusan.dto.response.FestivalListDto;
+import com.frombusan.model.festival.FestivalLikes;
+import com.frombusan.model.festival.FestivalMyList;
 import com.frombusan.model.member.Member;
 import com.frombusan.util.PageNavigator;
 import org.apache.ibatis.session.RowBounds;
@@ -70,27 +72,60 @@ public class FestivalService {
         }
 
         Festival findedFestival = festivalMapper.findFestival(festivalId);
-
         if(findedFestival == null) {
             throw new RuntimeException();
         }
 
         boolean isFavorite = festivalMapper.checkMemberLikeStatus(festivalId, loginMember.getMember_id());
-
         if(isFavorite) {
+            findedFestival.removePlace_like();
+            festivalMapper.updateFestival(findedFestival);
 
+            FestivalLikes festivalLikes = festivalMapper.findFestivalLike(festivalId, loginMember.getMember_id());
+            festivalMapper.deleteLike(festivalLikes);
+            return false;
         } else {
+            findedFestival.addPlace_like();
+            festivalMapper.updateFestival(findedFestival);
 
+            FestivalLikes festivalLikes = new FestivalLikes();
+            festivalLikes.setFestival_id(festivalId);
+            festivalLikes.setMember_id(loginMember.getMember_id());
+            festivalMapper.saveLikes(festivalLikes);
+            return true;
         }
-
-
-        return false;
     }
 
     @Transactional
     public Boolean toggleWishlist(Long festivalId, Member loginMember) {
 
-        return false;
+        if(!checkLoginMember(loginMember)) {
+            throw new RuntimeException();
+        }
+
+        Festival findedFestival = festivalMapper.findFestival(festivalId);
+        if(findedFestival == null) {
+            throw new RuntimeException();
+        }
+
+        boolean isWishList = festivalMapper.checkMemberWishListStatus(festivalId, loginMember.getMember_id());
+        if(isWishList){
+            findedFestival.removeWishList();
+            festivalMapper.updateFestival(findedFestival);
+
+            FestivalMyList festivalMyList = festivalMapper.findFestivalMyList(festivalId, loginMember.getMember_id());
+            festivalMapper.deleteMyList(festivalMyList);
+            return false;
+        }else {
+            findedFestival.addWishList();
+            festivalMapper.updateFestival(findedFestival);
+
+            FestivalMyList festivalMyList = new FestivalMyList();
+            festivalMyList.setFestival_id(festivalId);
+            festivalMyList.setMember_id(loginMember.getMember_id());
+            festivalMapper.saveMyList(festivalMyList);
+            return true;
+        }
     }
 
 

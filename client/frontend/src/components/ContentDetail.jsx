@@ -40,6 +40,7 @@ function ContentDetail({ data, isFavorite, isWishList }) {
     setIsFavoriteStat(resData.favorite);
   }
   async function handleIsWishList() {
+    console.log("실행");
     const response = await fetch(
       `http://localhost:9000${location.pathname}/wishlist`,
       {
@@ -50,6 +51,8 @@ function ContentDetail({ data, isFavorite, isWishList }) {
         credentials: "include",
       }
     );
+    console.log("status:", response.status);
+    console.log(await response.json());
     const resData = await response.json();
     setIsWishListStat(resData.wishList);
   }
@@ -217,8 +220,8 @@ function ContentDetail({ data, isFavorite, isWishList }) {
                   </AdvancedMarker>
                 </APIProvider>
               </div>
-              <div class="modal">
-                <span class="close">&times;</span>
+              <div className="modal">
+                <span className="close">&times;</span>
                 <div id="modalText"></div>
               </div>
             </div>

@@ -13,13 +13,5 @@ public class FestivalLikes {
 	private Long festival_id;
 	private String member_id;
 	private boolean liked;
-	
-	public boolean isLiked() {
-	    return liked;
-	  }
-  
-	  public void setLiked(boolean liked) {
-	    this.liked = liked;
-	  }
 
 }
