@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 
 function ContentDetail({ data, isFavorite, isWishList }) {
   const location = useLocation();
+  const subject = location.pathname.split("/")[1];
   const { user } = useAuth();
   const [showDetail, setShowDetail] = useState("detailInfo");
   const [isFavoriteStat, setIsFavoriteStat] = useState(isFavorite);
@@ -160,10 +161,19 @@ function ContentDetail({ data, isFavorite, isWishList }) {
                       <a href={data.homepage_url}>{data.homepage_url}</a>
                     </td>
                   </tr>
-                  <tr>
-                    <th>휴무일</th>
-                    <td>{data.hldy_info}</td>
-                  </tr>
+                  {subject === "festival" && (
+                    <tr>
+                      <th>복지시설</th>
+                      <td>{data.middle_size_rm1}</td>
+                    </tr>
+                  )}
+                  {subject === "tourist" && (
+                    <tr>
+                      <th>휴무일</th>
+                      <td>{data.hldy_info}</td>
+                    </tr>
+                  )}
+
                   <tr>
                     <th>운영요일 및 시간</th>
                     <td>{data.usage_day_week_and_time}</td>
@@ -217,8 +227,8 @@ function ContentDetail({ data, isFavorite, isWishList }) {
                   </AdvancedMarker>
                 </APIProvider>
               </div>
-              <div class="modal">
-                <span class="close">&times;</span>
+              <div className="modal">
+                <span className="close">&times;</span>
                 <div id="modalText"></div>
               </div>
             </div>

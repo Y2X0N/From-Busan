@@ -18,6 +18,9 @@
         <typeAlias type="com.frombusan.model.tourist.TouristSpotLikes" alias="touristSpotLikes"/>
         <typeAlias type="com.frombusan.model.tourist.TouristSpotMyList" alias="touristSpotMyList"/>
 
+        <typeAlias type="com.frombusan.model.festival.FestivalLikes" alias="festivalLikes"/>
+        <typeAlias type="com.frombusan.model.festival.FestivalMyList" alias="festivalMyList"/>
+
 
     </typeAliases>
 </configuration>

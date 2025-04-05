@@ -10,9 +10,14 @@ import {
 import { useLoaderData } from "react-router-dom";
 
 export async function loader() {
-  const response = await fetch("http://localhost:9000");
-  const reqdata = await response.json();
-  return reqdata;
+  try {
+    const response = await fetch("http://localhost:9000");
+    const reqdata = await response.json();
+    return reqdata;
+  } catch (error) {
+    console.warn("Data Loader fail", error);
+    return null;
+  }
 }
 
 function Directions({ from, to, mode }) {

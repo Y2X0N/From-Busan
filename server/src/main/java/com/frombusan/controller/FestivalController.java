@@ -1,6 +1,8 @@
 package com.frombusan.controller;
 
 import com.frombusan.dto.response.FestivalInfoDto;
+import com.frombusan.dto.response.FestivalInfoLikeDto;
+import com.frombusan.dto.response.FestivalInfoWishListDto;
 import com.frombusan.dto.response.FestivalListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ public class FestivalController {
 	}
 
 	// 게시글 읽기
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	public ResponseEntity<FestivalInfoDto> getFestival(@PathVariable(value = "id") Long festivalId, @SessionAttribute(value ="loginMember", required = false) Member loginMember) {
 		try {
 			FestivalInfoDto festivalInfoDto = festivalService.findFestivalById(festivalId, loginMember);
@@ -37,21 +39,21 @@ public class FestivalController {
 		}
 	}
 
-	@GetMapping("/{id}/like")
-	public ResponseEntity<Boolean> toggleLike(@PathVariable(value ="id") Long festivalId, @SessionAttribute(value="loginMember", required=true) Member loginMember) {
+	@PostMapping("/{id}/like")
+	public ResponseEntity<FestivalInfoLikeDto> toggleLike(@PathVariable(value ="id") Long festivalId, @SessionAttribute(value="loginMember", required=true) Member loginMember) {
 		try {
-			boolean result = festivalService.toggleLike(festivalId, loginMember);
-			return ResponseEntity.ok(result);
+			FestivalInfoLikeDto festivalInfoLikeDto = festivalService.toggleLike(festivalId, loginMember);
+			return ResponseEntity.ok(festivalInfoLikeDto);
 		} catch(Exception e){
 			throw new RuntimeException(e);
 		}
 	}
 
-	@GetMapping("/{id}/wishlist")
-	public ResponseEntity<Boolean> toggleWishList(@PathVariable(value ="id") Long festivalId, @SessionAttribute(value="loginMember", required=true) Member loginMember) {
+	@PostMapping("/{id}/wishlist")
+	public ResponseEntity<FestivalInfoWishListDto> toggleWishList(@PathVariable(value ="id") Long festivalId, @SessionAttribute(value="loginMember", required=true) Member loginMember) {
 		try {
-			boolean result = festivalService.toggleWishlist(festivalId, loginMember);
-			return ResponseEntity.ok(result);
+			FestivalInfoWishListDto festivalInfoWishListDto = festivalService.toggleWishList(festivalId, loginMember);
+			return ResponseEntity.ok(festivalInfoWishListDto);
 		} catch(Exception e){
 			throw new RuntimeException(e);
 		}

@@ -14,7 +14,6 @@ function TourSpotDetail() {
         credentials: "include",
       });
       const reqData = await response.json();
-      console.log(reqData);
       setData(reqData.touristSpot);
       setIsFavorite(reqData.isFavorite);
       setIsWishList(reqData.isWishList);

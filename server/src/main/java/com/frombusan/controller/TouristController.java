@@ -64,7 +64,7 @@ public class TouristController {
     // 명소 찜목록 추가
     @PostMapping("{id}/wishlist")
     public ResponseEntity<TouristInfoWishListDto> toggleWishList(
-              @RequestParam("touristSpotId") Long tourist_Spot_id
+              @PathVariable(value = "id") Long tourist_Spot_id
             , @SessionAttribute(value = "loginMember") Member loginMember) {
         try {
             TouristInfoWishListDto touristInfoWishListDto = touristService.toggleWishList(tourist_Spot_id, loginMember);
