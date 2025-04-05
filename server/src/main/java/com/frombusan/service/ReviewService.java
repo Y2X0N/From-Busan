@@ -4,7 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.frombusan.dto.request.ReviewWriteDto;
+import com.frombusan.dto.response.ReviewInfoDto;
+import com.frombusan.dto.response.ReviewListDto;
 import com.frombusan.model.member.Member;
+import com.frombusan.repository.TouristMapper;
+import com.frombusan.util.PageNavigator;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,49 +45,47 @@ public class ReviewService {
 
     }
 
-    public List<String> findAllMainTitle() {
-        return reviewMapper.findAllMainTitle();
-    }
-
-
-
-
-    public List<Review> findReviews(String searchText, int startRecord, int countPerPage) {
-        // 전체 검색 결과 중 시작 위치와 갯수
-        RowBounds rowBounds = new RowBounds(startRecord, countPerPage);
-        return reviewMapper.findReviews(searchText, rowBounds);
-    }
-
-    
-    public Review findReview(Long review_id) {
-        return reviewMapper.findReview(review_id);
-    }
-
-    public Review readReview(Long review_id) {
-    	Review review = findReview(review_id);
-    	review.addHit();
-        updateReview(review);
-        return review;
+    @Transactional(readOnly = true)
+    public ReviewListDto getList(String searchText, int page) {
+        try {
+            int total = reviewMapper.getTotal(searchText);
+            PageNavigator navi = new PageNavigator(ReviewListDto.countPerPage,ReviewListDto.pagePerGroup, page, total);
+            RowBounds rowBounds = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
+            List<Review> reviews = reviewMapper.findReviews(searchText, rowBounds);
+            List<String> findAllName = reviewMapper.findAllMainTitle();
+            return new ReviewListDto(reviews,findAllName,navi);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Transactional
-    public void updateReview(Review updateReview) {
-        if (updateReview != null) {
-            //log.info("review_id5: {}", updateReview);
-            reviewMapper.updateReview(updateReview);
+    public ReviewInfoDto read(Long reviewId, Member loginMember) {
+
+        try {
+            Review findReview = reviewMapper.findReview(reviewId);
+            findReview.addHit();
+            reviewMapper.updateReview(findReview);
+
+            Boolean isFavorite = reviewMapper.checkMemberLikeStatus(reviewId, loginMember.getMember_id());
+
+            ReviewInfoDto reviewInfoDto = new ReviewInfoDto();
+            reviewInfoDto.setReview(findReview);
+            reviewInfoDto.setIsFavorite(isFavorite);
+            return reviewInfoDto;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
+
 
     @Transactional
     public void removeReview(Long review_id) {
         reviewMapper.removeReview(review_id);	
     }
+
+
     
-
-    public int getTotal(String searchText) {
-        return reviewMapper.getTotal(searchText);
-    }
-
     public List<Review> findReviewsByMainTitle(String review_place) {
 	String result = review_place.substring(1, review_place.length() - 1);
     return reviewMapper.findReviewsByMainTitle(result);
@@ -109,5 +111,7 @@ public class ReviewService {
  	public void deleteLike(Object like_id) {
  		reviewMapper.deleteLike(like_id);
  	}
-    
+
+
+
 }

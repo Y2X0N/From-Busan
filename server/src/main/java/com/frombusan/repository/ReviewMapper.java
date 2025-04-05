@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import com.frombusan.model.AttachedImg;
@@ -55,4 +56,5 @@ public interface ReviewMapper {
     // 글쓰기 타이틀 리스트
     List<String> findAllMainTitle();
 
+    Boolean checkMemberLikeStatus(@Param("review_id") Long reviewId,@Param("member_id")String memberId);
 }
