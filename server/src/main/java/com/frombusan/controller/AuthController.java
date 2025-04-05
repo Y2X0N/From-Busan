@@ -1,10 +1,12 @@
 package com.frombusan.controller;
 
 import com.frombusan.dto.request.JoinFormDto;
+import com.frombusan.model.member.Member;
 import com.frombusan.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,5 +42,14 @@ public class AuthController {
             throw new RuntimeException(e);
         }
         return ResponseEntity.ok("회원가입 성공");
+    }
+
+    // 로그인 세션 확인
+    @GetMapping(path = "me")
+    public ResponseEntity<Member> me(@SessionAttribute("loginMember") Member loginMember){
+        if(ObjectUtils.isEmpty(loginMember)){
+            throw new RuntimeException();
+        }
+        return ResponseEntity.ok(loginMember);
     }
 }

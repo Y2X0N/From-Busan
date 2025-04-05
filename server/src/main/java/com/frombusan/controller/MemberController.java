@@ -1,29 +1,14 @@
 package com.frombusan.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-
 import com.frombusan.dto.request.FindIdDto;
 import com.frombusan.dto.request.FindPwDto;
 import com.frombusan.dto.request.UpdateMemberDto;
 import com.frombusan.dto.response.MyWishlist;
 import com.frombusan.service.MemberService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.frombusan.model.course.Course;
-import com.frombusan.model.festival.Festival;
-import com.frombusan.model.member.LoginForm;
 import com.frombusan.model.member.Member;
-import com.frombusan.model.tourist.Tourist_Spot;
-import com.frombusan.repository.CourseMapper;
-import com.frombusan.repository.FestivalMapper;
-import com.frombusan.repository.MemberMapper;
-import com.frombusan.repository.TouristMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +21,6 @@ public class MemberController {
 	
 	private final MemberService memberService;
 
-
 	//아이디 중복확인
 	@GetMapping("idCheck/{id}")
 	public ResponseEntity<Boolean> idCheck(@PathVariable(value = "id") String memberId) {
@@ -45,7 +29,7 @@ public class MemberController {
 	}
 
 	//아이디 찾기
-	@GetMapping("findId")
+	@PostMapping("findId")
 	public ResponseEntity<String> findId(@RequestBody FindIdDto findIdDto) {
 		String result = memberService.findId(findIdDto);
 		return ResponseEntity.ok(result);
