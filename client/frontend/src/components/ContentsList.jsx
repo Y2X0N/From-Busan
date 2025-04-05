@@ -22,7 +22,6 @@ const ContentsList = ({ data, navi }) => {
   useEffect(() => {
     const loader = async () => {
       if (currentLocation.search === "") {
-        console.log(currentLocation);
         return;
       } else {
         try {
@@ -30,7 +29,6 @@ const ContentsList = ({ data, navi }) => {
             `http://localhost:9000${currentLocation.pathname}list/${currentLocation.search}`
           );
           const reqData = await response.json();
-          console.log(reqData);
           setCurrentPageData(reqData[Object.keys(reqData)[0]]);
           setCurrentNavi(reqData[Object.keys(reqData)[1]]);
         } catch (error) {

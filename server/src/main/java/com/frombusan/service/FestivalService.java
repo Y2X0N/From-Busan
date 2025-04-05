@@ -3,6 +3,8 @@ package com.frombusan.service;
 import java.util.List;
 
 import com.frombusan.dto.response.FestivalInfoDto;
+import com.frombusan.dto.response.FestivalInfoLikeDto;
+import com.frombusan.dto.response.FestivalInfoWishListDto;
 import com.frombusan.dto.response.FestivalListDto;
 import com.frombusan.model.festival.FestivalLikes;
 import com.frombusan.model.festival.FestivalMyList;
@@ -65,7 +67,7 @@ public class FestivalService {
     }
 
     @Transactional
-    public Boolean toggleLike(Long festivalId, Member loginMember) {
+    public FestivalInfoLikeDto toggleLike(Long festivalId, Member loginMember) {
 
         if(!checkLoginMember(loginMember)){
             throw new RuntimeException();
@@ -79,25 +81,27 @@ public class FestivalService {
         boolean isFavorite = festivalMapper.checkMemberLikeStatus(festivalId, loginMember.getMember_id());
         if(isFavorite) {
             findedFestival.removePlace_like();
-            festivalMapper.updateFestival(findedFestival);
 
             FestivalLikes festivalLikes = festivalMapper.findFestivalLike(festivalId, loginMember.getMember_id());
             festivalMapper.deleteLike(festivalLikes);
-            return false;
         } else {
             findedFestival.addPlace_like();
-            festivalMapper.updateFestival(findedFestival);
 
             FestivalLikes festivalLikes = new FestivalLikes();
             festivalLikes.setFestival_id(festivalId);
             festivalLikes.setMember_id(loginMember.getMember_id());
             festivalMapper.saveLikes(festivalLikes);
-            return true;
         }
+        festivalMapper.updateFestival(findedFestival);
+        FestivalInfoLikeDto festivalInfoLikeDto = new FestivalInfoLikeDto();
+        festivalInfoLikeDto.setFestival(findedFestival);
+        festivalInfoLikeDto.setFavorite(!isFavorite);
+        return festivalInfoLikeDto;
+
     }
 
     @Transactional
-    public Boolean toggleWishlist(Long festivalId, Member loginMember) {
+    public FestivalInfoWishListDto toggleWishList(Long festivalId, Member loginMember) {
 
         if(!checkLoginMember(loginMember)) {
             throw new RuntimeException();
@@ -111,21 +115,23 @@ public class FestivalService {
         boolean isWishList = festivalMapper.checkMemberWishListStatus(festivalId, loginMember.getMember_id());
         if(isWishList){
             findedFestival.removeWishList();
-            festivalMapper.updateFestival(findedFestival);
 
             FestivalMyList festivalMyList = festivalMapper.findFestivalMyList(festivalId, loginMember.getMember_id());
             festivalMapper.deleteMyList(festivalMyList);
-            return false;
         }else {
             findedFestival.addWishList();
-            festivalMapper.updateFestival(findedFestival);
 
             FestivalMyList festivalMyList = new FestivalMyList();
             festivalMyList.setFestival_id(festivalId);
             festivalMyList.setMember_id(loginMember.getMember_id());
             festivalMapper.saveMyList(festivalMyList);
-            return true;
         }
+        festivalMapper.updateFestival(findedFestival);
+        FestivalInfoWishListDto festivalInfoWishListDto = new FestivalInfoWishListDto();
+        festivalInfoWishListDto.setFestival(findedFestival);
+        festivalInfoWishListDto.setWishList(!isWishList);
+        return festivalInfoWishListDto;
+
     }
 
 
@@ -135,7 +141,7 @@ public class FestivalService {
         return festivalMapper.findAllFestival(searchText, rowBounds);
     }
 
-    private Boolean checkLoginMember(Member loginMember){
+    private boolean checkLoginMember(Member loginMember){
         return loginMember != null && !StringUtils.isEmpty(loginMember.getMember_id());
     }
 }

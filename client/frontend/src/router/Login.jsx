@@ -11,7 +11,6 @@ function Login() {
 
   useEffect(() => {
     if (actionData?.user) {
-      console.log(actionData?.user);
       navi("/");
       return setUser(actionData.user);
     }
