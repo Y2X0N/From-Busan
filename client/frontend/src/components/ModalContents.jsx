@@ -31,25 +31,19 @@ function ModalContents() {
 
     if (title === "비밀번호 재확인") {
       apiUrl += "/member/checkPw";
-      // const response = await fetch(apiUrl, {
-      //   method: "POST",
-      //   body: body,
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   credentials: "include",
-      // });
-      const response = {
-        member_id: "test",
-        password: "test",
-        name: "test",
-        birth: "1992-12-28",
-        phone_number: "07089051410",
-      };
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        body: body,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
       if (!response) {
         setFindItemError(true);
       } else if (response) {
-        navi("/member/join", { state: { response: response } });
+        const resData = await response.json();
+        navi("/member/join", { state: { response: resData } });
       }
     } else {
       if (title === "아이디 찾기") {
@@ -164,7 +158,7 @@ function ModalContents() {
                       )}
                       <div className={classes.loginInfoContainer}>
                         <input
-                          type="text"
+                          type="password"
                           placeholder="비밀번호를 입력해주세요"
                           name="password"
                         />

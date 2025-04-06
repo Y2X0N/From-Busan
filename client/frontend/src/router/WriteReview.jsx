@@ -1,10 +1,11 @@
 import { ReactSummernoteLite } from "@easylogic/react-summernote-lite";
-import { Form, useNavigate } from "react-router-dom";
+import { Form, useLoaderData, useNavigate } from "react-router-dom";
 import classes from "./WriteReview.module.css";
 
 function WriteReview() {
   const navi = useNavigate();
-  const mockData = ["하라주쿠", "신주쿠"];
+  const places = useLoaderData();
+  console.log(places);
 
   function handleReturn() {
     navi("../review");
@@ -37,8 +38,8 @@ function WriteReview() {
                   style={{ width: "600px" }}
                 />
                 <datalist id="searchOptions">
-                  {mockData.map((item) => (
-                    <option value={item}></option>
+                  {places.map((item) => (
+                    <option key={item} value={item}></option>
                   ))}
                 </datalist>
                 <div class="error">에러표시장소</div>
@@ -72,3 +73,10 @@ function WriteReview() {
 }
 
 export default WriteReview;
+
+export async function loader() {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const response = await fetch(apiUrl + "/review/places");
+  const resData = await response.json();
+  return resData;
+}

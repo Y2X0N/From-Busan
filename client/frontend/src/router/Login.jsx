@@ -14,6 +14,8 @@ function Login() {
       navi("/");
       console.log(actionData.user);
       return setUser(actionData.user);
+    } else {
+      return setUser(null);
     }
   }, [actionData]);
 

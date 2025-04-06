@@ -68,6 +68,7 @@ function SignIn() {
       {!userData && (
         <div className={classes.joinContainer}>
           <Form method="post" className={classes.form} onSubmit={handleSubmit}>
+            <input type="hidden" name="actionType" value="join" />
             <div className={classes.logoContainer}>
               <h2>🌊부산에 오신걸 환영합니다</h2>
               <img className={classes.img} src="/bugi.png" alt="부기" />
@@ -157,6 +158,7 @@ function SignIn() {
       {userData && (
         <div className={classes.joinContainer}>
           <Form method="post" className={classes.form} onSubmit={handleSubmit}>
+            <input type="hidden" name="actionType" value="update" />
             <div className={classes.logoContainer}>
               <h2>개인정보 수정</h2>
               <img className={classes.img} src="/bugi.png" alt="부기" />
@@ -167,7 +169,7 @@ function SignIn() {
                   <td className={classes.firstTd}>아이디</td>
                   <td className={classes.secondTd}>
                     <input
-                      disabled
+                      readOnly
                       type="text"
                       name="member_id"
                       value={userData.member_id}
@@ -258,19 +260,40 @@ function SignIn() {
 export default SignIn;
 
 export async function action({ request }) {
-  console.log("실행");
-  const apiUrl = import.meta.env.VITE_API_URL;
+  let apiUrl = import.meta.env.VITE_API_URL;
+  let message = "";
   const formData = await request.formData();
   const postData = Object.fromEntries(formData);
-  const response = await fetch(apiUrl + "/auth/join", {
+  const actionType = postData.actionType;
+
+  if (actionType === "join") {
+    apiUrl += "/auth/join";
+    message = "가입을 완료했습니다. 로그인창으로 이동합니다";
+  }
+
+  if (actionType === "update") {
+    apiUrl += "/member/updateMember";
+    message = "정보변경을 완료했습니다. 로그인창으로 이동합니다";
+  }
+
+  const response = await fetch(apiUrl, {
     method: "POST",
     body: JSON.stringify(postData),
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
   });
   console.log("종료", response.status);
+  apiUrl = import.meta.env.VITE_API_URL;
   if (response.status === 200) {
-    return redirect("/");
+    await fetch(apiUrl + "/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+    alert(message);
+    document.cookie =
+      "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    return redirect("/member/login");
   }
 }

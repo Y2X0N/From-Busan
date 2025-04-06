@@ -16,7 +16,7 @@ import FestivalDetail from "./router/FestivalDetail.jsx";
 import AuthProvider from "./AuthProvider.jsx";
 import MyReviewPage from "./router/MyReviewPage.jsx";
 import MyBookmark from "./router/MyBookmark.jsx";
-import WriteReview from "./router/WriteReview.jsx";
+import WriteReview, { loader as loadPlaces } from "./router/WriteReview.jsx";
 import ReviewDetail from "./router/ReviewDetail.jsx";
 
 const router = createBrowserRouter([
@@ -43,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/member/join",
         element: <SignIn />,
+        action: signInAction,
+      },
+      {
+        path: "/member/updateMember",
         action: signInAction,
       },
       {
@@ -93,6 +97,7 @@ const router = createBrowserRouter([
       {
         path: "/review/write",
         element: <WriteReview />,
+        loader: loadPlaces,
       },
     ],
   },
