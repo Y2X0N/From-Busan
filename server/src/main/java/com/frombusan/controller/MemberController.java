@@ -42,6 +42,12 @@ public class MemberController {
 		return ResponseEntity.ok(result);
 	}
 
+	@PostMapping("checkPw")
+	public ResponseEntity<Member> checkPw(@RequestBody String password,@SessionAttribute(value = "loginMember") Member loginMember){
+		Member member = memberService.checkPw(password,loginMember);
+		return ResponseEntity.ok(member);
+	}
+
 	@PostMapping("updateMember")
 	public ResponseEntity<String> updateMember(@RequestBody UpdateMemberDto updateMemberDto,
 							@SessionAttribute(value = "loginMember") Member loginMember) {

@@ -3,6 +3,7 @@ package com.frombusan.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.frombusan.dto.request.ReviewUpdateDto;
 import com.frombusan.dto.response.ReviewInfoDto;
 import com.frombusan.dto.request.ReviewWriteDto;
 import com.frombusan.dto.response.ReviewListDto;
@@ -28,6 +29,13 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewController {
 
     private final ReviewService reviewService;
+
+    // 글쓰기페이지 리뷰장소 리스트
+    @GetMapping("places")
+    public ResponseEntity<List<String>> getPlaces() {
+        List<String> places = reviewService.getPlaces();
+        return ResponseEntity.ok(places);
+    }
 
     // 게시글 쓰기
     @PostMapping("write")
@@ -55,84 +63,28 @@ public class ReviewController {
                                               @SessionAttribute(value = "loginMember") Member loginMember) {
         try {
             ReviewInfoDto review = reviewService.read(review_id,loginMember);
-
+            return ResponseEntity.ok(review);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return null;
     }
 
-    // 게시글 수정 페이지 이동
-//    @GetMapping("update")
-//    public String updateForm(@SessionAttribute(value = "loginMember", required = false) Member loginMember,
-//                             @RequestParam Long review_id,
-//                             Model model) {
-//        log.info("review_id: {}", review_id);
-//
-//        // board_id에 해당하는 게시글이 없거나 게시글의 작성자가 로그인한 사용자의 아이디와 다르면 수정하지 않고 리스트로 리다이렉트 시킨다.
-//        Review review = reviewService.findReview(review_id);
-//        if (review_id == null || !review.getMember_id().equals(loginMember.getMember_id())) {
-//            log.info("수정 권한 없음");
-//            return "redirect:/review/list";
-//        }
-//        // model 에 board 객체를 저장한다.
-//        model.addAttribute("review", Review.toReviewUpdateForm(review));
-//
-//        // board/update.html 를 찾아서 리턴한다.
-//        return "review/update";
-//    }
-//
-//    // 게시글 수정
-//    @PostMapping("update")
-//    public String update(@SessionAttribute(value = "loginMember", required = false) Member loginMember,
-//                         @RequestParam Long review_id,
-//                         @Validated @ModelAttribute("review") ReviewUpdateForm updateReview,
-//                         BindingResult result) {
-//
-//        // validation 에 에러가 있으면 board/update.html 페이지로 돌아간다.
-//        if (result.hasErrors()) {
-//            return "review/update";
-//        }
-//
-//        // board_id 에 해당하는 Board 정보를 데이터베이스에서 가져온다.
-//        Review review = reviewService.findReview(review_id);
-//        // Board 객체가 없거나 작성자가 로그인한 사용자의 아이디와 다르면 수정하지 않고 리스트로 리다이렉트 시킨다.
-//        if (review == null || !review.getMember_id().equals(loginMember.getMember_id())) {
-//            log.info("수정 권한 없음");
-//            return "redirect:/review/list";
-//        }
-//        // 제목을 수정한다.
-//        review.setTitle(updateReview.getTitle());
-//        // 내용을 수정한다.
-//        review.setContents(updateReview.getContents());
-//
-//        // 수정한 Board 를 데이터베이스에 update 한다.
-//        reviewService.updateReview(review);
-//        // 수정이 완료되면 리스트로 리다이렉트 시킨다.
-//        return "redirect:/review/list";
-//    }
-//
-//    // 게시글 삭제
-//    @GetMapping("delete")
-//    public String remove(@SessionAttribute(value = "loginMember", required = false) Member loginMember,
-//                         @RequestParam Long review_id) {
-//        // board_id 에 해당하는 게시글을 가져온다.
-//        Review review = reviewService.findReview(review_id);
-//        // 게시글이 존재하지 않거나 작성자와 로그인 사용자의 아이디가 다르면 리스트로 리다이렉트 한다.
-//        if (review == null || !review.getMember_id().equals(loginMember.getMember_id())) {
-//            log.info("삭제 권한 없음");
-//            return "redirect:/review/list";
-//        }
-//        // 게시글을 삭제한다.
-//    	log.info("review_id:{}",review_id);
-//
-//        reviewService.removeReview(review_id);
-//        // board/list 로 리다이렉트 한다.
-//        return "redirect:/review/list";
-//    }
-//
-//
-//
+    // 게시글 수정
+    @PutMapping("update")
+    public ResponseEntity<String> update(@SessionAttribute(value = "loginMember") Member loginMember,
+                                         @RequestBody ReviewUpdateDto reviewUpdateDto) {
+        reviewService.update(loginMember,reviewUpdateDto);
+        return ResponseEntity.ok("게시글 수정 완료");
+    }
+
+      // 게시글 삭제
+    @PostMapping("delete/{id}")
+    public ResponseEntity<String> remove(@SessionAttribute(value = "loginMember") Member loginMember,
+                         @PathVariable(value = "id") Long reviewId) {
+        reviewService.removeReview(loginMember,reviewId);
+        return ResponseEntity.ok("게시글 삭제 완료");
+    }
+
 // // 한 장소 게시글 전체 보기
 //    @GetMapping("reviewList")
 //    public String reviewList(@RequestParam(value = "page", defaultValue = "1") int page,

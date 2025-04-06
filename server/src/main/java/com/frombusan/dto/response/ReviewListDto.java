@@ -14,7 +14,6 @@ import java.util.List;
 public class ReviewListDto {
 
     List<Review> reviews;
-    List<String> findAllName;
     private PageNavigator navi;
 
     public static final int countPerPage = 10;

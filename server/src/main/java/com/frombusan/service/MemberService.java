@@ -62,4 +62,12 @@ public class MemberService {
         myWishlist.setFestivalList(findMyFestivalWishlist);
         return myWishlist;
     }
+
+    public Member checkPw(String password, Member loginMember) {
+        if(loginMember.getPassword().equals(password)) {
+            return loginMember;
+        } else {
+            throw new RuntimeException();
+        }
+    }
 }

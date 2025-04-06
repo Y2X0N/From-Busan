@@ -3,6 +3,7 @@ package com.frombusan.service;
 import java.util.List;
 import java.util.Map;
 
+import com.frombusan.dto.request.ReviewUpdateDto;
 import com.frombusan.dto.request.ReviewWriteDto;
 import com.frombusan.dto.response.ReviewInfoDto;
 import com.frombusan.dto.response.ReviewListDto;
@@ -34,7 +35,6 @@ public class ReviewService {
 
     @Transactional
     public void write(Member loginMember, ReviewWriteDto reviewWriteDto) {
-        //존재하지않는review_place는 insert 되지않는다.
         try {
             Review review = ReviewWriteDto.toReview(reviewWriteDto);
             review.setMember_id(loginMember.getMember_id());
@@ -52,8 +52,7 @@ public class ReviewService {
             PageNavigator navi = new PageNavigator(ReviewListDto.countPerPage,ReviewListDto.pagePerGroup, page, total);
             RowBounds rowBounds = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
             List<Review> reviews = reviewMapper.findReviews(searchText, rowBounds);
-            List<String> findAllName = reviewMapper.findAllMainTitle();
-            return new ReviewListDto(reviews,findAllName,navi);
+            return new ReviewListDto(reviews,navi);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -78,14 +77,37 @@ public class ReviewService {
         }
     }
 
+    @Transactional
+    public void update(Member loginMember, ReviewUpdateDto reviewUpdateDto) {
+        Review review = reviewMapper.findReview(reviewUpdateDto.getReviewId());
+
+        if (review == null || !review.getMember_id().equals(loginMember.getMember_id())) {
+            throw new IllegalArgumentException("수정 권한 없음");
+        }
+        // 제목을 수정한다.
+        review.setTitle(reviewUpdateDto.getTitle());
+        // 내용을 수정한다.
+        review.setContents(reviewUpdateDto.getContents());
+        reviewMapper.updateReview(review);
+    }
+
+    public List<String> getPlaces() {
+        return reviewMapper.findAllMainTitle();
+    }
 
     @Transactional
-    public void removeReview(Long review_id) {
-        reviewMapper.removeReview(review_id);	
+    public void removeReview(Member loginMember,Long reviewId) {
+        Review findReview = reviewMapper.findReview(reviewId);
+
+        if (findReview == null || !findReview.getMember_id().equals(loginMember.getMember_id())) {
+            throw new IllegalArgumentException("삭제 권한 없음");
+        }
+
+        reviewMapper.removeReview(reviewId);
     }
 
 
-    
+
     public List<Review> findReviewsByMainTitle(String review_place) {
 	String result = review_place.substring(1, review_place.length() - 1);
     return reviewMapper.findReviewsByMainTitle(result);
@@ -99,15 +121,15 @@ public class ReviewService {
  	public List<String> findLikesMemberId(Long review_id ){
  		return reviewMapper.findLikesMemberId( review_id);
  	}
- 	
+
  	public List<Map<String,Object>> findLikesById(Long review_id){
  		return reviewMapper.findLikesById(review_id);
  	}
- 	
+
  	public void saveLikes(ReviewLikes reviewLikes) {
  		reviewMapper.saveLikes(reviewLikes);
  	}
- 	
+
  	public void deleteLike(Object like_id) {
  		reviewMapper.deleteLike(like_id);
  	}
