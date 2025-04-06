@@ -11,6 +11,7 @@
         
         <typeAlias type="com.frombusan.model.restaurant.Restaurant" alias="restaurant"/>
         <typeAlias type="com.frombusan.model.review.Review" alias="review"/>
+        <typeAlias type="com.frombusan.model.review.ReviewLikes" alias="reviewLikes"/>
         <typeAlias type="com.frombusan.model.tourist.Tourist_Spot" alias="tourist"/>
         <typeAlias type="com.frombusan.model.festival.Festival" alias="festival"/>
         <typeAlias type="com.frombusan.model.course.Course" alias="course"/>

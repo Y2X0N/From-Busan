@@ -3,6 +3,7 @@ package com.frombusan.repository;
 import java.util.List;
 import java.util.Map;
 
+import com.frombusan.model.tourist.TouristSpotLikes;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
@@ -32,9 +33,9 @@ public interface ReviewMapper {
     // 게시글 삭제
     void removeReview(Long review_id);
 
-    List<AttachedImg> findFilesByReviewId(Long review_id);
-
-    List<AttachedImg> findFilesForRemove(Long review_id);
+//    List<AttachedImg> findFilesByReviewId(Long review_id);
+//
+//    List<AttachedImg> findFilesForRemove(Long review_id);
 
     //장소 이름으로 리뷰찾기(명소)
     List<Review> findReviewsByMainTitle(String review_place);
@@ -51,10 +52,12 @@ public interface ReviewMapper {
 
     void deleteLike(Object like_id);
 
-    List<Review> findReviewRank5();
-
     // 글쓰기 타이틀 리스트
     List<String> findAllMainTitle();
-
+    // 리뷰 좋아요체크
     Boolean checkMemberLikeStatus(@Param("review_id") Long reviewId,@Param("member_id")String memberId);
+    // 리뷰 좋아요조회
+    ReviewLikes findReviewLike(@Param("review_id") Long reviewId, @Param("member_id") String memberId);
+
+
 }

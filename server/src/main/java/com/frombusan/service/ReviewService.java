@@ -10,6 +10,7 @@ import com.frombusan.model.member.Member;
 import com.frombusan.model.tourist.TouristSpotLikes;
 import com.frombusan.util.PageNavigator;
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -117,56 +118,25 @@ public class ReviewService {
     @Transactional
     public ReviewLikeDto toggleLike(Long reviewId, Member loginMember) {
         Review findReview = reviewMapper.findReview(reviewId);
+
         boolean isFavorite = reviewMapper.checkMemberLikeStatus(reviewId, loginMember.getMember_id());
+
         if (isFavorite) {
-            findReview.removePlace_like();
-
-            TouristSpotLikes findTouristSpotLike = touristMapper.findTouristSpotLike(touristSpotId, loginMember.getMember_id());
-            touristMapper.deleteLike(findTouristSpotLike.getLike_id());
+            findReview.removeReview_like();
+            ReviewLikes findReviewLike = reviewMapper.findReviewLike(reviewId, loginMember.getMember_id());
+            reviewMapper.deleteLike(findReviewLike.getLike_id());
         } else {
-            findTouristSpot.addPlace_like();
-
-            TouristSpotLikes touristSpotLike = new TouristSpotLikes();
-            touristSpotLike.setMember_id(loginMember.getMember_id());
-            touristSpotLike.setTourist_Spot_id(touristSpotId);
-            touristMapper.saveLikes(touristSpotLike);
+            findReview.addReview_like();
+            ReviewLikes reviewLike = new ReviewLikes();
+            reviewLike.setMember_id(loginMember.getMember_id());
+            reviewLike.setReview_id(findReview.getReview_id());
+            reviewMapper.saveLikes(reviewLike);
         }
-
-        touristMapper.updateTourist(findTouristSpot);
-
-        TouristInfoLikeDto touristInfoLikeDto = new TouristInfoLikeDto();
-        touristInfoLikeDto.setTouristSpot(findTouristSpot);
-        touristInfoLikeDto.setFavorite(!isFavorite);
-        return touristInfoLikeDto;
-
+        reviewMapper.updateReview(findReview);
+        ReviewLikeDto reviewLikeDto = new ReviewLikeDto();
+        reviewLikeDto.setReview(findReview);
+        reviewLikeDto.setFavorite(isFavorite);
+        return reviewLikeDto;
     }
-
-
-    public List<Review> findReviewsByMainTitle(String review_place) {
-	String result = review_place.substring(1, review_place.length() - 1);
-    return reviewMapper.findReviewsByMainTitle(result);
-    }
-
-    public List<Review> findReviewsByMemberId(String member_id) {
-        return reviewMapper.findReviewsByMemberId(member_id);
-    }
-
-    //좋아요
- 	public List<String> findLikesMemberId(Long review_id ){
- 		return reviewMapper.findLikesMemberId( review_id);
- 	}
-
- 	public List<Map<String,Object>> findLikesById(Long review_id){
- 		return reviewMapper.findLikesById(review_id);
- 	}
-
- 	public void saveLikes(ReviewLikes reviewLikes) {
- 		reviewMapper.saveLikes(reviewLikes);
- 	}
-
- 	public void deleteLike(Object like_id) {
- 		reviewMapper.deleteLike(like_id);
- 	}
-
 
 }

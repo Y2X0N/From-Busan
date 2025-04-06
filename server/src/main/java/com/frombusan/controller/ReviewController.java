@@ -98,53 +98,17 @@ public class ReviewController {
         return ResponseEntity.ok(reviewListByMainTitle);
     }
 
-  //좋아요 기능
-// 	@PostMapping("{id}/like")
-//	public ResponseEntity<Review> toggleLike(@PathVariable(value = "id") Long reviewId
-//                                            ,@SessionAttribute(value = "loginMember") Member loginMember) {
-//        ReviewLikeDto reviewLikeDto = reviewService.toggleLike(reviewId,loginMember);
-//
-//        List<String> findReviewLikes = reviewService.findLikesMemberId(review_id);
-//		List<Map<String, Object>> findLikesById = reviewService.findLikesById(review_id);
-//
-//
-//		Review review= reviewService.findReview(review_id);
-//		ReviewLikes reviewLikes = new ReviewLikes();
-//		String member_id = loginMember.getMember_id();
-//
-//		Object like_id = null;
-//		for (int i = 0; i < findLikesById.size(); i++) {
-//		    Map<String, Object> map = findLikesById.get(i);
-//		    if (member_id.equals((String)map.get("MEMBER_ID"))) {
-//		        like_id =map.get("LIKE_ID");
-//		        break;
-//		    }
-//		}
-//		if (review.getReview_like() == null) {
-//		    review.setReview_like(0L);
-//		}
-//		log.info("aa:{}",review);
-//		if (review != null) {
-//			if(!findReviewLikes.contains(member_id)) {
-//				review.addReview_like();
-//				reviewLikes.setMember_id(member_id);
-//				reviewLikes.setReview_id(review_id);
-//				reviewService.saveLikes(reviewLikes);
-//				review.setLiked(true);
-//				log.info("aa:{}",review);
-//
-//			}
-//			else {
-//				review.removeReview_like();
-//				reviewService.deleteLike(like_id);
-//				review.setLiked(false);
-//		    }
-//			reviewService.updateReview(review);
-//	    return ResponseEntity.ok(review);
-//	  } else {
-//	    // 관광지 정보가 없는 경우, 오류 응답을 반환합니다.
-//	    return ResponseEntity.badRequest().build();
-//	  }
-//	}
+    //좋아요 기능
+ 	@PostMapping("{id}/like")
+	public ResponseEntity<ReviewLikeDto> toggleLike(@PathVariable(value = "id") Long reviewId
+                                            ,@SessionAttribute(value = "loginMember") Member loginMember) {
+        try {
+            ReviewLikeDto reviewLikeDto = reviewService.toggleLike(reviewId,loginMember);
+            return ResponseEntity.ok(reviewLikeDto);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 }

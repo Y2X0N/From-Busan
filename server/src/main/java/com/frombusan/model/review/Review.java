@@ -20,20 +20,6 @@ public class Review {
     private LocalDateTime created_time;
     @NotBlank
     private String review_place;
-    private boolean liked;
-
-    public static ReviewUpdateForm toReviewUpdateForm(Review review) {
-        ReviewUpdateForm reviewUpdateForm = new ReviewUpdateForm();
-        reviewUpdateForm.setReview_id(review.getReview_id());
-        reviewUpdateForm.setTitle(review.getTitle());
-        reviewUpdateForm.setContents(review.getContents());
-        reviewUpdateForm.setMember_id(review.getMember_id());
-        reviewUpdateForm.setHit(review.getHit());
-        reviewUpdateForm.setCreated_time(review.getCreated_time());
-        reviewUpdateForm.setReview_like(review.getReview_like());
-        reviewUpdateForm.setReview_place(review.getReview_place());
-        return reviewUpdateForm;
-    }
 
     public void addReview_like() {
         this.review_like++;
