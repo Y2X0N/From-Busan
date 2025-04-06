@@ -166,6 +166,9 @@ CREATE TABLE review_like (
     member_id VARCHAR(20) REFERENCES member(member_id),
     review_id INTEGER REFERENCES review(review_id)
 );
+-- restaurant extension
+CREATE EXTENSION cube;
+CREATE EXTENSION earthdistance;
 
 
 

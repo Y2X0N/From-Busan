@@ -5,16 +5,11 @@
 <mapper namespace="com.frombusan.repository.ReplyMapper">
     <!-- 리플 등록 -->
     <insert id="saveReply">
-    	<selectKey keyProperty="reply_id" resultType="long" order="BEFORE">
-    		select seq_review.nextval from dual
-    	</selectKey>
     	insert into reply (
-    		reply_id,
     		review_id,
     		member_id,
     		content
     	) values (
-    		#{reply_id},
     		#{review_id},
     		#{member_id},
     		#{content}
