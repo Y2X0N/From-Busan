@@ -3,6 +3,7 @@ package com.frombusan.repository;
 import java.util.List;
 import java.util.Map;
 
+import com.frombusan.model.tourist.Tourist_Spot;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
@@ -39,6 +40,9 @@ public interface FestivalMapper {
 	void saveLikes(FestivalLikes festivalLikes);
 	//회원의 찜 저장
 	void saveMyList(FestivalMyList festivalMyList);
+	//회원의 찜 목록
+	List<Festival> findMyWishlistByMemberId(String member_id);
+
 
 	//미사용 메소드
 	List<Map<String,Object>> findLikesById(Long festival_id);

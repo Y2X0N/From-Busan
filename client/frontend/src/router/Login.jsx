@@ -12,6 +12,7 @@ function Login() {
   useEffect(() => {
     if (actionData?.user) {
       navi("/");
+      console.log(actionData.user);
       return setUser(actionData.user);
     }
   }, [actionData]);

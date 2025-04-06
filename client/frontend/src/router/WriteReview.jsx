@@ -4,6 +4,7 @@ import classes from "./WriteReview.module.css";
 
 function WriteReview() {
   const navi = useNavigate();
+  const mockData = ["하라주쿠", "신주쿠"];
 
   function handleReturn() {
     navi("../review");
@@ -36,8 +37,9 @@ function WriteReview() {
                   style={{ width: "600px" }}
                 />
                 <datalist id="searchOptions">
-                  <option value="하라주쿠"></option>
-                  <option value="신주쿠"></option>
+                  {mockData.map((item) => (
+                    <option value={item}></option>
+                  ))}
                 </datalist>
                 <div class="error">에러표시장소</div>
                 <div class="error">에러표시장소</div>

@@ -125,8 +125,17 @@
         )
     </insert>
 
-    <!--미사용 메소드 -->
+    <!--회원의 찜 목록-->
+    <select id="findMyWishlistByMemberId" resultType="festival">
+        select itemcntnts,festival_id,place_like,main_img_normal,main_title, hit
+        from wish_list_fes
+        inner join festival
+        on wish_list_fes.festival_id = festival.festival_id
+        where wish_list_fes.member_id = #{member_id}
+    </select>
 
+
+    <!--미사용 메소드 -->
     <select id="findLikesMemberId" resultType="string">
         select member_id from festival_likes where festival_id=#{festival_id}
     </select>

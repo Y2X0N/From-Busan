@@ -4,8 +4,13 @@ import { useAuth } from "../AuthProvider";
 
 function MenuLayout() {
   const { user, setUser } = useAuth();
+  const apiUrl = import.meta.env.VITE_API_URL;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await fetch(apiUrl + "/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
     setUser(null);
     document.cookie =
       "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
