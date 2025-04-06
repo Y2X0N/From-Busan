@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.frombusan.dto.request.ReviewUpdateDto;
+import com.frombusan.dto.response.RelationReviewListDto;
 import com.frombusan.dto.response.ReviewInfoDto;
 import com.frombusan.dto.request.ReviewWriteDto;
+import com.frombusan.dto.response.ReviewLikeDto;
 import com.frombusan.dto.response.ReviewListDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -85,55 +87,24 @@ public class ReviewController {
         return ResponseEntity.ok("게시글 삭제 완료");
     }
 
- // 한 장소 게시글 전체 보기
+    // 관련 리뷰 , 명소나 페스트벌의 main_title의 리뷰를 전부 불러옴
     @GetMapping("reviewList")
-    public String reviewList(@RequestParam(value = "page", defaultValue = "1") int page,
-                       @RequestParam(value = "searchText", defaultValue = "") String searchText,
-                       Model model,@RequestParam("main_title") String review_place
-                       ,@SessionAttribute(value = "loginMember", required = false) Member loginMember
-    					) {
-        //int total = reviewService.getTotal(searchText);
-        //PageNavigator navi = new PageNavigator(countPerPage, pagePerGroup, page, total);
-        // 데이터베이스에 저장된 모든 Board 객체를 리스트 형태로 받는다.
-        //List<Review> reviews = reviewService.findReviews(searchText, navi.getStartRecord(), navi.getCountPerPage());
+    public ResponseEntity<RelationReviewListDto> getReviewListByMainTitle(
+                                @RequestParam(value = "page", defaultValue = "1") int page,
+                                @RequestParam(value = "searchText", defaultValue = "") String searchText,
+                                @RequestParam("main_title") String reviewPlace) {
 
-        List<Review> findReviewsByMainTitle = reviewService.findReviewsByMainTitle(review_place);
-        //model.addAttribute("member_id",loginMember.getMember_id());
-        // Board 리스트를 model 에 저장한다.
-        model.addAttribute("findReviewsByMainTitle", findReviewsByMainTitle);
-
-        String reviewPlace = review_place.substring(1, review_place.length() - 1);
-        model.addAttribute("reviewPlace", reviewPlace);
-        // PageNavigation 객체를 model 에 저장한다.
-        //model.addAttribute("navi", navi);
-        //model.addAttribute("searchText", searchText);
-
-        // board/list.html 를 찾아서 리턴한다.
-        return "review/reviewList";
+        RelationReviewListDto reviewListByMainTitle = reviewService.getReviewListByMainTitle(page, searchText, reviewPlace);
+        return ResponseEntity.ok(reviewListByMainTitle);
     }
-
-    // 내가 쓴 리뷰 리스트
-    @GetMapping("myReviewList")
-    public String myReviewList(
-                        @SessionAttribute(value = "loginMember", required = false) Member loginMember
-                        ,Model model) {
-
-    	List<Review> reviews = reviewService.findReviewsByMemberId(loginMember.getMember_id());
-    	if(loginMember!=null) {
-    		model.addAttribute("reviews", reviews);
-    		model.addAttribute("loginMember",loginMember.getMember_id());
-    	}
-
-    	return "member/myReviewList";
-    }
-
 
   //좋아요 기능
-// 	@PostMapping("/like")
-//	public ResponseEntity<Review> likeReview(@RequestParam("review_id") Long review_id
-//											,@SessionAttribute(value = "loginMember", required = false) Member loginMember
-//											) {
-// 		List<String> findReviewLikes = reviewService.findLikesMemberId(review_id);
+// 	@PostMapping("{id}/like")
+//	public ResponseEntity<Review> toggleLike(@PathVariable(value = "id") Long reviewId
+//                                            ,@SessionAttribute(value = "loginMember") Member loginMember) {
+//        ReviewLikeDto reviewLikeDto = reviewService.toggleLike(reviewId,loginMember);
+//
+//        List<String> findReviewLikes = reviewService.findLikesMemberId(review_id);
 //		List<Map<String, Object>> findLikesById = reviewService.findLikesById(review_id);
 //
 //

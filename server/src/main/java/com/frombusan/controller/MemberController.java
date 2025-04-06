@@ -4,6 +4,7 @@ import com.frombusan.dto.request.FindIdDto;
 import com.frombusan.dto.request.FindPwDto;
 import com.frombusan.dto.request.UpdateMemberDto;
 import com.frombusan.dto.response.MyWishlist;
+import com.frombusan.model.review.Review;
 import com.frombusan.service.MemberService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import com.frombusan.model.member.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -62,5 +64,14 @@ public class MemberController {
 		MyWishlist myWishlist = memberService.getMyWishList(loginMember);
 		return ResponseEntity.ok(myWishlist);
     }
+
+	//　후기리스트
+	@GetMapping("myReviewList")
+	public ResponseEntity<List<Review>> getMyReviewList(@SessionAttribute(value = "loginMember") Member loginMember) {
+		List<Review> myReviewList = memberService.getMyReviewList(loginMember);
+		return ResponseEntity.ok(myReviewList);
+	}
+
+
 
 }

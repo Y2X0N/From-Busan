@@ -7,11 +7,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
-public class ReviewListDto {
-    List<Review> reviews;
+public class RelationReviewListDto {
+    private List<Review> reviews;
     private PageNavigator navi;
 }

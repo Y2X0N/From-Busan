@@ -76,15 +76,10 @@
     </select>
 
     <insert id="saveLikes">
-        <selectKey keyProperty="like_id" resultType="long" order="BEFORE">
-            select seq_review.nextval from dual
-        </selectKey>
         insert into review_like (
-        like_id,
         member_id,
         review_id
         ) values (
-        #{like_id},
         #{member_id},
         #{review_id}
         )

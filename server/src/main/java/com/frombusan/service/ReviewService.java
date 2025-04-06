@@ -5,22 +5,17 @@ import java.util.Map;
 
 import com.frombusan.dto.request.ReviewUpdateDto;
 import com.frombusan.dto.request.ReviewWriteDto;
-import com.frombusan.dto.response.ReviewInfoDto;
-import com.frombusan.dto.response.ReviewListDto;
+import com.frombusan.dto.response.*;
 import com.frombusan.model.member.Member;
-import com.frombusan.repository.TouristMapper;
+import com.frombusan.model.tourist.TouristSpotLikes;
 import com.frombusan.util.PageNavigator;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.frombusan.model.AttachedImg;
 import com.frombusan.model.review.Review;
 import com.frombusan.model.review.ReviewLikes;
 import com.frombusan.repository.ReviewMapper;
-import com.frombusan.util.FileService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +27,10 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewService {
 
     private final ReviewMapper reviewMapper;
+
+    public static final int countPerPage = 10;
+    public static final int pagePerGroup = 5;
+
 
     @Transactional
     public void write(Member loginMember, ReviewWriteDto reviewWriteDto) {
@@ -49,7 +48,7 @@ public class ReviewService {
     public ReviewListDto getList(String searchText, int page) {
         try {
             int total = reviewMapper.getTotal(searchText);
-            PageNavigator navi = new PageNavigator(ReviewListDto.countPerPage,ReviewListDto.pagePerGroup, page, total);
+            PageNavigator navi = new PageNavigator(countPerPage,pagePerGroup, page, total);
             RowBounds rowBounds = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
             List<Review> reviews = reviewMapper.findReviews(searchText, rowBounds);
             return new ReviewListDto(reviews,navi);
@@ -106,6 +105,41 @@ public class ReviewService {
         reviewMapper.removeReview(reviewId);
     }
 
+    @Transactional(readOnly = true)
+    public RelationReviewListDto getReviewListByMainTitle(int page, String searchText, String reviewPlace) {
+        int total = reviewMapper.getTotal(searchText);
+        PageNavigator navi = new PageNavigator(countPerPage,pagePerGroup, page, total);
+        RowBounds rowBounds = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
+        List<Review> reviews = reviewMapper.findReviews(reviewPlace,rowBounds);
+        return new RelationReviewListDto(reviews,navi);
+    }
+
+    @Transactional
+    public ReviewLikeDto toggleLike(Long reviewId, Member loginMember) {
+        Review findReview = reviewMapper.findReview(reviewId);
+        boolean isFavorite = reviewMapper.checkMemberLikeStatus(reviewId, loginMember.getMember_id());
+        if (isFavorite) {
+            findReview.removePlace_like();
+
+            TouristSpotLikes findTouristSpotLike = touristMapper.findTouristSpotLike(touristSpotId, loginMember.getMember_id());
+            touristMapper.deleteLike(findTouristSpotLike.getLike_id());
+        } else {
+            findTouristSpot.addPlace_like();
+
+            TouristSpotLikes touristSpotLike = new TouristSpotLikes();
+            touristSpotLike.setMember_id(loginMember.getMember_id());
+            touristSpotLike.setTourist_Spot_id(touristSpotId);
+            touristMapper.saveLikes(touristSpotLike);
+        }
+
+        touristMapper.updateTourist(findTouristSpot);
+
+        TouristInfoLikeDto touristInfoLikeDto = new TouristInfoLikeDto();
+        touristInfoLikeDto.setTouristSpot(findTouristSpot);
+        touristInfoLikeDto.setFavorite(!isFavorite);
+        return touristInfoLikeDto;
+
+    }
 
 
     public List<Review> findReviewsByMainTitle(String review_place) {
@@ -133,7 +167,6 @@ public class ReviewService {
  	public void deleteLike(Object like_id) {
  		reviewMapper.deleteLike(like_id);
  	}
-
 
 
 }

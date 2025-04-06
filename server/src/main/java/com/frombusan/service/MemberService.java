@@ -6,15 +6,20 @@ import com.frombusan.dto.request.UpdateMemberDto;
 import com.frombusan.dto.response.MyWishlist;
 import com.frombusan.model.festival.Festival;
 import com.frombusan.model.member.Member;
+import com.frombusan.model.review.Review;
 import com.frombusan.model.tourist.Tourist_Spot;
 import com.frombusan.repository.FestivalMapper;
 import com.frombusan.repository.MemberMapper;
+import com.frombusan.repository.ReviewMapper;
 import com.frombusan.repository.TouristMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.List;
 
@@ -26,6 +31,7 @@ public class MemberService {
     private final MemberMapper memberMapper;
     private final TouristMapper touristMapper;
     private final FestivalMapper festivalMapper;
+    private final ReviewMapper reviewMapper;
 
     public boolean idCheck(String memberId) {
         log.info("아이디 중복 확인 , id = {}",memberId);
@@ -63,6 +69,10 @@ public class MemberService {
         return myWishlist;
     }
 
+    public List<Review> getMyReviewList(Member loginMember) {
+        return reviewMapper.findReviewsByMemberId(loginMember.getMember_id());
+    }
+
     public Member checkPw(String password, Member loginMember) {
         if(loginMember.getPassword().equals(password)) {
             return loginMember;
@@ -70,4 +80,5 @@ public class MemberService {
             throw new RuntimeException();
         }
     }
+
 }
