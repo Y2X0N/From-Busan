@@ -127,11 +127,11 @@
 
     <!--회원의 찜 목록-->
     <select id="findMyWishlistByMemberId" resultType="festival">
-        select itemcntnts,festival_id,place_like,main_img_normal,main_title, hit
-        from wish_list_fes
-        inner join festival
-        on wish_list_fes.festival_id = festival.festival_id
-        where wish_list_fes.member_id = #{member_id}
+        select f.itemcntnts,f.festival_id,f.place_like,f.main_img_normal,f.main_title, f.hit
+        from wish_list_fes wl
+        inner join festival f
+        on wl.festival_id = f.festival_id
+        where wl.member_id = #{member_id}
     </select>
 
 

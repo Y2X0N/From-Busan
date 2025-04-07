@@ -31,41 +31,36 @@ function Directions({ from, to, mode }) {
   const selected = routes[routeIndex];
   const leg = selected?.legs[0];
 
-  // Initialize directions service and renderer
   useEffect(() => {
     if (!routesLibrary || !map) return;
     setDirectionsService(new routesLibrary.DirectionsService());
     setDirectionsRenderer(
       new routesLibrary.DirectionsRenderer({
-        draggable: true, // Only necessary for draggable markers
+        draggable: true,
         map,
       })
     );
   }, [routesLibrary, map]);
 
-  // Add the following useEffect to make markers draggable
-  useEffect(() => {
-    if (!directionsRenderer) return;
+  // useEffect(() => {
+  //   if (!directionsRenderer) return;
+  //   const listener = directionsRenderer.addListener(
+  //     "directions_changed",
+  //     () => {
+  //       const result = directionsRenderer.getDirections();
+  //       console.log(result);
+  //       if (result) {
+  //         setRoutes(result.routes);
+  //       }
+  //     }
+  //   );
 
-    // Add the listener to update routes when directions change
-    const listener = directionsRenderer.addListener(
-      "directions_changed",
-      () => {
-        const result = directionsRenderer.getDirections();
-        if (result) {
-          setRoutes(result.routes);
-        }
-      }
-    );
+  //   return () => coreLibrary.event.removeListener(listener);
+  // }, [directionsRenderer]);
 
-    return () => coreLibrary.event.removeListener(listener);
-  }, [directionsRenderer]);
-
-  // Use directions service
   useEffect(() => {
     if (!directionsService || !directionsRenderer) return;
 
-    directionsRenderer.setDirections(null);
     directionsService
       .route({
         origin: from,
@@ -74,12 +69,12 @@ function Directions({ from, to, mode }) {
         provideRouteAlternatives: true,
       })
       .then((response) => {
+        directionsRenderer.setDirections(null);
         directionsRenderer.setDirections(response);
         setRoutes(response.routes);
       });
   }, [directionsService, directionsRenderer]);
 
-  // Update direction route
   useEffect(() => {
     if (!directionsRenderer) return;
     directionsRenderer.setRouteIndex(routeIndex);

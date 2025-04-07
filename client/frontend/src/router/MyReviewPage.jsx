@@ -1,8 +1,11 @@
 import classes from "./MyReviewPage.module.css";
 import { useAuth } from "../AuthProvider";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 function MyReviewPage() {
   const { user } = useAuth();
+  const loadData = useLoaderData();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -40,21 +43,27 @@ function MyReviewPage() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>대공원</td>
-              <td>대공원제목</td>
-              <td>
-                <a>naver</a>
-              </td>
-              <td>오늘</td>
-              <td>1</td>
-              <td>1</td>
-            </tr>
+            {loadData.map((item) => (
+              <tr
+                style={{ cursor: "pointer" }}
+                key={item.review_id}
+                onClick={() => navigate(`/review/${item.review_id}`)}
+              >
+                <td style={{ color: "red" }}>{item.review_id}</td>
+                <td>{item.review_place}</td>
+                <td>{item.title}</td>
+                <td>{item.member_id}</td>
+                <td>{item.created_time.split("T")[0]}</td>
+                <td style={{ color: "red" }}>{item.review_like}</td>
+                <td>{item.hit}</td>
+              </tr>
+            ))}
 
-            <tr>
-              <td colSpan="10">리뷰가 없습니다</td>
-            </tr>
+            {loadData.length === 0 && (
+              <tr>
+                <td colSpan="7">작성하신 리뷰가 없습니다</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -63,3 +72,12 @@ function MyReviewPage() {
 }
 
 export default MyReviewPage;
+
+export async function loader() {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const response = await fetch(apiUrl + "/member/myReviewList", {
+    credentials: "include",
+  });
+  const resData = await response.json();
+  return resData;
+}

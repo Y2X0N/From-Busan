@@ -179,9 +179,11 @@
 
 .ContentsContainer {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 100px 50px;
   padding: 8vh 50px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  justify-items: center;
+  align-items: start;
 }
 .ContentsContainer .card {
   position: relative;

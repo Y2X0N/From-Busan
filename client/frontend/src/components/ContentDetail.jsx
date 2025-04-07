@@ -8,10 +8,11 @@ import {
   Pin,
 } from "@vis.gl/react-google-maps";
 import { useAuth } from "../AuthProvider";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function ContentDetail({ data, isFavorite, isWishList }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const subject = location.pathname.split("/")[1];
   const { user } = useAuth();
   const [showDetail, setShowDetail] = useState("detailInfo");
@@ -134,6 +135,9 @@ function ContentDetail({ data, isFavorite, isWishList }) {
                   type="button"
                   className={classes.findReviewButton}
                   value="관련 리뷰 찾기"
+                  onClick={() =>
+                    navigate(`/review/?searchText=${data.main_title}`)
+                  }
                 />
               </div>
 

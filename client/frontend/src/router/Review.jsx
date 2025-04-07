@@ -1,8 +1,23 @@
+import { useState } from "react";
 import { useAuth } from "../AuthProvider";
 import classes from "./Review.module.css";
-import { Link } from "react-router-dom";
+import {
+  Link,
+  useLoaderData,
+  useLocation,
+  NavLink,
+  useNavigate,
+} from "react-router-dom";
 function Review() {
   const { user } = useAuth();
+  const loadData = useLoaderData();
+  const [currentNavi, setCurrentNavi] = useState(loadData.navi);
+  const [searchText, setSearchText] = useState("");
+  const currentLocation = useLocation();
+  const navigate = useNavigate();
+  const searchParams = new URLSearchParams(currentLocation.search);
+  const searchTexts = decodeURIComponent(searchParams.get("searchText") || "");
+
   return (
     <>
       <div className={classes.contentsContainer}>
@@ -16,7 +31,7 @@ function Review() {
           <div className={classes.searchBar}>
             <input
               type="search"
-              placeholder="검색어를 입력해주세요."
+              placeholder={searchTexts ? searchTexts : "검색어를 입력해주세요."}
               // onChange={handleSearchText}
               // onKeyDown={handleKeyDown}
             />
@@ -53,100 +68,24 @@ function Review() {
             </tr>
           </thead>
           <tbody>
-            {false && (
-              <>
-                <th:block
-                  th:each="review, reviewsStat: ${findReviewRank5}"
-                  th:if="${navi.currentPage==1}"
-                >
-                  <tr
-                    th:if="${reviews}"
-                    th:onclick="|location.href='@{/review/read(review_id=${review.review_id})}'|"
-                    style="cursor:pointer;"
-                    class="hover likeRanking"
-                  >
-                    <td
-                      class="color"
-                      th:text="${reviewsStat.count}"
-                      style="color: red;"
-                    ></td>
-                    <td
-                      id="review_place"
-                      class="color"
-                      th:text="${review.review_place}"
-                      th:data-original="${review.review_place}"
-                    ></td>
-                    <th
-                      th:text="${review.title}"
-                      th:data-original="${review.title}"
-                      id="title"
-                    ></th>
-                    <td th:text="${review.member_id}" class="center"></td>
-                    <td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
-                    <td
-                      th:text="${review.review_like}"
-                      style="color: red;"
-                    ></td>
-                    <td th:text="${review.hit}"></td>
-                  </tr>
-                </th:block>
+            {loadData.reviews.map((item) => (
+              <tr
+                style={{ cursor: "pointer" }}
+                class="hover likeRanking"
+                key={item.review_id}
+                onClick={() => navigate(`./${item.review_id}`)}
+              >
+                <td style={{ color: "red" }}>{item.review_id}</td>
+                <td>{item.review_place}</td>
+                <td>{item.title}</td>
+                <td>{item.member_id}</td>
+                <td>{item.created_time.split("T")[0]}</td>
+                <td style={{ color: "red" }}>{item.review_like}</td>
+                <td>{item.hit}</td>
+              </tr>
+            ))}
 
-                <th:block th:each="review, reviewsStat: ${reviews}">
-                  <th:block th:if="${navi.currentPage == 1 and reviewsStat.count <= 7}">
-                    <tr
-                      th:if="${reviews}"
-                      th:onclick="|location.href='@{/review/read(review_id=${review.review_id})}'|"
-                      style="cursor:pointer;"
-                      class="hover"
-                    >
-                      <td class="color" th:text="${reviewsStat.count+3}"></td>
-                      <td
-                        id="review_place"
-                        class="color"
-                        th:text="${review.review_place}"
-                        th:data-original="${review.review_place}"
-                      ></td>
-                      <th
-                        th:text="${review.title}"
-                        th:data-original="${review.title}"
-                        id="title"
-                      ></th>
-                      <td th:text="${review.member_id}" class="center"></td>
-                      <td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
-                      <td th:text="${review.review_like}"></td>
-                      <td th:text="${review.hit}"></td>
-                    </tr>
-                  </th:block>
-                  <th:block th:if="${navi.currentPage > 1 and reviewsStat.count <= 10}">
-                    <tr
-                      th:if="${reviews}"
-                      th:onclick="|location.href='@{/review/read(review_id=${review.review_id})}'|"
-                      style="cursor:pointer;"
-                      class="hover"
-                    >
-                      <td class="color" th:text="${reviewsStat.count}"></td>
-                      <td
-                        id="review_place"
-                        class="color"
-                        th:text="${review.review_place}"
-                        th:data-original="${review.review_place}"
-                      ></td>
-                      <th
-                        th:text="${review.title}"
-                        th:data-original="${review.title}"
-                        id="title"
-                      ></th>
-                      <td th:text="${review.member_id}" class="center"></td>
-                      <td th:text="${#temporals.format(review.created_time, 'yyyy-MM-dd')}"></td>
-                      <td th:text="${review.review_like}"></td>
-                      <td th:text="${review.hit}"></td>
-                    </tr>
-                  </th:block>
-                </th:block>
-              </>
-            )}
-
-            {true && (
+            {loadData.reviews.length === 0 && (
               <tr>
                 <td colSpan="7">리뷰가 없습니다</td>
               </tr>
@@ -161,9 +100,91 @@ function Review() {
             </Link>
           </div>
         )}
+
+        <div className={classes.pageContainer}>
+          {currentNavi.currentPage - currentNavi.pagePerGroup > 0 && (
+            <NavLink
+              to={`./?page=${
+                currentNavi.currentPage - currentNavi.pagePerGroup
+              }&searchText=${searchText}`}
+            >
+              ≪
+            </NavLink>
+          )}
+
+          {currentNavi.currentPage - 1 > 0 && (
+            <NavLink
+              to={`./?page=${
+                currentNavi.currentPage - 1
+              }&searchText=${searchText}`}
+            >
+              ＜
+            </NavLink>
+          )}
+
+          {currentNavi.endPageGroup !== 0 &&
+            [
+              ...Array(
+                currentNavi.endPageGroup - currentNavi.startPageGroup + 1
+              ),
+            ].map((_, index) => {
+              const counter = currentNavi.startPageGroup + index;
+              return (
+                <NavLink
+                  key={counter}
+                  to={`./?page=${counter}&searchText=${searchText}`}
+                  className={({ isActive }) =>
+                    (isActive &&
+                      currentLocation.search.includes(`page=${counter}`)) ||
+                    (currentLocation.search === "" && counter === 1)
+                      ? classes.active
+                      : ""
+                  }
+                >
+                  {counter}
+                </NavLink>
+              );
+            })}
+
+          {currentNavi.currentPage < currentNavi.totalPageCount && (
+            <NavLink
+              to={`./?page=${
+                currentNavi.currentPage + 1
+              }&searchText=${searchText}`}
+            >
+              ＞
+            </NavLink>
+          )}
+
+          {currentNavi.currentPage + currentNavi.pagePerGroup <=
+            currentNavi.totalPageCount && (
+            <NavLink
+              to={`./?page=${
+                currentNavi.currentPage + currentNavi.pagePerGroup
+              }&searchText=${searchText}`}
+            >
+              ≫
+            </NavLink>
+          )}
+        </div>
       </div>
     </>
   );
 }
 
 export default Review;
+
+export async function loader({ request }) {
+  const url = new URL(request.url);
+  const searchText = url.searchParams?.get("searchText");
+  let apiUrl = import.meta.env.VITE_API_URL;
+  if (searchText) {
+    apiUrl += `/review/list/?searchText=${searchText}`;
+  } else {
+    apiUrl += "/review/list";
+  }
+  const response = await fetch(apiUrl);
+  const resData = await response.json();
+  console.log(resData);
+  return resData;
+}

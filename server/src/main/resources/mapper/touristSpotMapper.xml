@@ -115,11 +115,11 @@
 
 	<!--명소찜목록-->
 	<select id="findMyWishlistByMemberId" resultType="tourist">
-		select itemcntnts,tourist_spot_id,place_like,main_img_normal,main_title, hit
-		from wish_list
-		inner join tourist_Spot
-		on wish_list.tourist_Spot_id = tourist_Spot.tourist_Spot_id
-		where wish_list.member_id = #{member_id}
+		select ts.itemcntnts,ts.tourist_spot_id,ts.place_like,ts.main_img_normal,ts.main_title, ts.hit
+		from wish_list wl
+		inner join tourist_Spot ts
+		on wl.tourist_Spot_id = ts.tourist_Spot_id
+		where wl.member_id = #{member_id}
 	</select>
 	
 	 <update id="addHit">
