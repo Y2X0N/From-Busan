@@ -4,6 +4,7 @@
 
 .error {
   color: red;
+  font-size: 10px;
 }
 
 .writeContainer {
@@ -64,11 +65,13 @@
   color: rgb(142, 141, 141);
   background-color: #e6f6ff;
   width: 50px;
+  height: 65px;
   text-align: center;
   border-bottom: 1px solid #ccc;
 }
 .writeTable td {
   width: 300px;
+  height: 65px;
   padding: 10px;
   vertical-align: top;
   border-bottom: 1px solid #ccc;

@@ -33,7 +33,7 @@
     <update id="updateReply">
         update reply
         <set>
-            <if test="content != null">content = #{content}</if>
+            <if test="content != null">content = #{content},</if>
         </set>
         where reply_id = #{reply_id}
     </update>

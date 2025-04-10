@@ -62,7 +62,7 @@ public class ReviewController {
     // 게시글 읽기
     @GetMapping("{id}")
     public ResponseEntity<ReviewInfoDto> read(@PathVariable(value = "id") Long review_id,
-                                              @SessionAttribute(value = "loginMember") Member loginMember) {
+                                              @SessionAttribute(value = "loginMember", required = false) Member loginMember) {
         try {
             ReviewInfoDto review = reviewService.read(review_id,loginMember);
             return ResponseEntity.ok(review);

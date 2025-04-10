@@ -11,9 +11,9 @@ function MenuLayout() {
       method: "POST",
       credentials: "include",
     });
-    setUser(null);
     document.cookie =
       "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    setUser(null);
   };
 
   return (

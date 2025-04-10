@@ -33,9 +33,9 @@ public class RestaurantController {
 	 * @param type 타입에 따라 명소인지 페스티벌인지 구분 , ex) tourist,festival
 	 * @return 맛집반환
 	 */
-	@GetMapping("list/{id}")
+	@GetMapping("{type}/{id}")
 	public ResponseEntity<List<Restaurant>> getList(@PathVariable(value = "id") Long id
-													,@RequestParam String type) {
+													,@PathVariable (value = "type") String type) {
 		List<Restaurant> findRestaurantList = restaurantService.getList(id,type);
 		return ResponseEntity.ok(findRestaurantList);
 	}

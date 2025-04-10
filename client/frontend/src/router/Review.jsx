@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../AuthProvider";
 import classes from "./Review.module.css";
 import {
@@ -11,12 +11,44 @@ import {
 function Review() {
   const { user } = useAuth();
   const loadData = useLoaderData();
+
+  const [currentPageData, setCurrentPageData] = useState(loadData.reviews);
   const [currentNavi, setCurrentNavi] = useState(loadData.navi);
   const [searchText, setSearchText] = useState("");
   const currentLocation = useLocation();
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(currentLocation.search);
   const searchTexts = decodeURIComponent(searchParams.get("searchText") || "");
+
+  function handleSearchText(event) {
+    setSearchText(event.target.value);
+  }
+  function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      navigate(`./?searchText=${searchText}`);
+    }
+  }
+
+  useEffect(() => {
+    const loader = async () => {
+      if (currentLocation.search === "") {
+        return;
+      } else {
+        try {
+          const response = await fetch(
+            `http://localhost:9000${currentLocation.pathname}list/${currentLocation.search}`
+          );
+          const reqData = await response.json();
+          setCurrentPageData(reqData[Object.keys(reqData)[0]]);
+          setCurrentNavi(reqData[Object.keys(reqData)[1]]);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    loader();
+  }, [currentLocation]);
 
   return (
     <>
@@ -32,12 +64,12 @@ function Review() {
             <input
               type="search"
               placeholder={searchTexts ? searchTexts : "검색어를 입력해주세요."}
-              // onChange={handleSearchText}
-              // onKeyDown={handleKeyDown}
+              onChange={handleSearchText}
+              onKeyDown={handleKeyDown}
             />
-            {/* <Link to={`./?searchText=${searchText}`}> */}
-            <button type="button">검색</button>
-            {/* </Link> */}
+            <Link to={`./?searchText=${searchText}`}>
+              <button type="button">검색</button>
+            </Link>
           </div>
         </div>
 
@@ -68,7 +100,7 @@ function Review() {
             </tr>
           </thead>
           <tbody>
-            {loadData.reviews.map((item) => (
+            {currentPageData.map((item) => (
               <tr
                 style={{ cursor: "pointer" }}
                 class="hover likeRanking"
@@ -185,6 +217,5 @@ export async function loader({ request }) {
   }
   const response = await fetch(apiUrl);
   const resData = await response.json();
-  console.log(resData);
   return resData;
 }

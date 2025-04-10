@@ -20,6 +20,7 @@ import com.frombusan.repository.ReviewMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.thymeleaf.util.StringUtils;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -65,7 +66,11 @@ public class ReviewService {
             findReview.addHit();
             reviewMapper.updateReview(findReview);
 
-            Boolean isFavorite = reviewMapper.checkMemberLikeStatus(reviewId, loginMember.getMember_id());
+            Boolean isFavorite = null;
+
+            if(checkLoginMember(loginMember)){
+                isFavorite = reviewMapper.checkMemberLikeStatus(reviewId, loginMember.getMember_id());
+            }
 
             ReviewInfoDto reviewInfoDto = new ReviewInfoDto();
             reviewInfoDto.setReview(findReview);
@@ -134,8 +139,12 @@ public class ReviewService {
         reviewMapper.updateReview(findReview);
         ReviewLikeDto reviewLikeDto = new ReviewLikeDto();
         reviewLikeDto.setReview(findReview);
-        reviewLikeDto.setFavorite(isFavorite);
+        reviewLikeDto.setFavorite(!isFavorite);
         return reviewLikeDto;
+    }
+
+    private boolean checkLoginMember(Member loginMember){
+        return loginMember != null && !StringUtils.isEmpty(loginMember.getMember_id());
     }
 
 }

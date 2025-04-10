@@ -1,20 +1,95 @@
 import { ReactSummernoteLite } from "@easylogic/react-summernote-lite";
-import { Form, useLoaderData, useNavigate } from "react-router-dom";
+import {
+  Form,
+  redirect,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+  useSubmit,
+} from "react-router-dom";
 import classes from "./WriteReview.module.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 function WriteReview() {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const navi = useNavigate();
+  const location = useLocation();
   const places = useLoaderData();
   const noteContent = useRef();
   const contentValue = useRef();
+  const reviewPlace = useRef();
+  const reviewTitle = useRef();
+  const [errorTitle, setErrorTitle] = useState("");
+  const [errorPlace, setErrorPlace] = useState("");
+  const [errorContent, setErrorContent] = useState("");
+  const submit = useSubmit();
+
+  const reviewData = location.state?.review;
+  const content = reviewData?.contents;
 
   function handleReturn() {
     navi("../review");
   }
 
-  function handleSubmit() {
+  async function handleReviewDelete(reviewId) {
+    const result = confirm("정말로 삭제하시겠습니까?");
+
+    if (!result) {
+      return;
+    }
+
+    const response = await fetch(apiUrl + `/review/delete/${reviewId}`, {
+      method: "POST",
+      credentials: "include",
+    });
+    return navi("../review");
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setErrorContent("");
+    setErrorPlace("");
+    setErrorTitle("");
+
+    if (!reviewPlace.current.value) {
+      setErrorPlace("*리뷰할 장소를 선택해주세요");
+      reviewPlace.current.focus();
+      return;
+    }
+
+    const isPlaceValid = places.some(
+      (item) => item === reviewPlace.current.value
+    );
+
+    if (!isPlaceValid) {
+      setErrorPlace("*정확한 리뷰장소 선택해주세요");
+      reviewPlace.current.focus();
+      return;
+    }
+
+    if (!reviewTitle.current.value) {
+      setErrorTitle("*제목을 입력해주세요");
+      reviewTitle.current.focus();
+      return;
+    }
+
+    function extractTextFromHTML() {
+      const tmp = document.createElement("div");
+      tmp.innerHTML = noteContent.current;
+      return tmp.textContent || tmp.innerText || "";
+    }
+
+    const result = extractTextFromHTML();
+
+    if (!result) {
+      setErrorContent("*내용을 입력해주세요");
+      return;
+    }
+
     contentValue.current.value = noteContent.current;
+
+    submit(e.currentTarget);
   }
 
   return (
@@ -29,8 +104,17 @@ function WriteReview() {
               value="목록으로"
               onClick={handleReturn}
             />
-            <input className={classes.writeBtn} type="submit" value="등록" />
-            <input className={classes.writeBtn} type="reset" value="취소" />
+            <input
+              className={classes.writeBtn}
+              type="submit"
+              value={location.pathname === "/review/edit" ? "글수정" : "등록"}
+            />
+            <input
+              className={classes.writeBtn}
+              type="reset"
+              value={location.pathname === "/review/edit" ? "글삭제" : "취소"}
+              onClick={() => handleReviewDelete(reviewData.review_id)}
+            />
           </div>
         </div>
         <table className={classes.writeTable}>
@@ -43,27 +127,35 @@ function WriteReview() {
                   list="searchOptions"
                   style={{ width: "600px" }}
                   name="review_place"
+                  defaultValue={reviewData ? reviewData.review_place : ""}
+                  readOnly={reviewData ? true : false}
+                  ref={reviewPlace}
                 />
                 <datalist id="searchOptions">
                   {places.map((item) => (
                     <option key={item} value={item}></option>
                   ))}
                 </datalist>
-                <div class="error">에러표시장소</div>
-                <div class="error">에러표시장소</div>
+                <div className={classes.error}>{errorPlace}</div>
               </td>
             </tr>
 
             <tr>
               <th scope="row">제목</th>
               <td>
-                <input type="text" style={{ width: "600px" }} name="title" />
-                <div class="error">에러표시장소</div>
+                <input
+                  type="text"
+                  style={{ width: "600px" }}
+                  name="title"
+                  defaultValue={reviewData ? reviewData.title : ""}
+                  ref={reviewTitle}
+                />
+                <div className={classes.error}>{errorTitle}</div>
               </td>
             </tr>
           </tbody>
         </table>
-        <div class="error">에러표시장소</div>
+        <div className={classes.error}>{errorContent}</div>
         <div>
           <ReactSummernoteLite
             id="sample"
@@ -71,11 +163,19 @@ function WriteReview() {
             placeholder="내용을 입력해주세요"
             onInit={({ note }) => {
               note.summernote("justifyLeft");
+              {
+                reviewData ? note.summernote("pasteHTML", `${content}`) : null;
+              }
             }}
             onChange={(content) => (noteContent.current = content)}
           />
         </div>
         <input type="hidden" name="contents" ref={contentValue} />
+        <input
+          type="hidden"
+          name="actionType"
+          value={reviewData ? "update" : "create"}
+        />
       </Form>
     </div>
   );
@@ -91,17 +191,27 @@ export async function loader() {
 }
 
 export async function action({ request }) {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  let apiUrl = import.meta.env.VITE_API_URL;
   const formData = await request.formData();
   const postData = Object.fromEntries(formData);
-  console.log(postData);
-  const response = await fetch(apiUrl + "/review/write", {
-    method: "POST",
-    body: JSON.stringify(postData),
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
-  console.log(response);
+  if (postData.actionType === "update") {
+    const response = await fetch(apiUrl + "/review/write", {
+      method: "POST",
+      body: JSON.stringify(postData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+  } else {
+    const response = await fetch(apiUrl + "/review/update", {
+      method: "POST",
+      body: JSON.stringify(postData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+  }
+  return redirect("../review");
 }

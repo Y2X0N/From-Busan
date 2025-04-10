@@ -284,7 +284,6 @@ export async function action({ request }) {
     },
     credentials: "include",
   });
-  console.log("종료", response.status);
   apiUrl = import.meta.env.VITE_API_URL;
   if (response.status === 200) {
     await fetch(apiUrl + "/auth/logout", {

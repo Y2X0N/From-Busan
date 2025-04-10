@@ -22,7 +22,10 @@ import WriteReview, {
   loader as loadPlaces,
   action as reviewAction,
 } from "./router/WriteReview.jsx";
-import ReviewDetail, { loader as loadReview } from "./router/ReviewDetail.jsx";
+import ReviewDetail, {
+  loader as loadReview,
+  action as replyAction,
+} from "./router/ReviewDetail.jsx";
 
 const router = createBrowserRouter([
   {
@@ -102,9 +105,16 @@ const router = createBrowserRouter([
         path: "/review/:id",
         element: <ReviewDetail />,
         loader: loadReview,
+        action: replyAction,
       },
       {
         path: "/review/write",
+        element: <WriteReview />,
+        loader: loadPlaces,
+        action: reviewAction,
+      },
+      {
+        path: "/review/edit",
         element: <WriteReview />,
         loader: loadPlaces,
         action: reviewAction,

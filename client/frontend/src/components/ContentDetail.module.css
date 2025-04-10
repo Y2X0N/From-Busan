@@ -183,3 +183,69 @@
   height: 600px;
   background-color: grey;
 }
+
+.infoWindowContainer {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.infoWindowHeader {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.infoWindowHeader h2 {
+  font-size: 1.2em;
+  margin: 0;
+  color: #333;
+}
+
+.infoWindowBody {
+  display: flex;
+  gap: 10px;
+}
+
+.infoWindowImg {
+  flex: 0 0 80px;
+  min-width: 100px;
+  min-height: 100px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.infoWindowImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.infoWindowDetails {
+  flex: 1;
+  font-size: 0.9em;
+  color: #555;
+  text-align: left;
+}
+
+.infoWindowDetails p {
+  margin: 4px 0;
+  line-height: 1.3;
+}
+
+.infoWindowDetails p strong {
+  color: #333;
+}
+.gm-style-iw button[title="Close"],
+.gm-ui-hover-effect[title="Close"] {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  top: 5px !important;
+  right: 5px !important;
+}

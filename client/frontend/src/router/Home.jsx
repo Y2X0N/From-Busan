@@ -42,21 +42,20 @@ function Directions({ from, to, mode }) {
     );
   }, [routesLibrary, map]);
 
-  // useEffect(() => {
-  //   if (!directionsRenderer) return;
-  //   const listener = directionsRenderer.addListener(
-  //     "directions_changed",
-  //     () => {
-  //       const result = directionsRenderer.getDirections();
-  //       console.log(result);
-  //       if (result) {
-  //         setRoutes(result.routes);
-  //       }
-  //     }
-  //   );
+  useEffect(() => {
+    if (!directionsRenderer) return;
+    const listener = directionsRenderer.addListener(
+      "directions_changed",
+      () => {
+        const result = directionsRenderer.getDirections();
+        if (result) {
+          setRoutes(result.routes);
+        }
+      }
+    );
 
-  //   return () => coreLibrary.event.removeListener(listener);
-  // }, [directionsRenderer]);
+    return () => coreLibrary.event.removeListener(listener);
+  }, [directionsRenderer]);
 
   useEffect(() => {
     if (!directionsService || !directionsRenderer) return;
@@ -98,7 +97,6 @@ function Home() {
     setTo(event.target.value);
   }
   function setModeHandler(event) {
-    console.log(event.target.value);
     setMode(event.target.value);
   }
   function handleFindRoute() {

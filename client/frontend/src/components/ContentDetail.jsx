@@ -3,14 +3,13 @@ import classes from "./ContentDetail.module.css";
 import {
   APIProvider,
   Map,
-  Marker,
   AdvancedMarker,
-  Pin,
+  InfoWindow,
 } from "@vis.gl/react-google-maps";
 import { useAuth } from "../AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 
-function ContentDetail({ data, isFavorite, isWishList }) {
+function ContentDetail({ data, isFavorite, isWishList, restData }) {
   const location = useLocation();
   const navigate = useNavigate();
   const subject = location.pathname.split("/")[1];
@@ -18,6 +17,7 @@ function ContentDetail({ data, isFavorite, isWishList }) {
   const [showDetail, setShowDetail] = useState("detailInfo");
   const [isFavoriteStat, setIsFavoriteStat] = useState(isFavorite);
   const [isWishListStat, setIsWishListStat] = useState(isWishList);
+  const [clickItem, setClickItem] = useState(null);
 
   useEffect(() => {
     setIsFavoriteStat(isFavorite);
@@ -219,8 +219,6 @@ function ContentDetail({ data, isFavorite, isWishList }) {
                   ></Map>
                   <AdvancedMarker
                     position={{ lat: data.lat, lng: data.lng }}
-                    clickable={true}
-                    onClick={() => alert("marker was clicked!")}
                     title={"clickable google.maps.Marker"}
                   >
                     <img
@@ -229,6 +227,66 @@ function ContentDetail({ data, isFavorite, isWishList }) {
                       alt="Festival"
                     />
                   </AdvancedMarker>
+                  {restData.map((item) => (
+                    <div
+                      key={item.restaurant_id}
+                      onClick={() => {
+                        setClickItem(
+                          clickItem?.restaurant_id === item.restaurant_id
+                            ? null
+                            : item
+                        );
+                      }}
+                    >
+                      <AdvancedMarker
+                        position={{ lat: item.lat, lng: item.lng }}
+                        title={item.main_title}
+                      >
+                        <img
+                          src="/restaurant.png"
+                          style={{ width: "3vw", height: "3vh" }}
+                          alt="Festival"
+                        />
+                      </AdvancedMarker>
+                      {clickItem?.restaurant_id === item.restaurant_id && (
+                        <InfoWindow
+                          position={{ lat: item.lat, lng: item.lng }}
+                          maxWidth={400}
+                        >
+                          <div className={classes.infoWindowContainer}>
+                            <div className={classes.infoWindowHeader}>
+                              <h2>{clickItem.main_title}</h2>
+                            </div>
+                            <div className={classes.infoWindowBody}>
+                              <div className={classes.infoWindowImg}>
+                                <img
+                                  src={clickItem.main_img_thumb}
+                                  alt={clickItem.main_title}
+                                />
+                              </div>
+                              <div className={classes.infoWindowDetails}>
+                                <p>
+                                  <strong>주소:</strong> {clickItem.addr1}
+                                </p>
+                                <p>
+                                  <strong>전화번호:</strong>{" "}
+                                  {clickItem.cntct_tel}
+                                </p>
+                                <p>
+                                  <strong>주요메뉴:</strong>{" "}
+                                  {clickItem.rprsntv_menu}
+                                </p>
+                                <p>
+                                  <strong>운영시간:</strong>{" "}
+                                  {clickItem.usage_day_week_and_time}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </InfoWindow>
+                      )}
+                    </div>
+                  ))}
                 </APIProvider>
               </div>
               <div className="modal">
