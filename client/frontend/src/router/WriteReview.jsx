@@ -176,6 +176,11 @@ function WriteReview() {
           name="actionType"
           value={reviewData ? "update" : "create"}
         />
+        <input
+          type="hidden"
+          name="reviewId"
+          value={reviewData ? reviewData.review_id : ""}
+        />
       </Form>
     </div>
   );
@@ -194,9 +199,10 @@ export async function action({ request }) {
   let apiUrl = import.meta.env.VITE_API_URL;
   const formData = await request.formData();
   const postData = Object.fromEntries(formData);
+  console.log(postData);
   if (postData.actionType === "update") {
-    const response = await fetch(apiUrl + "/review/write", {
-      method: "POST",
+    const response = await fetch(apiUrl + "/review/update", {
+      method: "PUT",
       body: JSON.stringify(postData),
       headers: {
         "Content-Type": "application/json",
@@ -204,7 +210,7 @@ export async function action({ request }) {
       credentials: "include",
     });
   } else {
-    const response = await fetch(apiUrl + "/review/update", {
+    const response = await fetch(apiUrl + "/review/write", {
       method: "POST",
       body: JSON.stringify(postData),
       headers: {

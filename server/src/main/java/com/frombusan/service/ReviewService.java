@@ -84,7 +84,6 @@ public class ReviewService {
     @Transactional
     public void update(Member loginMember, ReviewUpdateDto reviewUpdateDto) {
         Review review = reviewMapper.findReview(reviewUpdateDto.getReviewId());
-
         if (review == null || !review.getMember_id().equals(loginMember.getMember_id())) {
             throw new IllegalArgumentException("수정 권한 없음");
         }

@@ -240,7 +240,7 @@
 .infoWindowDetails p strong {
   color: #333;
 }
-.gm-style-iw button[title="Close"],
+/* .gm-style-iw button[title="Close"],
 .gm-ui-hover-effect[title="Close"] {
   width: 20px !important;
   height: 20px !important;
@@ -248,4 +248,4 @@
   line-height: 20px !important;
   top: 5px !important;
   right: 5px !important;
-}
+} */

@@ -76,7 +76,8 @@ public class ReplyRestController {
 		// 수정 권한 확인
         Reply findReply = replyMapper.findReply(reply_id);
         if (findReply.getMember_id().equals(loginMember.getMember_id())) {
-            replyMapper.updateReply(reply);
+			findReply.setContent(reply.getContent());
+            replyMapper.updateReply(findReply);
         }
 		
 		return ResponseEntity.ok(reply);
