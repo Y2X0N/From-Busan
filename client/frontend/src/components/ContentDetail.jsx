@@ -1,15 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import classes from "./ContentDetail.module.css";
 import {
   APIProvider,
   Map,
-  Marker,
   AdvancedMarker,
-  Pin,
+  InfoWindow,
 } from "@vis.gl/react-google-maps";
+import { useAuth } from "../AuthProvider";
+import { useLocation, useNavigate } from "react-router-dom";
 
-function ContentDetail({ data }) {
+function ContentDetail({ data, isFavorite, isWishList, restData }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const subject = location.pathname.split("/")[1];
+  const { user } = useAuth();
   const [showDetail, setShowDetail] = useState("detailInfo");
+  const [isFavoriteStat, setIsFavoriteStat] = useState(isFavorite);
+  const [isWishListStat, setIsWishListStat] = useState(isWishList);
+  const [clickItem, setClickItem] = useState(null);
+
+  useEffect(() => {
+    setIsFavoriteStat(isFavorite);
+  }, [isFavorite]);
+
+  useEffect(() => {
+    setIsWishListStat(isWishList);
+  }, [isWishList]);
+
+  async function handleIsFavorite() {
+    const response = await fetch(
+      `http://localhost:9000${location.pathname}/like`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const resData = await response.json();
+    setIsFavoriteStat(resData.favorite);
+  }
+  async function handleIsWishList() {
+    const response = await fetch(
+      `http://localhost:9000${location.pathname}/wishlist`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const resData = await response.json();
+    setIsWishListStat(resData.wishList);
+  }
 
   return (
     <>
@@ -44,34 +89,57 @@ function ContentDetail({ data }) {
             <>
               <img src={data.main_img_normal} alt={data.main_title} />
 
-              {/* Todo: 조건별화면표시제어 */}
-              <div className={classes.buttonContainer}>
-                <div className={classes.buttons}>
-                  <a className={classes.icon}>
-                    <img src="/heart.svg" alt="like" />
-                  </a>
-                  <a className={classes.icon}>
-                    <img
-                      src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
-                      alt="likeFilled"
-                    />
-                  </a>
+              {user && (
+                <div className={classes.buttonContainer}>
+                  <div className={classes.buttons}>
+                    {!isFavoriteStat && (
+                      <button
+                        className={classes.icon}
+                        onClick={handleIsFavorite}
+                      >
+                        <img src="/heart.svg" alt="like" />
+                      </button>
+                    )}
+                    {isFavoriteStat && (
+                      <button
+                        className={classes.icon}
+                        onClick={handleIsFavorite}
+                      >
+                        <img
+                          src="https://cdn-icons-png.flaticon.com/512/803/803087.png"
+                          alt="likeFilled"
+                        />
+                      </button>
+                    )}
+                    {!isWishListStat && (
+                      <button
+                        className={classes.icon}
+                        onClick={handleIsWishList}
+                      >
+                        <img src="/bookmark.svg" alt="bookmark" />
+                      </button>
+                    )}
+                    {isWishListStat && (
+                      <button
+                        className={classes.icon}
+                        onClick={handleIsWishList}
+                      >
+                        <img src="/bookmarkFilled.svg" alt="bookmarkFilled" />
+                      </button>
+                    )}
+                  </div>
                 </div>
-                <div className={classes.buttons}>
-                  <a className={classes.icon}>
-                    <img src="/bookmark.svg" alt="bookmark" />
-                  </a>
-                  <a className={classes.icon}>
-                    <img src="/bookmarkFilled.svg" alt="bookmarkFilled" />
-                  </a>
-                </div>
+              )}
+              <div className={classes.reviewBtn}>
+                <input
+                  type="button"
+                  className={classes.findReviewButton}
+                  value="관련 리뷰 찾기"
+                  onClick={() =>
+                    navigate(`/review/?searchText=${data.main_title}`)
+                  }
+                />
               </div>
-
-              <input
-                type="button"
-                className={classes.findReviewButton}
-                value="관련 리뷰 찾기"
-              />
 
               <div className={classes.detailExplain}>
                 <p>{data.itemcntnts}</p>
@@ -97,10 +165,19 @@ function ContentDetail({ data }) {
                       <a href={data.homepage_url}>{data.homepage_url}</a>
                     </td>
                   </tr>
-                  <tr>
-                    <th>휴무일</th>
-                    <td>{data.hldy_info}</td>
-                  </tr>
+                  {subject === "festival" && (
+                    <tr>
+                      <th>복지시설</th>
+                      <td>{data.middle_size_rm1}</td>
+                    </tr>
+                  )}
+                  {subject === "tourist" && (
+                    <tr>
+                      <th>휴무일</th>
+                      <td>{data.hldy_info}</td>
+                    </tr>
+                  )}
+
                   <tr>
                     <th>운영요일 및 시간</th>
                     <td>{data.usage_day_week_and_time}</td>
@@ -142,8 +219,6 @@ function ContentDetail({ data }) {
                   ></Map>
                   <AdvancedMarker
                     position={{ lat: data.lat, lng: data.lng }}
-                    clickable={true}
-                    onClick={() => alert("marker was clicked!")}
                     title={"clickable google.maps.Marker"}
                   >
                     <img
@@ -152,10 +227,70 @@ function ContentDetail({ data }) {
                       alt="Festival"
                     />
                   </AdvancedMarker>
+                  {restData.map((item) => (
+                    <div
+                      key={item.restaurant_id}
+                      onClick={() => {
+                        setClickItem(
+                          clickItem?.restaurant_id === item.restaurant_id
+                            ? null
+                            : item
+                        );
+                      }}
+                    >
+                      <AdvancedMarker
+                        position={{ lat: item.lat, lng: item.lng }}
+                        title={item.main_title}
+                      >
+                        <img
+                          src="/restaurant.png"
+                          style={{ width: "3vw", height: "3vh" }}
+                          alt="Festival"
+                        />
+                      </AdvancedMarker>
+                      {clickItem?.restaurant_id === item.restaurant_id && (
+                        <InfoWindow
+                          position={{ lat: item.lat, lng: item.lng }}
+                          maxWidth={400}
+                        >
+                          <div className={classes.infoWindowContainer}>
+                            <div className={classes.infoWindowHeader}>
+                              <h2>{clickItem.main_title}</h2>
+                            </div>
+                            <div className={classes.infoWindowBody}>
+                              <div className={classes.infoWindowImg}>
+                                <img
+                                  src={clickItem.main_img_thumb}
+                                  alt={clickItem.main_title}
+                                />
+                              </div>
+                              <div className={classes.infoWindowDetails}>
+                                <p>
+                                  <strong>주소:</strong> {clickItem.addr1}
+                                </p>
+                                <p>
+                                  <strong>전화번호:</strong>{" "}
+                                  {clickItem.cntct_tel}
+                                </p>
+                                <p>
+                                  <strong>주요메뉴:</strong>{" "}
+                                  {clickItem.rprsntv_menu}
+                                </p>
+                                <p>
+                                  <strong>운영시간:</strong>{" "}
+                                  {clickItem.usage_day_week_and_time}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </InfoWindow>
+                      )}
+                    </div>
+                  ))}
                 </APIProvider>
               </div>
-              <div class="modal">
-                <span class="close">&times;</span>
+              <div className="modal">
+                <span className="close">&times;</span>
                 <div id="modalText"></div>
               </div>
             </div>

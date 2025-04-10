@@ -1,7 +1,6 @@
-package com.frombusan.dto.member;
+package com.frombusan.dto.request;
 
 import com.frombusan.model.member.Member;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 

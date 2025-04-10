@@ -10,10 +10,14 @@ import {
 import { useLoaderData } from "react-router-dom";
 
 export async function loader() {
-  const response = await fetch("http://localhost:9000");
-  const reqdata = await response.json();
-  console.log(reqdata);
-  return reqdata;
+  try {
+    const response = await fetch("http://localhost:9000");
+    const reqdata = await response.json();
+    return reqdata;
+  } catch (error) {
+    console.warn("Data Loader fail", error);
+    return null;
+  }
 }
 
 function Directions({ from, to, mode }) {
@@ -27,23 +31,19 @@ function Directions({ from, to, mode }) {
   const selected = routes[routeIndex];
   const leg = selected?.legs[0];
 
-  // Initialize directions service and renderer
   useEffect(() => {
     if (!routesLibrary || !map) return;
     setDirectionsService(new routesLibrary.DirectionsService());
     setDirectionsRenderer(
       new routesLibrary.DirectionsRenderer({
-        draggable: true, // Only necessary for draggable markers
+        draggable: true,
         map,
       })
     );
   }, [routesLibrary, map]);
 
-  // Add the following useEffect to make markers draggable
   useEffect(() => {
     if (!directionsRenderer) return;
-
-    // Add the listener to update routes when directions change
     const listener = directionsRenderer.addListener(
       "directions_changed",
       () => {
@@ -57,11 +57,9 @@ function Directions({ from, to, mode }) {
     return () => coreLibrary.event.removeListener(listener);
   }, [directionsRenderer]);
 
-  // Use directions service
   useEffect(() => {
     if (!directionsService || !directionsRenderer) return;
 
-    directionsRenderer.setDirections(null);
     directionsService
       .route({
         origin: from,
@@ -70,12 +68,12 @@ function Directions({ from, to, mode }) {
         provideRouteAlternatives: true,
       })
       .then((response) => {
+        directionsRenderer.setDirections(null);
         directionsRenderer.setDirections(response);
         setRoutes(response.routes);
       });
   }, [directionsService, directionsRenderer]);
 
-  // Update direction route
   useEffect(() => {
     if (!directionsRenderer) return;
     directionsRenderer.setRouteIndex(routeIndex);
@@ -99,7 +97,6 @@ function Home() {
     setTo(event.target.value);
   }
   function setModeHandler(event) {
-    console.log(event.target.value);
     setMode(event.target.value);
   }
   function handleFindRoute() {
@@ -151,21 +148,10 @@ function Home() {
             </div>
           </div>
           <div className={classes.map}>
-            <APIProvider
-              apiKey={"AIzaSyALFwCG2TvwNdzJ7yJFWyGTfYn8fmrAhhE"}
-              onLoad={() => console.log("Maps API has loaded.")}
-            >
+            <APIProvider apiKey={"AIzaSyALFwCG2TvwNdzJ7yJFWyGTfYn8fmrAhhE"}>
               <Map
                 defaultZoom={12}
                 defaultCenter={{ lat: 35.15, lng: 129.0756416 }}
-                onCameraChanged={(ev) =>
-                  console.log(
-                    "camera changed:",
-                    ev.detail.center,
-                    "zoom:",
-                    ev.detail.zoom
-                  )
-                }
               ></Map>
               {showDirections && <Directions from={from} to={to} mode={mode} />}
             </APIProvider>

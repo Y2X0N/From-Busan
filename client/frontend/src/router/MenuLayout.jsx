@@ -1,8 +1,20 @@
 import { Outlet, NavLink, Link } from "react-router-dom";
 import classes from "./MenuLayout.module.css";
+import { useAuth } from "../AuthProvider";
 
 function MenuLayout() {
-  const loginStatus = false;
+  const { user, setUser } = useAuth();
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  const handleLogout = async () => {
+    await fetch(apiUrl + "/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+    document.cookie =
+      "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    setUser(null);
+  };
 
   return (
     <>
@@ -14,16 +26,16 @@ function MenuLayout() {
 
           <nav>
             <div className={classes["top-nav"]}>
-              {!loginStatus && (
+              {!user && (
                 <div>
                   <Link to="/member/login">로그인</Link>
                   <Link to="/member/join">회원가입</Link>
                 </div>
               )}
-              {loginStatus && (
+              {user && (
                 <div className={classes["top-nav"]}>
                   <Link to="/member/myPage">마이페이지</Link>
-                  <Link to="/member/logout">로그아웃</Link>
+                  <Link onClick={handleLogout}>로그아웃</Link>
                 </div>
               )}
               <div className={classes["language-select"]}>

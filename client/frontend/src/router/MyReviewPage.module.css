@@ -1,0 +1,93 @@
+.contentsContainer {
+  margin: 0 auto;
+  width: 1200px;
+  padding: 10vh 0;
+}
+
+.pageTitle {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.pageTitle h2 {
+  font-size: 35px;
+  color: #6e6e6e;
+  font-weight: 400;
+  text-align: center;
+}
+
+.reviewTable {
+  margin-top: 3vh;
+  width: 100%;
+  font-size: 13px;
+  border-top: 1px solid #e7e7e7;
+  border-bottom: 1px solid #e7e7e7;
+  border-collapse: collapse;
+}
+
+.reviewTable .mainTitle {
+  color: rgb(161, 161, 161);
+  background-color: #e6f6ff;
+  border: none;
+}
+
+.reviewTable th {
+  font-size: 13px;
+  text-align: center;
+}
+
+.th1 {
+  width: 5%;
+}
+
+.th2 {
+  width: 12.5%;
+}
+
+.th3 {
+  width: 10%;
+}
+
+.th4 {
+  width: 50%;
+}
+
+.reviewTable th,
+td {
+  padding: 12px 0;
+}
+
+.reviewTable tbody td {
+  border-top: 1px solid #e7e7e7;
+  text-align: center;
+}
+
+.reviewTable tbody th {
+  padding-left: 28px;
+  padding-right: 14px;
+  border-top: 1px solid #e7e7e7;
+  text-align: left;
+}
+
+.reviewTable a {
+  color: #333;
+  display: inline-block;
+  line-height: 1.4;
+  word-break: break-all;
+  vertical-align: middle;
+  height: 100%;
+  width: 100%;
+}
+
+.reviewTable a:hover {
+  text-decoration: underline;
+}
+
+.reviewTable tbody tr {
+  text-align: center;
+  height: 4vh;
+  width: 100%;
+}
+.reviewTable tbody td {
+  border-bottom: 1px solid #e7e7e7;
+}

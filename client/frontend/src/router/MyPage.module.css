@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Shippori+Mincho&display=swap");
+.myPageContainer {
+  width: 1200px;
+  height: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Shippori Mincho", serif;
+}
+
+.myPageContainer > h2 {
+  text-align: center;
+  font-size: 40px;
+  margin-bottom: 10%;
+  color: #6e6e6e;
+  border-bottom: 1px solid black;
+}
+
+.span {
+  font-size: 27px;
+  color: #6e6e6e;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 800px;
+}
+
+.buttonContainer > a > input {
+  padding: 10px 30px;
+  text-align: center;
+  font-size: 30px;
+  color: #7e7e7e;
+  border: 2px solid #7e7e7e;
+  background: #fff;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  transition: all ease-in-out 0.3s;
+}
+
+.buttonContainer > a > input:hover {
+  border-color: #fff;
+  background: #666;
+  color: #fff;
+}

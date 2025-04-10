@@ -1,7 +1,6 @@
-package com.frombusan.dto.tourist;
+package com.frombusan.dto.response;
 
 import com.frombusan.model.tourist.Tourist_Spot;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 

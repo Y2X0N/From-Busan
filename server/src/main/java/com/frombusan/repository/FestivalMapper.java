@@ -3,6 +3,7 @@ package com.frombusan.repository;
 import java.util.List;
 import java.util.Map;
 
+import com.frombusan.model.tourist.Tourist_Spot;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
@@ -21,34 +22,32 @@ public interface FestivalMapper {
 	//축제페이징처리
 	int getTotal(String searchText);
 	List<Festival> findAllFestival(String searchText,RowBounds rowBounds);
-	//좋아요유무
-	Boolean checkMemberLikeStatus(@Param("festival_Id")Long festival_Id, @Param("member_Id")String memberId);
-	//찜유무
-	Boolean checkMemberWishListStatus(@Param("festival_Id")Long festival_Id, @Param("member_Id")String memberId);
-
-	//좋아요 기능
-	void updateFestival(Festival updateFestival);
-
-	List<String> findLikesMemberId(Long festival_id);
-
-	List<Map<String,Object>> findLikesById(Long festival_id);
-
-	void saveLikes(FestivalLikes festivalLikes);
-
+	//회원의 좋아요 유무
+	Boolean checkMemberLikeStatus(@Param("festival_id")Long festivalId, @Param("member_id")String memberId);
+	//회원의 찜 유무
+	Boolean checkMemberWishListStatus(@Param("festival_id")Long festivalId, @Param("member_id")String memberId);
+	//회원의 좋아요 게시물찾기
+	FestivalLikes findFestivalLike(@Param("festival_id")Long festivalId, @Param("member_id")String memberId);
+	//회원의 찜 게시물 찾기
+	FestivalMyList findFestivalMyList(@Param("festival_id")Long festivalId, @Param("member_id")String memberId);
+	//회원의 좋아요 삭제
 	void deleteLike(Object like_id);
-//
-	//찜하기
-
-	void saveMyList(FestivalMyList festivalMyList);
-
-	List<Map<String,Object>> findMyListById(Long festival_id);
-
-	List<String> findMyListMemberId(Long festival_id);
-
-	//테이블 다른걸로!
+	//회원의 찜 삭제
 	void deleteMyList(Object wishboard_id);
+	//축제정보 업데이트
+	void updateFestival(Festival updateFestival);
+	//회원의 좋아요 저장
+	void saveLikes(FestivalLikes festivalLikes);
+	//회원의 찜 저장
+	void saveMyList(FestivalMyList festivalMyList);
+	//회원의 찜 목록
+	List<Festival> findMyWishlistByMemberId(String member_id);
 
+
+	//미사용 메소드
+	List<Map<String,Object>> findLikesById(Long festival_id);
+	List<String> findLikesMemberId(Long festival_id);
+	List<Map<String,Object>> findMyListById(Long festival_id);
+	List<String> findMyListMemberId(Long festival_id);
 	List<Map<String, Object>> findMyListByMemberId(String member_id);
-
-
 }

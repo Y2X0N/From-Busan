@@ -22,7 +22,6 @@ const ContentsList = ({ data, navi }) => {
   useEffect(() => {
     const loader = async () => {
       if (currentLocation.search === "") {
-        console.log(currentLocation);
         return;
       } else {
         try {
@@ -30,7 +29,6 @@ const ContentsList = ({ data, navi }) => {
             `http://localhost:9000${currentLocation.pathname}list/${currentLocation.search}`
           );
           const reqData = await response.json();
-          console.log(reqData);
           setCurrentPageData(reqData[Object.keys(reqData)[0]]);
           setCurrentNavi(reqData[Object.keys(reqData)[1]]);
         } catch (error) {
@@ -49,7 +47,11 @@ const ContentsList = ({ data, navi }) => {
           <div className={classes.searchBar}>
             <input
               type="search"
-              placeholder="명소를 입력해주세요."
+              placeholder={
+                currentLocation.pathname === "/tourist"
+                  ? "명소를 입력해주세요."
+                  : "축제를 입력해주세요"
+              }
               onChange={handleSearchText}
               onKeyDown={handleKeyDown}
             />
@@ -114,7 +116,11 @@ const ContentsList = ({ data, navi }) => {
           ))}
 
           {currentPageData.length === 0 && (
-            <span className={classes.color}>찾으시는 명소가 없습니다</span>
+            <span className={classes.color}>
+              {currentLocation.pathname === "/tourist/"
+                ? "찾으시는 명소가 없습니다"
+                : "찾으시는 축제가 없습니다"}
+            </span>
           )}
         </div>
 

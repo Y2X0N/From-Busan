@@ -161,6 +161,15 @@ CREATE TABLE course_likes (
     course_id INTEGER REFERENCES course(course_id)
 );
 
+CREATE TABLE review_like (
+    like_id SERIAL PRIMARY KEY,
+    member_id VARCHAR(20) REFERENCES member(member_id),
+    review_id INTEGER REFERENCES review(review_id)
+);
+-- restaurant extension
+CREATE EXTENSION cube;
+CREATE EXTENSION earthdistance;
+
 
 
 

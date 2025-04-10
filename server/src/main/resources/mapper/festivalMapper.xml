@@ -3,51 +3,96 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.frombusan.repository.FestivalMapper">
-    
 
-    
-     <select id="findFestival" resultType="festival">
-        select * from festival where festival_id=#{festival_id}
-    </select>
-    
-    
-    
-    <select id="findAllFestival" resultMap="festivalResultMap">
-        select itemcntnts,festival_id,place_like,main_img_normal,main_title,hit 
-        from festival 
-       	<if test="_parameter != null">
-            where main_title like '%' || #{searchText} || '%'
-        </if>
-        order by hit desc
-    </select>
-   	<resultMap type="festival" id="festivalResultMap">
-		<id property="id" column="id" />
-		<result property="hit" column="hit" />
-	</resultMap>
-    
-     
+    <!--홈화면축제리스트-->
     <select id="findAllFestivalForMain" resultMap="festivalForMain">
-        select festival_id,place_like,main_img_normal,main_title 
+        select festival_id,place_like,main_img_normal,main_title
         from festival order by place_like desc
     </select>
-   	<resultMap type="festival" id="festivalForMain">
-		<id property="id" column="id" />
-		<result property="hit" column="hit" />
-	</resultMap>
-    
-    
-    
+    <resultMap type="festival" id="festivalForMain">
+        <id property="id" column="id" />
+        <result property="hit" column="hit" />
+    </resultMap>
+
+    <!--축제정보찾기-->
+    <select id="findFestival" resultType="festival">
+        select * from festival where festival_id=#{festival_id}
+    </select>
+
+    <!--축제 페이징 처리-->
     <select id="getTotal" resultType="int">
-        select count(*) from festival 
+        select count(*) from festival
         <if test="_parameter != null">
             where main_title like '%' || #{searchText} || '%'
         </if>
     </select>
-    
-    
-    
-     <!-- ///////////////////////////////////////////////////////////////////////////////// -->
-    
+
+    <select id="findAllFestival" resultMap="festivalResultMap">
+        select itemcntnts,festival_id,place_like,main_img_normal,main_title,hit
+        from festival
+        <if test="_parameter != null">
+            where main_title like '%' || #{searchText} || '%'
+        </if>
+        order by hit desc
+    </select>
+    <resultMap type="festival" id="festivalResultMap">
+        <id property="id" column="id" />
+        <result property="hit" column="hit" />
+    </resultMap>
+
+    <!--회원의 좋아요 유무-->
+    <select id="checkMemberLikeStatus" resultType="boolean">
+        SELECT CASE
+        WHEN EXISTS (
+        SELECT 1 FROM festival_likes
+        WHERE festival_id = #{festival_id}
+        AND member_id = #{member_id}
+        )
+        THEN TRUE
+        ELSE FALSE
+        END AS isFavorite
+    </select>
+
+    <!--회원의 찜 유무-->
+    <select id="checkMemberWishListStatus" resultType="boolean">
+        SELECT CASE
+        WHEN EXISTS (
+        SELECT 1 FROM wish_list_fes
+        WHERE festival_id = #{festival_id}
+        AND member_id = #{member_id}
+        )
+        THEN TRUE
+        ELSE FALSE
+        END AS isWishList
+    </select>
+
+    <!--회원의 좋아요 게시물찾기-->
+    <select id="findFestivalLike" resultType="festivalLikes">
+        SELECT like_id,member_id,festival_id
+        FROM festival_likes
+        WHERE festival_id = #{festival_id}
+        AND member_id = #{member_id}
+    </select>
+
+    <!--회원의 찜 게시물 찾기-->
+    <select id="findFestivalMyList" resultType="festivalMyList">
+        SELECT *
+        FROM wish_list_fes
+        WHERE festival_id = #{festival_id}
+        AND member_id = #{member_id}
+    </select>
+
+    <!--회원의 좋아요 삭제-->
+    <delete id="deleteLike">
+        delete from festival_likes where like_id = #{like_id}
+    </delete>
+
+    <!--회원의 찜 삭제-->
+    <delete id="deleteMyList">
+        delete from wish_list_fes where wishboard_id = #{wishboard_id}
+    </delete>
+
+    <!--축제정보 업데이트-->
     <update id="updateFestival">
         update festival
         <set>
@@ -57,70 +102,58 @@
         </set>
         where festival_id = #{festival_id}
     </update>
-    
+
+    <!--회원의 좋아요 저장-->
+    <insert id="saveLikes">
+        insert into festival_likes (
+        member_id,
+        festival_id
+        ) values (
+        #{member_id},
+        #{festival_id}
+        )
+    </insert>
+
+    <!--회원의 찜 저장-->
+    <insert id="saveMyList">
+        insert into wish_list_fes (
+        member_id,
+        festival_id
+        ) values (
+        #{member_id},
+        #{festival_id}
+        )
+    </insert>
+
+    <!--회원의 찜 목록-->
+    <select id="findMyWishlistByMemberId" resultType="festival">
+        select f.itemcntnts,f.festival_id,f.place_like,f.main_img_normal,f.main_title, f.hit
+        from wish_list_fes wl
+        inner join festival f
+        on wl.festival_id = f.festival_id
+        where wl.member_id = #{member_id}
+    </select>
+
+
+    <!--미사용 메소드 -->
     <select id="findLikesMemberId" resultType="string">
         select member_id from festival_likes where festival_id=#{festival_id}
     </select>
-    
+
     <select id="findLikesById" resultType="map">
         select member_id,like_id from festival_likes where festival_id=#{festival_id}
     </select>
-    
-    <insert id="saveLikes">
-    <selectKey keyProperty="like_id" resultType="long" order="BEFORE">
-            select seq_review.nextval from dual
-        </selectKey>
-        insert into festival_likes (
-        	like_id,
-            member_id,
-            festival_id
-        ) values (
-            #{like_id},
-            #{member_id},
-            #{festival_id}
-        )
-    </insert>
-    
-     <delete id="deleteLike">
-        delete from festival_likes where like_id = #{like_id} 
-    </delete>
-    
-<!-- /////////////////찜 기능//////////////////////////////////////////////////////////////// -->
-    
-    <insert id="saveMyList">
-    <selectKey keyProperty="wishboard_id" resultType="long" order="BEFORE">
-            select seq_review.nextval from dual
-        </selectKey>
-        insert into wish_list_fes (
-        	wishboard_id,
-            member_id,
-            festival_id
-        ) values (
-            #{wishboard_id},
-            #{member_id},
-            #{festival_id}
-        )
-    </insert>
-    
+
     <select id="findMyListById" resultType="map">
         select member_id, wishboard_id from wish_list_fes where festival_id=#{festival_id}
     </select>
-    
-      <select id="findMyListMemberId" resultType="string">
+
+    <select id="findMyListMemberId" resultType="string">
         select member_id from wish_list_fes where festival_id=#{festival_id}
     </select>
-    
-    <delete id="deleteMyList">
-        delete from wish_list_fes where wishboard_id = #{wishboard_id} 
-    </delete>
-    
-    
-        
- <!-- /////////////////찜 목록//////////////////////////////////////////////////////////////// -->
 
-	 <select id="findMyListByMemberId" resultType="map">
+    <select id="findMyListByMemberId" resultType="map">
         select festival_id from wish_list_fes where member_id=#{member_id}
     </select>
-    
-    
+
 </mapper>

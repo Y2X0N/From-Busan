@@ -1,11 +1,10 @@
 package com.frombusan.controller;
 
 
-import com.frombusan.dto.tourist.TouristInfoDto;
-import com.frombusan.dto.tourist.TouristInfoLikeDto;
-import com.frombusan.dto.tourist.TouristInfoWishListDto;
-import com.frombusan.dto.tourist.TouristListDto;
-import com.frombusan.model.tourist.Tourist_Spot;
+import com.frombusan.dto.response.TouristInfoDto;
+import com.frombusan.dto.response.TouristInfoLikeDto;
+import com.frombusan.dto.response.TouristInfoWishListDto;
+import com.frombusan.dto.response.TouristListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -65,7 +64,7 @@ public class TouristController {
     // 명소 찜목록 추가
     @PostMapping("{id}/wishlist")
     public ResponseEntity<TouristInfoWishListDto> toggleWishList(
-              @RequestParam("touristSpotId") Long tourist_Spot_id
+              @PathVariable(value = "id") Long tourist_Spot_id
             , @SessionAttribute(value = "loginMember") Member loginMember) {
         try {
             TouristInfoWishListDto touristInfoWishListDto = touristService.toggleWishList(tourist_Spot_id, loginMember);

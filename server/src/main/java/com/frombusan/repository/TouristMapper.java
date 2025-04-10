@@ -33,7 +33,7 @@ public interface TouristMapper {
 
 	List<Map<String,Object>> findLikesById(Long tourist_Spot_id);
 
-	TouristSpotLikes findTouristSpotLike(@Param("tourist_Spot_id") Long tourist_Spot_id, @Param("member_id") String member_id);
+	TouristSpotLikes findTouristSpotLike(@Param("tourist_Spot_id") Long touristSpotId, @Param("member_id") String memberId);
 
 	TouristSpotMyList findTouristSpotWishList(@Param("tourist_Spot_id") Long touristSpotId, @Param("member_id") String memberId);
 
@@ -47,7 +47,7 @@ public interface TouristMapper {
 	void deleteMyList(Object wishboard_id);
 
 	//찜 목록
-	List<Map<String, Object>> findMyListByMemberId(String member_id);
+	List<Tourist_Spot> findMyWishlistByMemberId(String member_id);
 
 	void addHit(Tourist_Spot tourist_Spot);
 

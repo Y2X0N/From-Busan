@@ -12,14 +12,5 @@ public class ReviewLikes {
 	private Long like_id;
 	private Long review_id;
 	private String member_id;
-	private boolean liked;
-	
-	public boolean isLiked() {
-	    return liked;
-	  }
-  
-	  public void setLiked(boolean liked) {
-	    this.liked = liked;
-	  }
 
 }

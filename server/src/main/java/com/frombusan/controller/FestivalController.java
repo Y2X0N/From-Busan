@@ -1,24 +1,15 @@
 package com.frombusan.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import com.frombusan.dto.FestivalInfoDto;
-import com.frombusan.dto.FestivalListDto;
-import org.apache.ibatis.session.RowBounds;
+import com.frombusan.dto.response.FestivalInfoDto;
+import com.frombusan.dto.response.FestivalInfoLikeDto;
+import com.frombusan.dto.response.FestivalInfoWishListDto;
+import com.frombusan.dto.response.FestivalListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.frombusan.model.festival.Festival;
-import com.frombusan.model.festival.FestivalLikes;
-import com.frombusan.model.festival.FestivalMyList;
 import com.frombusan.model.member.Member;
-import com.frombusan.repository.FestivalMapper;
 import com.frombusan.service.FestivalService;
-import com.frombusan.util.PageNavigator;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,7 +29,7 @@ public class FestivalController {
 	}
 
 	// 게시글 읽기
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	public ResponseEntity<FestivalInfoDto> getFestival(@PathVariable(value = "id") Long festivalId, @SessionAttribute(value ="loginMember", required = false) Member loginMember) {
 		try {
 			FestivalInfoDto festivalInfoDto = festivalService.findFestivalById(festivalId, loginMember);
@@ -48,6 +39,25 @@ public class FestivalController {
 		}
 	}
 
+	@PostMapping("/{id}/like")
+	public ResponseEntity<FestivalInfoLikeDto> toggleLike(@PathVariable(value ="id") Long festivalId, @SessionAttribute(value="loginMember", required=true) Member loginMember) {
+		try {
+			FestivalInfoLikeDto festivalInfoLikeDto = festivalService.toggleLike(festivalId, loginMember);
+			return ResponseEntity.ok(festivalInfoLikeDto);
+		} catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
+
+	@PostMapping("/{id}/wishlist")
+	public ResponseEntity<FestivalInfoWishListDto> toggleWishList(@PathVariable(value ="id") Long festivalId, @SessionAttribute(value="loginMember", required=true) Member loginMember) {
+		try {
+			FestivalInfoWishListDto festivalInfoWishListDto = festivalService.toggleWishList(festivalId, loginMember);
+			return ResponseEntity.ok(festivalInfoWishListDto);
+		} catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
 	//좋아요 기능
 //	 	@PostMapping("/like")
 //		public ResponseEntity<Festival> likeTouristSpot(@RequestParam("festivalId") Long festival_id

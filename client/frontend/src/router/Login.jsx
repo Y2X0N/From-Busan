@@ -1,9 +1,22 @@
+import { useEffect } from "react";
+import { useAuth } from "../AuthProvider";
 import classes from "./Login.module.css";
-
-import { Form, Outlet, useNavigate, redirect } from "react-router-dom";
+import { Form, Outlet, useNavigate, useActionData } from "react-router-dom";
 
 function Login() {
   const navi = useNavigate();
+  const actionData = useActionData();
+  const failLogin = actionData?.error;
+  const { setUser } = useAuth();
+
+  useEffect(() => {
+    if (actionData?.user) {
+      navi("/");
+      return setUser(actionData.user);
+    } else {
+      return setUser(null);
+    }
+  }, [actionData]);
 
   return (
     <>
@@ -25,6 +38,11 @@ function Login() {
               name="password"
             />
           </div>
+          {failLogin && (
+            <span style={{ fontSize: "1.5vh", color: "red" }}>
+              *아이디 혹은 비밀번호가 일치 하지 않습니다
+            </span>
+          )}
 
           <div className={classes.loginSubmit}>
             <input type="submit" value="로그인" />
@@ -32,14 +50,14 @@ function Login() {
               type="button"
               value="아이디 찾기"
               onClick={() => {
-                navi("./check", { state: { title: "아이디 찾기" } });
+                navi("./findId");
               }}
             />
             <input
               type="button"
               value="비밀번호 찾기"
               onClick={() => {
-                navi("./check", { state: { title: "비밀번호 찾기" } });
+                navi("./findPassword");
               }}
             />
           </div>
@@ -54,16 +72,18 @@ export default Login;
 export async function action({ request }) {
   const formData = await request.formData();
   const urlEncodedData = new URLSearchParams(formData);
-  // const postData = Object.fromEntries(formData);
   const response = await fetch("http://localhost:9000/auth/login", {
     method: "POST",
     body: urlEncodedData,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
+    credentials: "include",
   });
 
   if (response.status === 200) {
-    return redirect("/");
+    return { user: Object.fromEntries(formData) };
+  } else {
+    return { error: true };
   }
 }

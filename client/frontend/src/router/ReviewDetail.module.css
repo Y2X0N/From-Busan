@@ -1,0 +1,249 @@
+@charset "UTF-8";
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+
+.error {
+  color: red;
+}
+
+.writeContainer {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.writeContainer form {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.writeHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 23px;
+  width: 100%;
+  height: 45px;
+  margin-top: 65px;
+  color: #6e6e6e;
+}
+.writeBtnContainer {
+  display: flex;
+}
+.writeBtnContainer .writeBtn {
+  height: 35px;
+  width: 100px;
+  background-color: white;
+  border: 2px solid black;
+  margin-right: 1%;
+}
+
+.writeBtn:hover {
+  background-color: black;
+  color: white;
+  border: 2px solid black;
+}
+
+.writeTable {
+  margin-top: 2px;
+  width: 100%;
+  height: 10%;
+  text-align: left;
+  border-top: 1px solid #ccc;
+}
+.writeTable tr {
+  width: 50px;
+  padding: 10px;
+}
+.writeTable .th1 {
+  padding: 15px 0;
+  color: rgb(142, 141, 141);
+  background-color: #e6f6ff;
+  width: 5vw;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+.writeTable .td1 {
+  width: 25vw;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.writeTable .th2 {
+  padding: 15px 0;
+  color: rgb(142, 141, 141);
+  background-color: #e6f6ff;
+  width: 4vw;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+.writeTable .td2 {
+  width: 4vw;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.contentContainer {
+  margin-top: 2vh;
+  width: 99%;
+  min-height: 40vh;
+  border: none;
+  outline: none;
+}
+
+.topButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonContainer {
+  display: flex;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttons .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100vw * (35 / 1920));
+  height: calc(100vw * (35 / 1920));
+  border: solid 2px #eaeaea;
+  background-color: #fff;
+  transform-origin: center;
+  color: inherit;
+  cursor: pointer;
+}
+
+.buttons .icon:hover {
+  background-color: #eaeaea;
+}
+
+.buttons .icon img {
+  width: calc(100vw * (20 / 1920));
+  height: calc(100vw * (20 / 1920));
+}
+
+.icon .active img {
+  animation: animateHeart 0.3s linear forwards;
+}
+
+@keyframes animateHeart {
+  0% {
+    transform: scale(0.2);
+  }
+
+  40% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.replyContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.replyContainer .writeReplyContainer {
+  width: 99%;
+  border: 1px, solid, black;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.replyContainer .writeReplyContainer .writeReplyHeader {
+  font-weight: 600;
+  margin-bottom: 1vh;
+}
+
+.replyContainer .writeReplyContainer .writeReplyContents {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+
+.replyContainer .writeReplyContainer .writeReplyContents > textarea {
+  width: 95%;
+  height: 3rem;
+}
+
+.replyContainer .writeReplyContainer .writeReplyContents > button {
+  width: 3rem;
+  height: 3rem;
+}
+.repliesContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 5px;
+}
+.repliesContainer .repliesHeader {
+  font-size: 18px;
+  font-weight: 600;
+  color: #6e6e6e;
+  margin: 1vh 0;
+}
+
+.spanFirst {
+  font-weight: bold;
+  margin-right: 0.5vw;
+}
+
+.spanSec {
+  font-size: 12px;
+}
+
+.replyHeader {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.rightControls {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+
+.replyControlBtn {
+  color: grey;
+  background: white;
+  border: none;
+}
+
+.replyControlBtn:hover {
+  color: black;
+}
+
+.writeEditReplyContents {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+
+.writeEditReplyContents > textarea {
+  width: 95%;
+  height: 3rem;
+}
+
+.writeEditReplyContents > button {
+  width: 3rem;
+  height: 3rem;
+}
